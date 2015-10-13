@@ -6,18 +6,18 @@
         xmlns:local="clr-namespace:GraphManager"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="367.105" Width="540.789" MinWidth="540" MinHeight="367">
+        Title="MainWindow" Height="438.158" Width="747.368" MinWidth="540" MinHeight="367">
     <Grid Background="#FFC0DAFF">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="Canvas" HorizontalAlignment="Center" Grid.Column="1" Height="300" Width="350" Margin="10" VerticalAlignment="Center" Background="White" />
-        <ComboBox Grid.Column="0" Height="20" VerticalAlignment="Top" Margin="10">
+        <Canvas x:Name="Canvas" HorizontalAlignment="Center" Grid.Column="1" Height="350" Width="500" Margin="10" VerticalAlignment="Center" Background="White" MouseDown="Canvas_MouseDown" />
+        <ComboBox SelectedIndex="0" x:Name="CbxMode" Grid.Column="0" Height="25" VerticalAlignment="Top" Margin="10">
             <system:String>Dodaj</system:String>
             <system:String>Usuń</system:String>
         </ComboBox>
-        <Button Grid.Column="0" Height="20" Margin="10,40,10,10" VerticalAlignment="Top">Czyść</Button>
-        
+        <Button Grid.Column="0" Height="25" Margin="10,50,10,10" VerticalAlignment="Top">Czyść</Button>
+
     </Grid>
 </Window>
