@@ -14,7 +14,7 @@ namespace Graph_Manager.Model
             Edges = new List<Edge>();
         }
 
-        private List<Vertex> Vertexes { get; set; }
-        private List<Edge> Edges { get; set; }
+        public List<Vertex> Vertexes { get; set; }
+        public List<Edge> Edges { get; set; }
     }
 }
