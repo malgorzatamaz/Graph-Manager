@@ -1,9 +1,9 @@
-﻿<Window x:Class="GraphManager.MainWindow"
+﻿<Window x:Class="Graph_Manager.MainWindow"
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:GraphManager"
+        xmlns:local="clr-namespace:Graph_Manager"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
         Title="MainWindow" Height="438.158" Width="747.368" MinWidth="540" MinHeight="367">
@@ -12,29 +12,25 @@
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
+        <Button x:Name="cbxClear" 
+                Grid.Column="0" 
+                Height="25" 
+                Margin="10,372,10,0"
+                VerticalAlignment="Top" 
+                Content="Czyść"/>
         <Canvas x:Name="Canvas" 
-                HorizontalAlignment="Center" 
                 Grid.Column="1" 
-                Height="350" 
-                Width="500" 
                 Margin="10" 
-                VerticalAlignment="Center" 
-                Background="White" 
-                MouseRightButtonDown="Canvas_MouseRightButtonDown"
-                MouseLeftButtonDown="Canvas_MouseLeftButtonDown"/>
-        <ComboBox 
-            SelectedIndex="0" 
-            x:Name="CbxMode" 
-            Grid.Column="0"
-            Height="25" 
-            VerticalAlignment="Top" 
-            Margin="10">
+                Background="White" />
+        <ComboBox SelectedIndex="0" 
+                  x:Name="cbxMode" 
+                  Grid.Column="0" 
+                  Height="25" 
+                  VerticalAlignment="Top" 
+                  Margin="10,10,10,0">
             <system:String>Dodaj</system:String>
             <system:String>Usuń</system:String>
         </ComboBox>
-        <Button Grid.Column="0" 
-                Height="25" 
-                Margin="10,50,10,10" 
-                VerticalAlignment="Top">Czyść</Button>
     </Grid>
 </Window>
+
