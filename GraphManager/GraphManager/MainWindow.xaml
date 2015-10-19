@@ -12,29 +12,12 @@
             <ColumnDefinition Width="150"/>
             <ColumnDefinition Width="150*"/>
         </Grid.ColumnDefinitions>
-        <Canvas x:Name="Canvas" 
-                HorizontalAlignment="Center" 
-                Grid.Column="1" 
-                Height="350" 
-                Width="500" 
-                Margin="10" 
-                VerticalAlignment="Center" 
-                Background="White" 
-                MouseRightButtonDown="Canvas_MouseRightButtonDown"
-                MouseLeftButtonDown="Canvas_MouseLeftButtonDown"/>
-        <ComboBox 
-            SelectedIndex="0" 
-            x:Name="CbxMode" 
-            Grid.Column="0"
-            Height="25" 
-            VerticalAlignment="Top" 
-            Margin="10">
+        <Canvas x:Name="Canvas" HorizontalAlignment="Center" Grid.Column="1" Height="350" Width="500" Margin="10" VerticalAlignment="Center" Background="White" MouseDown="Canvas_MouseDown" />
+        <ComboBox SelectedIndex="0" x:Name="CbxMode" Grid.Column="0" Height="25" VerticalAlignment="Top" Margin="10">
             <system:String>Dodaj</system:String>
             <system:String>Usuń</system:String>
         </ComboBox>
-        <Button Grid.Column="0" 
-                Height="25" 
-                Margin="10,50,10,10" 
-                VerticalAlignment="Top">Czyść</Button>
+        <Button Grid.Column="0" Height="25" Margin="10,50,10,10" VerticalAlignment="Top">Czyść</Button>
+
     </Grid>
 </Window>

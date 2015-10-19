@@ -12,7 +12,7 @@ namespace Graph_Manager.Model
         public Point StartPoint { get; set; }
         public Point EndPoint { get; set; }
         public int Index { get; set; }
-        public Vertex StartVertex { get; set; }
-        public Vertex EndVertex { get; set; }
+        public Vertex StartVertex { get; set; } //informacja nadmmiarowa
+        public Vertex EndVertex { get; set; } //informacja nadmiarowa 
     }
 }

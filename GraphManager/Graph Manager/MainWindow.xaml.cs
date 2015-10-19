@@ -28,6 +28,7 @@ namespace Graph_Manager
         public bool AnySelected => Graph.Vertexes.Any(v => v.Selected == true);
         public Graph Graph { get; set; }
 
+        //odpowiada za zaznaczanie wierzchołków
         private void Canvas_MouseRightButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             if (e.OriginalSource is Image)
@@ -54,10 +55,12 @@ namespace Graph_Manager
             Draw();
         }
 
+        //wykonuje operacje wybrane w menu
         private void Canvas_MouseLeftButtonDown(object sender, System.Windows.Input.MouseButtonEventArgs e)
         {
             Point point = Mouse.GetPosition(Canvas);
 
+            //dodaje wolne wierzchołki
             if (cbxMode.SelectedIndex == 0 && AnySelected == false)
             {
                 Graph.Vertexes.Add(new Vertex()
@@ -65,6 +68,8 @@ namespace Graph_Manager
                     Position = point
                 });
             }
+            //dodaje wierzchołek połączony z aktualnie wybranymi (sprawdza czy nie kliknięto na inny wierzchołek,
+            //jeśli tak to nie wykonuje operacji)
             else if (cbxMode.SelectedIndex == 0 && AnySelected == true && !(e.OriginalSource is Image))
             {
                 var vertex = new Vertex()
@@ -78,7 +83,9 @@ namespace Graph_Manager
                     var edge = new Edge()
                     {
                         StartPoint = v.Position,
-                        EndPoint = point
+                        EndPoint = point,
+                        StartVertex = v,
+                        EndVertex = vertex
                     };
 
                     Graph.Edges.Add(edge);
@@ -90,6 +97,7 @@ namespace Graph_Manager
                     vertex.ConnectedVertexes.Add(v);
                 });
             }
+            //łaczy wybrane wierzchołki z innym który nie jest zaznaczony
             else if (cbxMode.SelectedIndex == 0 && AnySelected == true && e.OriginalSource is Image)
             {
                 int index = Canvas.Children.IndexOf(e.OriginalSource as Image);
@@ -100,7 +108,9 @@ namespace Graph_Manager
                     var edge = new Edge()
                     {
                         StartPoint = v.Position,
-                        EndPoint = vertex.Position
+                        EndPoint = vertex.Position,
+                        StartVertex = v,
+                        EndVertex = vertex
                     };
 
                     Graph.Edges.Add(edge);
@@ -112,17 +122,26 @@ namespace Graph_Manager
                     vertex.ConnectedVertexes.Add(v);
                 });
             }
+            //usuwa dowolny wierzchołek
             else if (cbxMode.SelectedIndex == 1 && e.OriginalSource is Image)
             {
                 int index = Canvas.Children.IndexOf(e.OriginalSource as Image);
-                var vertex = Graph.Vertexes.First(v => v.Index == index);
+                var vertex = Graph.Vertexes.FirstOrDefault(v => v.Index == index);
 
                 vertex.ConnectedEdges.ForEach(m =>
                 {
-                    Graph.Edges.RemoveAll(v => v.Index == m.Index);
+                    Graph.Edges.Remove(m);
                 });
 
                 Graph.Vertexes.Remove(vertex);
+            }
+            //usuwa dowolną krawędź
+            else if (cbxMode.SelectedIndex == 1 && e.OriginalSource is Line)
+            {
+                int index = Canvas.Children.IndexOf(e.OriginalSource as Line);
+                var edge = Graph.Edges.FirstOrDefault(v => v.Index == index);
+
+                Graph.Edges.Remove(edge);
             }
 
             Draw();
@@ -132,7 +151,7 @@ namespace Graph_Manager
         {
             Canvas.Children.Clear();
 
-            //Edges draw
+            //rysuje krawędzie
             foreach (var edge in Graph.Edges)
             {
                 Line line = new Line();
@@ -149,7 +168,7 @@ namespace Graph_Manager
                 edge.Index = Canvas.Children.IndexOf(line);
             }
 
-            //Vertex draw
+            //rysuje wierzchołki
             foreach (var vertex in Graph.Vertexes)
             {
                 Image image = new Image();
@@ -175,6 +194,11 @@ namespace Graph_Manager
 
                 vertex.Index = Canvas.Children.IndexOf(image);
             }
+        }
+
+        private void cbxClear_Click(object sender, RoutedEventArgs e)
+        {
+            Canvas.Children.Clear();
         }
     }
 }

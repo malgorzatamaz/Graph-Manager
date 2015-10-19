@@ -15,7 +15,7 @@
         <Button x:Name="cbxClear" 
                 Grid.Column="0" 
                 Margin="10,0,0,10" 
-                Content="Czyść" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="130"/>
+                Content="Czyść" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="130" Click="cbxClear_Click"/>
         <Canvas x:Name="Canvas" 
                 HorizontalAlignment="Center" 
                 Grid.Column="1" 
@@ -24,6 +24,7 @@
                 Margin="10" 
                 VerticalAlignment="Center" 
                 Background="White" 
+                ClipToBounds="True" 
                 MouseRightButtonDown="Canvas_MouseRightButtonDown" 
                 MouseLeftButtonDown="Canvas_MouseLeftButtonDown"/>
         <ComboBox SelectedIndex="0" 

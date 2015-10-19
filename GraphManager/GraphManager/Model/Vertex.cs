@@ -1,10 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace point_draw.Graphs
+namespace GraphManager.Model
 {
     class Vertex
     {
@@ -13,17 +9,12 @@ namespace point_draw.Graphs
         public int Index { get; set; }
         public int CanvasIndex { get; set; }
         public List<Vertex> Neibourghs { get; set; }
-        public List<int> EdgesIndex { get; set; } 
+        public List<int> EdgesIndex { get; set; }
 
         public Vertex()
         {
-             Neibourghs = new List<Vertex>();
+            Neibourghs = new List<Vertex>();
             EdgesIndex = new List<int>();
         }
-
-        
     }
-
-
-
 }

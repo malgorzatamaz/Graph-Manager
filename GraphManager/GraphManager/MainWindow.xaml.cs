@@ -12,15 +12,15 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using GraphManager.Model;
 using MahApps.Metro.Controls;
-using point_draw.Graphs;
 
 namespace GraphManager
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
     /// </summary>
-    public partial class MainWindow 
+    public partial class MainWindow
     {
 
         private Graph Graph;
@@ -110,7 +110,7 @@ namespace GraphManager
                 DrawEdge(addToVertex, newVertex);
 
                 Canvas.Children.Remove(_selectedImage);
-                    // usuwanie i rysowanie wierzchołka na nowy, żeby był widoczy nad liną
+                // usuwanie i rysowanie wierzchołka na nowy, żeby był widoczy nad liną
                 Canvas.Children.Add(_selectedImage);
                 _selectedIndex = Canvas.Children.Count - 1;
                 addToVertex.CanvasIndex = _selectedIndex;
@@ -141,7 +141,7 @@ namespace GraphManager
             index = Canvas.Children.IndexOf(line);
 
             vertex1.EdgesIndex.Add(index);
-                //Dodajemy numer indeksu lini na canvasie, żeby potem je móc łatwo odnaleźć i usunąć
+            //Dodajemy numer indeksu lini na canvasie, żeby potem je móc łatwo odnaleźć i usunąć
             vertex2.EdgesIndex.Add(index);
         }
 
@@ -227,8 +227,6 @@ namespace GraphManager
                 Graph.Vertexes.Add(v);
             }
         }
-        
+
     }
 }
-
-

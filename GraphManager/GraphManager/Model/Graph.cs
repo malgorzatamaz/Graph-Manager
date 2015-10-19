@@ -1,20 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.Generic;
 
-namespace point_draw.Graphs
+namespace GraphManager.Model
 {
     class Graph
     {
         public List<Vertex> Vertexes;
 
-
         public Graph()
         {
             Vertexes = new List<Vertex>();
         }
+
         public int GetIndex(int canvasIndex)
         {
             return Vertexes.FindIndex(n => n.CanvasIndex == canvasIndex);
@@ -25,6 +21,4 @@ namespace point_draw.Graphs
             return Vertexes[index].CanvasIndex;
         }
     }
-
-    
 }

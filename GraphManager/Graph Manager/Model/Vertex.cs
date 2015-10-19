@@ -19,6 +19,6 @@ namespace Graph_Manager.Model
         public Point Position { get; set; }
         public List<Vertex> ConnectedVertexes { get; set; }
         public List<Edge> ConnectedEdges { get; set; }
-        public Boolean Selected { get; set; }
+        public Boolean Selected { get; set; } //przechowuje informacje czy wierzchołek jest zaznaczony 
     }
 }

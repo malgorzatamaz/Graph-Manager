@@ -1,14 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace point_draw.Graphs
+﻿namespace GraphManager.Model
 {
     class Edge
     {
-       public Vertex StartVertex { get; set; }
-       public Vertex EndVertex { get; set; }
+        public Vertex StartVertex { get; set; }
+        public Vertex EndVertex { get; set; }
     }
 }
