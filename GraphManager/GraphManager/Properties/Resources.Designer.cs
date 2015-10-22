@@ -63,6 +63,26 @@ namespace GraphManager.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap add_button_selected {
+            get {
+                object obj = ResourceManager.GetObject("add_button_selected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap add_button_unselected {
+            get {
+                object obj = ResourceManager.GetObject("add_button_unselected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap Circle_Blue {
             get {
                 object obj = ResourceManager.GetObject("Circle_Blue", resourceCulture);
@@ -76,6 +96,56 @@ namespace GraphManager.Properties {
         internal static System.Drawing.Bitmap Circle_Orange {
             get {
                 object obj = ResourceManager.GetObject("Circle_Orange", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete_all_button {
+            get {
+                object obj = ResourceManager.GetObject("delete_all_button", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete_button_selected {
+            get {
+                object obj = ResourceManager.GetObject("delete_button_selected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap delete_button_unselected {
+            get {
+                object obj = ResourceManager.GetObject("delete_button_unselected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap drag_button_selected {
+            get {
+                object obj = ResourceManager.GetObject("drag_button_selected", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap drag_button_unselected {
+            get {
+                object obj = ResourceManager.GetObject("drag_button_unselected", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

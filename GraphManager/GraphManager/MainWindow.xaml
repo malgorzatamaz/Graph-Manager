@@ -6,18 +6,17 @@
         xmlns:local="clr-namespace:GraphManager"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
         mc:Ignorable="d"
-        Title="MainWindow" Height="438.158" Width="747.368" MinWidth="540" MinHeight="367">
-    <Grid Background="#FFC0DAFF">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="150*"/>
-        </Grid.ColumnDefinitions>
-        <Canvas x:Name="Canvas" HorizontalAlignment="Center" Grid.Column="1" Height="350" Width="500" Margin="10" VerticalAlignment="Center" Background="White" MouseDown="Canvas_MouseDown" />
-        <ComboBox SelectedIndex="0" x:Name="CbxMode" Grid.Column="0" Height="25" VerticalAlignment="Top" Margin="10">
-            <system:String>Dodaj</system:String>
-            <system:String>Usuń</system:String>
-        </ComboBox>
-        <Button Grid.Column="0" Height="25" Margin="10,50,10,10" VerticalAlignment="Top">Czyść</Button>
+        Title="MainWindow" Height="446.066" Width="747.368" MinWidth="750" MinHeight="450">
+    <Grid Background="#FFC0DAFF" Margin="0,0,2,-3">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="60"/>
+            <RowDefinition Height="60*"/>
+        </Grid.RowDefinitions>
+        <Canvas x:Name="Canvas" Grid.Row="1" HorizontalAlignment="Center" MinHeight="300" MinWidth="700" Margin="20,10" VerticalAlignment="Center" Background="White" MouseDown="Canvas_MouseDown" Height="322" />
+        <Image x:Name="image" HorizontalAlignment="Left" Height="40" Margin="140,10,0,0" VerticalAlignment="Top" Width="40" RenderTransformOrigin="-2.863,0.634" OpacityMask="#FFFBF6F6"/>
+        <Image x:Name="image1" HorizontalAlignment="Left" Height="40" Margin="80,10,0,0" VerticalAlignment="Top" Width="40"/>
+        <Image x:Name="image2" HorizontalAlignment="Left" Height="40" Margin="20,10,0,0" VerticalAlignment="Top" Width="40" RenderTransformOrigin="0.391,0.807" />
+        <Image x:Name="image3" HorizontalAlignment="Left" Height="40" Margin="200,10,0,0" VerticalAlignment="Top" Width="40" RenderTransformOrigin="2.983,0.579"/>
 
     </Grid>
 </Window>

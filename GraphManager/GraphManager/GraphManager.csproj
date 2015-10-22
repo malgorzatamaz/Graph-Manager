@@ -114,6 +114,27 @@
   <ItemGroup>
     <None Include="Resources\Circle_Orange.png" />
   </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add-button-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add-button-unselected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete-all-button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete-button-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete-button-unselected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\drag-button-selected.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\drag-button-unselected.png" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
