@@ -77,7 +77,7 @@ namespace Graph_Manager
             Point point = Mouse.GetPosition(Canvas);
 
             //dodaje wolne wierzchołki
-            if (cbxMode.SelectedIndex == 0 && AnySelected == false)
+            if (cbxMode.SelectedIndex == 0 && AnySelected == false && !(e.OriginalSource is Image))
             {
                 Graph.Vertexes.Add(new Vertex()
                 {
