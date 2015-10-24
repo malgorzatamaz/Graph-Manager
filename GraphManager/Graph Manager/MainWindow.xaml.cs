@@ -217,6 +217,7 @@ namespace Graph_Manager
         private void cbxClear_Click(object sender, RoutedEventArgs e)
         {
             Canvas.Children.Clear();
+            Graph = new Graph();
         }
     }
 }
