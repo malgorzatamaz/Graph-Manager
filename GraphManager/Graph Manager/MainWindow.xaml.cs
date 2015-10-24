@@ -98,6 +98,8 @@ namespace Graph_Manager
                 });
             }
             //łaczy wybrane wierzchołki z innym który nie jest zaznaczony
+            //DO POPRAWY -> Tworzone są nadmiarowe wierzcholki i czasami znajdują się na sobie lub 
+            //krawędzie są usuwane tam gdzie nie trzeba z tego samego powodu
             else if (cbxMode.SelectedIndex == 0 && AnySelected == true && e.OriginalSource is Image)
             {
                 int index = Canvas.Children.IndexOf(e.OriginalSource as Image);
