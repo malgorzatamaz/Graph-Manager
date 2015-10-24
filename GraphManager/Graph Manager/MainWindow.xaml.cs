@@ -24,8 +24,24 @@ namespace Graph_Manager
             InitializeComponent();
         }
 
-        public string LocalPath => AppDomain.CurrentDomain.BaseDirectory;
-        public bool AnySelected => Graph.Vertexes.Any(v => v.Selected == true);
+        //public string LocalPath => AppDomain.CurrentDomain.BaseDirectory;
+        //public bool AnySelected => Graph.Vertexes.Any(v => v.Selected == true);
+        public string LocalPath 
+        { 
+            get
+            { 
+                return AppDomain.CurrentDomain.BaseDirectory;
+            } 
+        }
+
+        public bool AnySelected 
+        { 
+            get
+            {
+               return Graph.Vertexes.Any(v => v.Selected == true);
+            }
+        }
+        
         public Graph Graph { get; set; }
 
         //odpowiada za zaznaczanie wierzchołków
