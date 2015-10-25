@@ -94,52 +94,18 @@ namespace Graph_Manager
                 };
                 Graph.Vertexes.Add(vertex);
 
-                Graph.Vertexes.Where(v => v.Selected == true).ToList().ForEach(v =>
-                {
-                    var edge = new Edge()
-                    {
-                        StartPoint = v.Position,
-                        EndPoint = point,
-                        StartVertex = v,
-                        EndVertex = vertex
-                    };
-
-                    Graph.Edges.Add(edge);
-
-                    v.ConnectedEdges.Add(edge);
-                    v.ConnectedVertexes.Add(vertex);
-
-                    vertex.ConnectedEdges.Add(edge);
-                    vertex.ConnectedVertexes.Add(v);
-                });
+                AddEdge(point, vertex);
             }
+
             //łaczy wybrane wierzchołki z innym który nie jest zaznaczony
-            //DO POPRAWY -> Tworzone są nadmiarowe wierzcholki i czasami znajdują się na sobie lub 
-            //krawędzie są usuwane tam gdzie nie trzeba z tego samego powodu
             else if (cbxMode.SelectedIndex == 0 && AnySelected == true && e.OriginalSource is Image)
             {
                 int index = Canvas.Children.IndexOf(e.OriginalSource as Image);
                 var vertex = Graph.Vertexes.First(v => v.Index == index);
 
-                Graph.Vertexes.Where(v => v.Selected == true).ToList().ForEach(v =>
-                {
-                    var edge = new Edge()
-                    {
-                        StartPoint = v.Position,
-                        EndPoint = vertex.Position,
-                        StartVertex = v,
-                        EndVertex = vertex
-                    };
-
-                    Graph.Edges.Add(edge);
-
-                    v.ConnectedEdges.Add(edge);
-                    v.ConnectedVertexes.Add(vertex);
-
-                    vertex.ConnectedEdges.Add(edge);
-                    vertex.ConnectedVertexes.Add(v);
-                });
+                AddEdge(vertex.Position, vertex);
             }
+
             //usuwa dowolny wierzchołek
             else if (cbxMode.SelectedIndex == 1 && e.OriginalSource is Image)
             {
@@ -153,6 +119,7 @@ namespace Graph_Manager
 
                 Graph.Vertexes.Remove(vertex);
             }
+
             //usuwa dowolną krawędź
             else if (cbxMode.SelectedIndex == 1 && e.OriginalSource is Line)
             {
@@ -218,6 +185,28 @@ namespace Graph_Manager
         {
             Canvas.Children.Clear();
             Graph = new Graph();
+        }
+
+        private void AddEdge(Point point, Vertex vertex)
+        {
+            Graph.Vertexes.Where(v => v.Selected == true).ToList().ForEach(v =>
+            {
+                var edge = new Edge()
+                {
+                    StartPoint = v.Position,
+                    EndPoint = vertex.Position,
+                    StartVertex = v,
+                    EndVertex = vertex
+                };
+
+                Graph.Edges.Add(edge);
+
+                v.ConnectedEdges.Add(edge);
+                v.ConnectedVertexes.Add(vertex);
+
+                vertex.ConnectedEdges.Add(edge);
+                vertex.ConnectedVertexes.Add(v);
+            });
         }
     }
 }
