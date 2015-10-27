@@ -13,8 +13,8 @@ namespace Graph_Manager.ViewModel
     class RandomMainViewModel
     {
         private Graph _graph;
-    //  private int[] _tab; 
-        
+        //  private int[] _tab; 
+
         public RandomMainViewModel(Graph graph)
         {
             _graph = graph;
@@ -22,20 +22,41 @@ namespace Graph_Manager.ViewModel
             RandomizeGraph = new RelayCommand(Randomize, IsEven);
         }
 
+        public bool OnCircle{ get; set; }
+        public int CircleCenterX { get; set; }
+        public int CircleCenterY { get; set; }
+        public int CanvasHeight { get; set; }
+        public int CanvasWidth { get; set; }
+
 
         public ICommand RandomizeGraph { get; set; }
 
         public void Randomize(object obj)
         {
             List<int> degreeSequence = (List<int>)obj;
-            int maxEdges = 0, vertexIndex, sum = degreeSequence.Sum();
+            int maxEdges = 0, radius, vertexIndex, angleChange = 0, angle, sum = degreeSequence.Sum();
             Vertex maxEdgesVertex = new Vertex();
             Random r = new Random();
-
+            Point p = new Point();
+            angle = 360 / _graph.Vertexes.Count;
 
             foreach (var x in degreeSequence)
             {
-                _graph.Vertexes.Add(new Vertex());
+
+                if (OnCircle)
+                {
+                    radius = CanvasHeight - 40;
+                    p.X = 0.5 * CanvasWidth + (radius * Math.Sin(angleChange));
+                    p.Y = 0.5 * CanvasHeight + (radius * Math.Cos(angleChange));
+                    angleChange += angle;
+                }
+                else
+                {
+                    p.X = r.Next(10, CanvasWidth - 10);
+                    p.Y = r.Next(10, CanvasHeight - 10);
+                }
+
+                _graph.Vertexes.Add(new Vertex {Position = p});
             }
             
             while (sum > -1)
@@ -52,10 +73,11 @@ namespace Graph_Manager.ViewModel
                                 maxEdgesVertex = x;
                             }
                         }
+
                         _graph.Vertexes[i].ConnectedEdges.Add(new Edge
                         {
-                            EndPoint = new Point(r.Next(0,400),r.Next(0,400)),
-                            StartPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
+                            StartPoint = _graph.Vertexes[i].Position,
+                            EndPoint = maxEdgesVertex.Position,
                             StartVertex = _graph.Vertexes[i],
                             EndVertex = maxEdgesVertex,
                             Index = i
