@@ -8,7 +8,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Graph_Manager.Model;
 
-namespace Graph_Manager
+namespace Graph_Manager.View
 {
     /// <summary>
     /// Interaction logic for MainWindow.xaml
