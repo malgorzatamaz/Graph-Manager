@@ -1,4 +1,7 @@
-﻿using System.Windows;
+﻿using System.Collections.Generic;
+using System.Windows;
+using Graph_Manager.Model;
+using Graph_Manager.ViewModel;
 
 namespace Graph_Manager.View
 {
@@ -7,9 +10,10 @@ namespace Graph_Manager.View
     /// </summary>
     public partial class RandomWindow : Window
     {
-        public RandomWindow()
+        public RandomWindow(Graph graph)
         {
             InitializeComponent();
+            DataContext = new RandomViewModel(graph);
         }
     }
 }

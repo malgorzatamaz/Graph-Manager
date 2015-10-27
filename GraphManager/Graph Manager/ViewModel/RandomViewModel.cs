@@ -10,15 +10,13 @@ using Graph_Manager.Model;
 
 namespace Graph_Manager.ViewModel
 {
-    class RandomMainViewModel
+    class RandomViewModel
     {
         private Graph _graph;
-        //  private int[] _tab; 
 
-        public RandomMainViewModel(Graph graph)
+        public RandomViewModel(Graph graph)
         {
             _graph = graph;
-        //    _tab = tab;
             RandomizeGraph = new RelayCommand(Randomize, IsEven);
         }
 
@@ -27,13 +25,12 @@ namespace Graph_Manager.ViewModel
         public int CircleCenterY { get; set; }
         public int CanvasHeight { get; set; }
         public int CanvasWidth { get; set; }
-
-
         public ICommand RandomizeGraph { get; set; }
 
         public void Randomize(object obj)
         {
-            List<int> degreeSequence = (List<int>)obj;
+            string sequenceString = (string)obj;
+            List<int> degreeSequence = SplitDegreeSequence(sequenceString);
             int maxEdges = 0, radius, vertexIndex, angleChange = 0, angle, sum = degreeSequence.Sum();
             Vertex maxEdgesVertex = new Vertex();
             Random r = new Random();
@@ -99,9 +96,15 @@ namespace Graph_Manager.ViewModel
 
         public bool IsEven(object obj) // Parzysta
         {
-            List<int> degreeSequence = (List<int>) obj;
+            string sequenceString = (string)obj;
+            List<int> degreeSequence = SplitDegreeSequence(sequenceString);
             int sum = degreeSequence.Sum();
             return sum%2 == 0;
         }
+
+        public List<int> SplitDegreeSequence(string str)
+        {
+            return str.Split(',').Select(int.Parse).ToList();
+        } 
     }
 }
