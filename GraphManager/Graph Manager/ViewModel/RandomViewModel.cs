@@ -17,12 +17,13 @@ namespace Graph_Manager.ViewModel
         private int _canvasWidth;
         private int _canvasHeight;
 
-        public RandomViewModel(Graph graph, int canvasWidth,int canvasHeight)
+        public RandomViewModel(Graph graph, int canvasWidth, int canvasHeight)
         {
             _canvasWidth = canvasWidth;
             _canvasHeight = canvasHeight;
             _graph = graph;
             RandomizeGraph = new RelayCommand(Randomize, IsEven);
+            CloseCommand = new RelayCommand(o => ((Window)o).Close());
         }
 
         public bool OnCircle
@@ -31,6 +32,7 @@ namespace Graph_Manager.ViewModel
             set { _onCircle = value; }
         }
         public ICommand RandomizeGraph { get; set; }
+        public ICommand CloseCommand;
         public void Randomize(object obj)
         {
             string sequenceString = (string)obj;
