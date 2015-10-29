@@ -13,20 +13,24 @@ namespace Graph_Manager.ViewModel
     class RandomViewModel
     {
         private Graph _graph;
+        private bool _onCircle;
+        private int _canvasWidth;
+        private int _canvasHeight;
 
-        public RandomViewModel(Graph graph)
+        public RandomViewModel(Graph graph, int canvasWidth,int canvasHeight)
         {
+            _canvasWidth = canvasWidth;
+            _canvasHeight = canvasHeight;
             _graph = graph;
             RandomizeGraph = new RelayCommand(Randomize, IsEven);
         }
 
-        public bool OnCircle{ get; set; }
-        public int CircleCenterX { get; set; }
-        public int CircleCenterY { get; set; }
-        public int CanvasHeight { get; set; }
-        public int CanvasWidth { get; set; }
+        public bool OnCircle
+        {
+            get { return _onCircle; }
+            set { _onCircle = value; }
+        }
         public ICommand RandomizeGraph { get; set; }
-
         public void Randomize(object obj)
         {
             string sequenceString = (string)obj;
@@ -42,15 +46,15 @@ namespace Graph_Manager.ViewModel
 
                 if (OnCircle)
                 {
-                    radius = CanvasHeight - 40;
-                    p.X = 0.5 * CanvasWidth + (radius * Math.Sin(angleChange));
-                    p.Y = 0.5 * CanvasHeight + (radius * Math.Cos(angleChange));
+                    radius = (_canvasHeight/2) - 20;
+                    p.X = 0.5 * _canvasWidth + (radius * Math.Sin(angleChange));
+                    p.Y = 0.5 * _canvasHeight + (radius * Math.Cos(angleChange));
                     angleChange += angle;
                 }
                 else
                 {
-                    p.X = r.Next(10, CanvasWidth - 10);
-                    p.Y = r.Next(10, CanvasHeight - 10);
+                    p.X = r.Next(10, _canvasWidth - 10);
+                    p.Y = r.Next(10, _canvasHeight - 10);
                 }
 
                 _graph.Vertexes.Add(new Vertex {Position = p});
@@ -82,9 +86,9 @@ namespace Graph_Manager.ViewModel
 
                         _graph.Vertexes[i].ConnectedVertexes.Add(maxEdgesVertex);
                         degreeSequence[i]--;
+                        sum--;
                     } 
                 }
-                sum--;
             }
 
             vertexIndex = _graph.Vertexes.Count;

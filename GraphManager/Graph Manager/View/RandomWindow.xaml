@@ -7,10 +7,11 @@
         mc:Ignorable="d"
         Title="RandomWindow" Height="123" Width="394" ResizeMode="NoResize" >
     <Grid>
-        <Button x:Name="BtnRandomize" Content="Losuj graf" HorizontalAlignment="Left" Margin="10,54,0,0" Width="363" VerticalAlignment="Top"/>
-        <CheckBox x:Name="ChbOnCircle" Content=" Rozkład po kole" HorizontalAlignment="Left" Margin="265,16,0,0" VerticalAlignment="Top" Width="128" Height="23"/>
-        <TextBox x:Name="TxbDegreeSequence" HorizontalAlignment="Left" Height="20" Margin="10,16,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
-        <Label x:Name="label" Content="Ciąg stopni grafu" HorizontalAlignment="Left" Margin="135,10,0,0" VerticalAlignment="Top" Width="125" Height="29" RenderTransformOrigin="0.464,1.552"/>
+        <Button x:Name="BtnRandomize" Command="{Binding RandomizeGraph}" CommandParameter="{Binding ElementName=TxbDegreeSequence, Path=Text}"  Content="Losuj graf" HorizontalAlignment="Left" Margin="219,64,0,0" Width="160" VerticalAlignment="Top"/>
+        <CheckBox x:Name="ChbOnCircle" IsChecked="{Binding OnCircle}" Content=" Rozkład po kole" HorizontalAlignment="Left" Margin="265,23,-5,0" VerticalAlignment="Top" Width="128" Height="23"/>
+        <TextBox x:Name="TxbDegreeSequence" HorizontalAlignment="Left" Height="20" Margin="10,21,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="label" Content="Ciąg stopni grafu" HorizontalAlignment="Left" Margin="135,16,0,0" VerticalAlignment="Top" Width="125" Height="29" RenderTransformOrigin="0.464,1.552"/>
+        <Button x:Name="BtnCancel" Content="Anuluj" Command="ApplicationCommands.Close" HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="160"/>
 
     </Grid>
 </Window>
