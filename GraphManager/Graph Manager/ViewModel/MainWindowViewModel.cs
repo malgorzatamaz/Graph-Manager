@@ -14,6 +14,7 @@ namespace Graph_Manager.ViewModel
     {     
         private bool _isImageSelectedLeftButton;
         private bool _isImageSelectedRightButton;
+        private bool _isLineSelectedRightButton;
         public Graph Graph { get; set; }
         public string PathDeleteVertex{ get; set; }
         public string PathAddVertex { get; set; }
@@ -28,6 +29,14 @@ namespace Graph_Manager.ViewModel
         public ICommand CanvasMouseLeftButtonDownCommand { get; set; }
         public ICommand CanvasMouseRightButtonDownCommand { get; set; }
         public ICommand LineMouseRightButtonDownCommand { get; set; }
+
+        public bool IsLineSelectedRightButton
+        {
+            get
+            {
+                return Graph.Edges.Any(l => l.IsMouseLeftButtonDown == true);
+            }
+        }
 
         public bool IsImageSelectedRightButton
         {
@@ -123,9 +132,7 @@ namespace Graph_Manager.ViewModel
                 };
                 IdImage++;
                 Graph.Vertexes.Add(vertex);
-
                 AddEdge(vertex);
-                AddToObjectCompositeCollection();
             }
 
             //łaczy wybrane wierzchołki z innym który nie jest zaznaczony
@@ -133,34 +140,27 @@ namespace Graph_Manager.ViewModel
             {
                 var vertex = Graph.Vertexes.First(v => v.IsMouseLeftButtonDown==true);
                 AddEdge(vertex);
-                AddToObjectCompositeCollection();
                 Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true).IsMouseLeftButtonDown = false;
             }
 
-            ////usuwa dowolny wierzchołek
-            //else if (IndexAction == 2)// && e.OriginalSource is Image)
-            //{
-            //    int index = IdImage;
-            //    var vertex = Graph.Vertexes.FirstOrDefault(v => v.IdVertex == index);
+            //usuwa dowolny wierzchołek
+            else if (IndexAction == 3 && IsImageSelectedLeftButton==true)
+            {
+                var vertex = Graph.Vertexes.FirstOrDefault(v => v.IsMouseLeftButtonDown);
+                vertex.ConnectedEdges.ForEach(m =>
+                {
+                    Graph.Edges.Remove(m);
+                });
+                Graph.Vertexes.Remove(vertex);
+            }
 
-
-            //    vertex.ConnectedEdges.ForEach(m =>
-            //    {
-            //        Graph.Edges.Remove(m);
-            //    });
-
-            //    Graph.Vertexes.Remove(vertex);
-            //}
-
-            ////usuwa dowolną krawędź
-            //else if (IndexAction == 1)//&& e.OriginalSource is Line)
-            //{
-            //    int index = IdEdge;
-            //    var edge = Graph.Edges.FirstOrDefault(v => v.IdEdge == index);
-
-
-            //    Graph.Edges.Remove(edge);
-            //}
+            //usuwa dowolną krawędź
+            else if (IndexAction == 3 && IsLineSelectedRightButton == true)
+            {
+                var edge = Graph.Edges.FirstOrDefault(v => v.IsMouseLeftButtonDown==true);
+                Graph.Edges.Remove(edge);
+            }
+            AddToObjectCompositeCollection();
         }
 
         private void AddToObjectCompositeCollection()

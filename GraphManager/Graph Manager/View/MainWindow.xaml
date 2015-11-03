@@ -29,33 +29,46 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Content="Czyść" />
-        <WrapPanel Grid.Column="0"  
+        <WrapPanel Grid.Column="0"
                    Width="150"
                    Height="100"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Background="Bisque"
                    Orientation="Horizontal">
-            <Button x:Name="BtnAdd"  Background="Transparent" BorderThickness="0"
-                     Command="{Binding AddVertexCommand}"
-                    Width="40" Height="40"
+            <Button x:Name="BtnAdd"
+                    Width="40"
+                    Height="40"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top">
-                <Image Source="{Binding  PathAddVertex,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding AddVertexCommand}">
+                <Image Source="{Binding PathAddVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </Button>
-            <Button x:Name="BtnMove" Background="Transparent" BorderThickness="0"
-                     Command="{Binding MoveVertexCommand}"
-                    Width="40" Height="40"
+            <Button x:Name="BtnMove"
+                    Width="40"
+                    Height="40"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top">
-                <Image Source="{Binding  PathMoveVertex,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding MoveVertexCommand}">
+                <Image Source="{Binding PathMoveVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </Button>
-            <Button x:Name="BtnDelete" Background="Transparent" BorderThickness="0"
-                    Command="{Binding DeleteVertexCommand}"
-                    Width="40" Height="40"
+            <Button x:Name="BtnDelete"
+                    Width="40"
+                    Height="40"
                     HorizontalAlignment="Left"
-                    VerticalAlignment="Top" >
-                <Image Width="40" Height="40" Source="{Binding  PathDeleteVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"/>
+                    VerticalAlignment="Top"
+                    Background="Transparent"
+                    BorderThickness="0"
+                    Command="{Binding DeleteVertexCommand}">
+                <Image Width="40"
+                       Height="40"
+                       Source="{Binding PathDeleteVertex,
+                                        Mode=OneWay,
+                                        UpdateSourceTrigger=PropertyChanged}" />
             </Button>
         </WrapPanel>
         <ItemsControl Grid.Column="1" ItemsSource="{Binding ObjectCompositeCollection}">
@@ -98,15 +111,21 @@
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type model:Edge}">
                     <Line Stroke="DarkBlue"
-                          StrokeThickness="2"
+                          StrokeThickness="3"
                           X1="{Binding StartPoint.X}"
                           X2="{Binding EndPoint.X}"
                           Y1="{Binding StartPoint.Y}"
-                          Y2="{Binding EndPoint.Y}" />
+                          Y2="{Binding EndPoint.Y}" >
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding LineMouseLeftButtonDownCommand, Mode=OneWay}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Line>
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
-        
+
     </Grid>
 </Window>
 
