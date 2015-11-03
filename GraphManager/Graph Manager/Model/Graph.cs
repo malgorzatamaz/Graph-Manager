@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 
 namespace Graph_Manager.Model
 {
@@ -10,11 +6,11 @@ namespace Graph_Manager.Model
     {
         public Graph()
         {
-            Vertexes = new List<Vertex>();
-            Edges = new List<Edge>();
+            Vertexes = new ObservableCollection<Vertex>();
+            Edges = new ObservableCollection<Edge>();
         }
 
-        public List<Vertex> Vertexes { get; set; }
-        public List<Edge> Edges { get; set; }
+        public ObservableCollection<Vertex> Vertexes { get; set; }
+        public ObservableCollection<Edge> Edges { get; set; }
     }
 }

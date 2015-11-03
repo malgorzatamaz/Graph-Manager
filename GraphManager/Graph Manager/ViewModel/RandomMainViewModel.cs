@@ -1,10 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
-using System.Windows.Documents;
 using System.Windows.Input;
 using Graph_Manager.Model;
 
@@ -54,11 +51,11 @@ namespace Graph_Manager.ViewModel
                         }
                         _graph.Vertexes[i].ConnectedEdges.Add(new Edge
                         {
-                            EndPoint = new Point(r.Next(0,400),r.Next(0,400)),
-                            StartPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
+                            //EndPoint = new Point(r.Next(0,400),r.Next(0,400)),
+                           // StartPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
                             StartVertex = _graph.Vertexes[i],
                             EndVertex = maxEdgesVertex,
-                            Index = i
+                            IdEdge = i
                         });
 
                         _graph.Vertexes[i].ConnectedVertexes.Add(maxEdgesVertex);
@@ -71,7 +68,7 @@ namespace Graph_Manager.ViewModel
             vertexIndex = _graph.Vertexes.Count;
             foreach (var x in _graph.Vertexes)
             {
-                x.Index = vertexIndex++;
+                x.IdVertex = vertexIndex++;
             }
         }
 

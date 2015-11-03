@@ -2,38 +2,104 @@
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
-        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:ei="clr-namespace:Microsoft.Expression.Interactivity.Core;assembly=Microsoft.Expression.Interactions"
+        xmlns:i="clr-namespace:System.Windows.Interactivity;assembly=System.Windows.Interactivity"
         xmlns:local="clr-namespace:Graph_Manager"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:model="clr-namespace:Graph_Manager.Model"
         xmlns:system="clr-namespace:System;assembly=mscorlib"
-        mc:Ignorable="d"
-        Title="MainWindow" Height="438.158" Width="747.368" MinWidth="540" MinHeight="367">
+        xmlns:viewModel="clr-namespace:Graph_Manager.ViewModel"
+        Title="MainWindow"
+        Width="750"
+        Height="440"
+        MinWidth="540"
+        MinHeight="370"
+        mc:Ignorable="d">
+
     <Grid Background="#FFC0DAFF">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="150"/>
-            <ColumnDefinition Width="150*"/>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="4*" />
         </Grid.ColumnDefinitions>
-        <Button x:Name="cbxClear" 
-                Grid.Column="0" 
-                Margin="10,0,0,10" 
-                Content="Czyść" Height="25" VerticalAlignment="Bottom" HorizontalAlignment="Left" Width="130" Click="cbxClear_Click"/>
-        <Canvas x:Name="Canvas" 
-                HorizontalAlignment="Center" 
-                Grid.Column="1" 
-                Height="387" 
-                Width="569" 
-                Margin="10" 
-                VerticalAlignment="Center" 
-                Background="White" 
-                ClipToBounds="True" 
-                MouseRightButtonDown="Canvas_MouseRightButtonDown" 
-                MouseLeftButtonDown="Canvas_MouseLeftButtonDown"/>
-        <ComboBox SelectedIndex="0" 
-                  x:Name="cbxMode" 
-                  Grid.Column="0" 
-                  Margin="10,10,0,0" Height="25" VerticalAlignment="Top" HorizontalAlignment="Left" Width="130">
-            <system:String>Dodaj</system:String>
-            <system:String>Usuń</system:String>
-        </ComboBox>
+        <Button x:Name="BtnClear"
+                Grid.Column="0"
+                Width="130"
+                Height="25"
+                Margin="10,0,0,10"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                Content="Czyść" />
+        <WrapPanel Grid.Column="0"
+                   Width="150"
+                   Height="100"
+                   HorizontalAlignment="Left"
+                   VerticalAlignment="Top"
+                   Background="Bisque"
+                   Orientation="Horizontal">
+            <Button x:Name="BtnAdd"
+                    Width="75"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Add" />
+            <Button x:Name="BtnMove"
+                    Width="75"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Move" />
+            <Button x:Name="BtnDelete"
+                    Width="75"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Top"
+                    Content="Delete" />
+        </WrapPanel>
+        <ItemsControl Grid.Column="1" ItemsSource="{Binding ObjectCompositeCollection}">
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas Name="Canvas" Background="GreenYellow">
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding CanvasMouseLeftButtonDownCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Canvas}" />
+                            </i:EventTrigger>
+
+                            <i:EventTrigger EventName="MouseRightButtonDown">
+                                <i:InvokeCommandAction Command="{Binding CanvasMouseRightButtonDownCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Canvas}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Canvas>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+            <ItemsControl.Resources>
+                <DataTemplate DataType="{x:Type model:Vertex}">
+                    <Image Height="30"
+                           MaxWidth="30"
+                           Margin="{Binding Margin}"
+                           HorizontalAlignment="Left"
+                           VerticalAlignment="Top"
+                           Source="{Binding Path,
+                                            Mode=TwoWay,
+                                            UpdateSourceTrigger=PropertyChanged}">
+
+                        <i:Interaction.Triggers>
+                            <i:EventTrigger EventName="MouseRightButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ImageMouseRightButtonDownCommand, Mode=OneWay}" />
+                            </i:EventTrigger>
+
+                            <i:EventTrigger EventName="MouseLeftButtonDown">
+                                <i:InvokeCommandAction Command="{Binding ImageMouseLeftButtonDownCommand, Mode=OneWay}" />
+                            </i:EventTrigger>
+                        </i:Interaction.Triggers>
+                    </Image>
+                </DataTemplate>
+                <DataTemplate DataType="{x:Type model:Edge}">
+                    <Line Stroke="DarkBlue"
+                          StrokeThickness="2"
+                          X1="{Binding StartPoint.X}"
+                          X2="{Binding EndPoint.X}"
+                          Y1="{Binding StartPoint.Y}"
+                          Y2="{Binding EndPoint.Y}" />
+                </DataTemplate>
+            </ItemsControl.Resources>
+        </ItemsControl>
     </Grid>
 </Window>
 
