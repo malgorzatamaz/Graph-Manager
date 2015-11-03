@@ -27,9 +27,6 @@ namespace Graph_Manager.ViewModel
         public ICommand MoveVertexCommand { get; set; }
         public ICommand DeleteVertexCommand { get; set; }
         public ICommand CanvasMouseLeftButtonDownCommand { get; set; }
-        public ICommand CanvasMouseRightButtonDownCommand { get; set; }
-        public ICommand LineMouseRightButtonDownCommand { get; set; }
-
         public bool IsLineSelectedRightButton
         {
             get
@@ -74,38 +71,14 @@ namespace Graph_Manager.ViewModel
             AddVertexCommand = new RelayCommand(AddVertex, (n) => true);
             MoveVertexCommand = new RelayCommand(MoveVertex, (n) => true);
             DeleteVertexCommand = new RelayCommand(DeleteVertex, (n) => true);
-            CanvasMouseLeftButtonDownCommand = new RelayCommand(CanvasMouseLeftButtonDown, (n) => true);
-            CanvasMouseRightButtonDownCommand = new RelayCommand(CanvasMouseRightButtonDown, (n) => true);
-            LineMouseRightButtonDownCommand=new RelayCommand(LineMouseRightButtonDown, (n) => true);         
-        }
-
-        private void LineMouseRightButtonDown(object obj)
-        {
-            MessageBox.Show("line");
-            MessageBox.Show(Convert.ToString((int)obj ));
-            var linia = Graph.Edges.First(n => n.IdEdge == (int) obj);
-          //  MessageBox.Show(Convert.ToString(linia.StartPoint));
-        }
-
-        private void CanvasMouseRightButtonDown(object sender)
-        {
-            if (IsImageSelectedRightButton == false)
-            {
-                foreach (var vertex in Graph.Vertexes)
-                {
-                    vertex.Selected = false;
-                }
-                MessageBox.Show("canvas prawy click");
-            }
+            CanvasMouseLeftButtonDownCommand = new RelayCommand(CanvasMouseLeftButtonDown, (n) => true);        
         }
 
         private void CanvasMouseLeftButtonDown(object obj)
-        {
-            Canvas canvas = obj as Canvas;
-            Point point = Mouse.GetPosition(canvas);
+        {          
+            Point point = Mouse.GetPosition(obj as Canvas);
             point.X = point.X - Convert.ToDouble(Resources.ImageWidth) / 2;
             point.Y = point.Y - Convert.ToDouble(Resources.ImageHeight) / 2;
-      //      MessageBox.Show(Convert.ToString(point));
             //dodaje wolne wierzchołki
             if (IndexAction == 1 && AnySelected == false && IsImageSelectedLeftButton == false)
             {
@@ -230,7 +203,7 @@ namespace Graph_Manager.ViewModel
             PathMoveVertex = AppDomain.CurrentDomain.BaseDirectory + "DragSelected.png";
         }
 
-        private void AddVertex(object obj) // 1-dodaj, 2 -move, 3- delete(zamiast comboboxa)
+        private void AddVertex(object obj) // 1-dodaj, 2 -move, 3- delete
         {
             IndexAction = 1;
             PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddSelected.png";

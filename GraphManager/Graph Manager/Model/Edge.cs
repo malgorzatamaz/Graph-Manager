@@ -16,12 +16,7 @@ namespace Graph_Manager.Model
 
         public Edge()
         {
-            LineMouseLeftButtonDownCommand = new RelayCommand(LineMouseLeftButtonDown, (n) => true);
-        }
-
-        private void LineMouseLeftButtonDown(object obj)
-        {
-            IsMouseLeftButtonDown = true;
+            LineMouseLeftButtonDownCommand = new RelayCommand((m)=> IsMouseLeftButtonDown = true, (n) => true);
         }
     }
 }

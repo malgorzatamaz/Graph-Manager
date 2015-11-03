@@ -10,9 +10,10 @@ namespace Graph_Manager.Model
     [ImplementPropertyChanged]
     public class Vertex
     {
+        private bool _selected;
+     
         public ICommand ImageMouseRightButtonDownCommand { get; set; }
         public ICommand ImageMouseLeftButtonDownCommand { get; set; }
-        private Func<int> CallCanvasMouseRightButtonDown;
         public Vertex()
         {
             ConnectedEdges = new List<Edge>();
@@ -20,7 +21,7 @@ namespace Graph_Manager.Model
             Selected = false;
             Path = AppDomain.CurrentDomain.BaseDirectory + "CircleBlue.png";
             ImageMouseRightButtonDownCommand = new RelayCommand(ImageMouseRightButtonDown, (n) => true);
-            ImageMouseLeftButtonDownCommand = new RelayCommand(ImageMouseLeftButtonDown, (n) => true);
+            ImageMouseLeftButtonDownCommand = new RelayCommand((m)=> IsMouseLeftButtonDown = true, (n) => true);
         }
 
         private void ImageMouseRightButtonDown(object obj)
@@ -37,12 +38,6 @@ namespace Graph_Manager.Model
                 Path = AppDomain.CurrentDomain.BaseDirectory + "CircleBlue.png";
             }
         }
-
-        private void ImageMouseLeftButtonDown(object obj)
-        {
-            IsMouseLeftButtonDown = true;
-        }
-
         public bool IsMouseRightButtonDown { get; set; }
         public bool IsMouseLeftButtonDown { get; set; }
         public int IdVertex { get; set; }
@@ -51,6 +46,7 @@ namespace Graph_Manager.Model
         public string Path { get; set; }
         public List<Vertex> ConnectedVertexes { get; set; }
         public List<Edge> ConnectedEdges { get; set; }
-        public Boolean Selected { get; set; } //przechowuje informacje czy wierzchołek jest zaznaczony 
+        public Boolean Selected { get; set; }
+
     }
 }

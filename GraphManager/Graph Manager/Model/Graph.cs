@@ -9,7 +9,6 @@ namespace Graph_Manager.Model
             Vertexes = new ObservableCollection<Vertex>();
             Edges = new ObservableCollection<Edge>();
         }
-
         public ObservableCollection<Vertex> Vertexes { get; set; }
         public ObservableCollection<Edge> Edges { get; set; }
     }
