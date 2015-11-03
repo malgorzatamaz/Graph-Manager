@@ -11,12 +11,12 @@ namespace Graph_Manager.ViewModel
 {
     [ImplementPropertyChanged]
     public class MainWindowViewModel
-    {     
+    {
         private bool _isImageSelectedLeftButton;
         private bool _isImageSelectedRightButton;
         private bool _isLineSelectedRightButton;
         public Graph Graph { get; set; }
-        public string PathDeleteVertex{ get; set; }
+        public string PathDeleteVertex { get; set; }
         public string PathAddVertex { get; set; }
         public string PathMoveVertex { get; set; }
         public static int IdImage { get; set; }
@@ -58,11 +58,11 @@ namespace Graph_Manager.ViewModel
                 return Graph.Vertexes.Any(v => v.Selected == true);
             }
         }
-      
+
         public MainWindowViewModel()
         {
             Graph = new Graph();
-            ObjectCompositeCollection=new CompositeCollection();
+            ObjectCompositeCollection = new CompositeCollection();
             PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddSelected.png";
             PathDeleteVertex = AppDomain.CurrentDomain.BaseDirectory + "DeleteUnselected.png";
             PathMoveVertex = AppDomain.CurrentDomain.BaseDirectory + "DragUnselected.png";
@@ -71,11 +71,11 @@ namespace Graph_Manager.ViewModel
             AddVertexCommand = new RelayCommand(AddVertex, (n) => true);
             MoveVertexCommand = new RelayCommand(MoveVertex, (n) => true);
             DeleteVertexCommand = new RelayCommand(DeleteVertex, (n) => true);
-            CanvasMouseLeftButtonDownCommand = new RelayCommand(CanvasMouseLeftButtonDown, (n) => true);        
+            CanvasMouseLeftButtonDownCommand = new RelayCommand(CanvasMouseLeftButtonDown, (n) => true);
         }
 
         private void CanvasMouseLeftButtonDown(object obj)
-        {          
+        {
             Point point = Mouse.GetPosition(obj as Canvas);
             point.X = point.X - Convert.ToDouble(Resources.ImageWidth) / 2;
             point.Y = point.Y - Convert.ToDouble(Resources.ImageHeight) / 2;
@@ -95,7 +95,7 @@ namespace Graph_Manager.ViewModel
             //dodaje wierzchołek połączony z aktualnie wybranymi (sprawdza czy nie kliknięto na inny wierzchołek,
             //jeśli tak to nie wykonuje operacji)
 
-            else if (IndexAction == 1 && AnySelected == true && IsImageSelectedLeftButton==false)
+            else if (IndexAction == 1 && AnySelected == true && IsImageSelectedLeftButton == false)
             {
                 var vertex = new Vertex()
                 {
@@ -109,15 +109,19 @@ namespace Graph_Manager.ViewModel
             }
 
             //łaczy wybrane wierzchołki z innym który nie jest zaznaczony
-            else if (IndexAction == 1 && AnySelected == true && IsImageSelectedLeftButton==true)
+            else if (IndexAction == 1 && AnySelected == true && IsImageSelectedLeftButton == true)
             {
-                var vertex = Graph.Vertexes.First(v => v.IsMouseLeftButtonDown==true);
-                AddEdge(vertex);
+                var vertex = Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true);
+                if(vertex.ConnectedVertexes.Any()==false)
+                    AddEdge(vertex);
+                else if (Graph.Vertexes.First().ConnectedVertexes.First(m => m.IdVertex == vertex.IdVertex) == null)
+                    AddEdge(vertex);
+
                 Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true).IsMouseLeftButtonDown = false;
             }
 
             //usuwa dowolny wierzchołek
-            else if (IndexAction == 3 && IsImageSelectedLeftButton==true)
+            else if (IndexAction == 3 && IsImageSelectedLeftButton == true)
             {
                 var vertex = Graph.Vertexes.FirstOrDefault(v => v.IsMouseLeftButtonDown);
                 vertex.ConnectedEdges.ForEach(m =>
@@ -130,7 +134,7 @@ namespace Graph_Manager.ViewModel
             //usuwa dowolną krawędź
             else if (IndexAction == 3 && IsLineSelectedRightButton == true)
             {
-                var edge = Graph.Edges.FirstOrDefault(v => v.IsMouseLeftButtonDown==true);
+                var edge = Graph.Edges.FirstOrDefault(v => v.IsMouseLeftButtonDown == true);
                 Graph.Edges.Remove(edge);
             }
             AddToObjectCompositeCollection();
@@ -149,7 +153,7 @@ namespace Graph_Manager.ViewModel
                 var edge = new Edge()
                 {
                     StartPoint = item.Position,
-                    EndPoint = vertex.Position,            
+                    EndPoint = vertex.Position,
                     StartVertex = item,
                     EndVertex = vertex,
                     IdEdge = IdEdge
@@ -162,14 +166,14 @@ namespace Graph_Manager.ViewModel
 
                 vertex.ConnectedEdges.Add(edge);
                 vertex.ConnectedVertexes.Add(item);
-            }        
+            }
         }
         /// <summary>
         /// sluzy do obcinania line, zeby linii nie bylo na obrazku + przemieszczenie do centru obrazka
         /// </summary>
         /// <param name="edge"></param>
 
-        private void CalculateStartEndPoint(Edge edge) 
+        private void CalculateStartEndPoint(Edge edge)
         {
             double DiagonalBig = Math.Sqrt(Math.Pow(edge.EndPoint.X - edge.StartPoint.X, 2) + Math.Pow(edge.EndPoint.Y - edge.StartPoint.Y, 2));
             Point pointStart = new Point();

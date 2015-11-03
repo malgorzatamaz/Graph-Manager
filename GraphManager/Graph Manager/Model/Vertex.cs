@@ -10,8 +10,6 @@ namespace Graph_Manager.Model
     [ImplementPropertyChanged]
     public class Vertex
     {
-        private bool _selected;
-     
         public ICommand ImageMouseRightButtonDownCommand { get; set; }
         public ICommand ImageMouseLeftButtonDownCommand { get; set; }
         public Vertex()
