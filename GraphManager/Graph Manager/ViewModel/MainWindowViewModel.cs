@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.ObjectModel;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Shapes;
 using Graph_Manager.Model;
 using PropertyChanged;
 
@@ -15,14 +11,17 @@ namespace Graph_Manager.ViewModel
 {
     [ImplementPropertyChanged]
     public class MainWindowViewModel
-    {
-        public CompositeCollection ObjectCompositeCollection { get; set; }    
+    {     
         private bool _isImageSelectedLeftButton;
         private bool _isImageSelectedRightButton;
         public Graph Graph { get; set; }
+        public string PathDeleteVertex{ get; set; }
+        public string PathAddVertex { get; set; }
+        public string PathMoveVertex { get; set; }
         public static int IdImage { get; set; }
         public static int IdEdge { get; set; }
         public int IndexAction { get; set; }
+        public CompositeCollection ObjectCompositeCollection { get; set; }
         public ICommand AddVertexCommand { get; set; }
         public ICommand MoveVertexCommand { get; set; }
         public ICommand DeleteVertexCommand { get; set; }
@@ -58,7 +57,11 @@ namespace Graph_Manager.ViewModel
         {
             Graph = new Graph();
             ObjectCompositeCollection=new CompositeCollection();
+            PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddSelected.png";
+            PathDeleteVertex = AppDomain.CurrentDomain.BaseDirectory + "DeleteUnselected.png";
+            PathMoveVertex = AppDomain.CurrentDomain.BaseDirectory + "DragUnselected.png";
             IdImage = IdEdge = 0;
+            IndexAction = 1;
             AddVertexCommand = new RelayCommand(AddVertex, (n) => true);
             MoveVertexCommand = new RelayCommand(MoveVertex, (n) => true);
             DeleteVertexCommand = new RelayCommand(DeleteVertex, (n) => true);
@@ -95,7 +98,7 @@ namespace Graph_Manager.ViewModel
             point.Y = point.Y - Convert.ToDouble(Resources.ImageHeight) / 2;
       //      MessageBox.Show(Convert.ToString(point));
             //dodaje wolne wierzchołki
-            if (IndexAction == 0 && AnySelected == false && IsImageSelectedLeftButton == false)
+            if (IndexAction == 1 && AnySelected == false && IsImageSelectedLeftButton == false)
             {
                 Graph.Vertexes.Add(new Vertex()
                 {
@@ -110,7 +113,7 @@ namespace Graph_Manager.ViewModel
             //dodaje wierzchołek połączony z aktualnie wybranymi (sprawdza czy nie kliknięto na inny wierzchołek,
             //jeśli tak to nie wykonuje operacji)
 
-            else if (IndexAction == 0 && AnySelected == true && IsImageSelectedLeftButton==false)
+            else if (IndexAction == 1 && AnySelected == true && IsImageSelectedLeftButton==false)
             {
                 var vertex = new Vertex()
                 {
@@ -126,7 +129,7 @@ namespace Graph_Manager.ViewModel
             }
 
             //łaczy wybrane wierzchołki z innym który nie jest zaznaczony
-            else if (IndexAction == 0 && AnySelected == true && IsImageSelectedLeftButton==true)
+            else if (IndexAction == 1 && AnySelected == true && IsImageSelectedLeftButton==true)
             {
                 var vertex = Graph.Vertexes.First(v => v.IsMouseLeftButtonDown==true);
                 AddEdge(vertex);
@@ -135,7 +138,7 @@ namespace Graph_Manager.ViewModel
             }
 
             ////usuwa dowolny wierzchołek
-            //else if (IndexAction == 1)// && e.OriginalSource is Image)
+            //else if (IndexAction == 2)// && e.OriginalSource is Image)
             //{
             //    int index = IdImage;
             //    var vertex = Graph.Vertexes.FirstOrDefault(v => v.IdVertex == index);
@@ -214,16 +217,25 @@ namespace Graph_Manager.ViewModel
         private void DeleteVertex(object obj)
         {
             IndexAction = 3;
+            PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddUnselected.png";
+            PathDeleteVertex = AppDomain.CurrentDomain.BaseDirectory + "DeleteSelected.png";
+            PathMoveVertex = AppDomain.CurrentDomain.BaseDirectory + "DragUnselected.png";
         }
 
         private void MoveVertex(object obj)
         {
             IndexAction = 2;
+            PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddUnselected.png";
+            PathDeleteVertex = AppDomain.CurrentDomain.BaseDirectory + "DeleteUnselected.png";
+            PathMoveVertex = AppDomain.CurrentDomain.BaseDirectory + "DragSelected.png";
         }
 
         private void AddVertex(object obj) // 1-dodaj, 2 -move, 3- delete(zamiast comboboxa)
         {
             IndexAction = 1;
+            PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddSelected.png";
+            PathDeleteVertex = AppDomain.CurrentDomain.BaseDirectory + "DeleteUnselected.png";
+            PathMoveVertex = AppDomain.CurrentDomain.BaseDirectory + "DragUnselected.png";
         }
     }
 }
