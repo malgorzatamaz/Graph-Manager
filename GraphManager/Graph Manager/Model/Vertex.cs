@@ -40,7 +40,7 @@ namespace Graph_Manager.Model
 
         private void ImageMouseLeftButtonDown(object obj)
         {
-            IsMouseRightButtonDown = true;
+            IsMouseLeftButtonDown = true;
         }
 
         public bool IsMouseRightButtonDown { get; set; }

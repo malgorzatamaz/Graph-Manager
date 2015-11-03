@@ -125,13 +125,14 @@ namespace Graph_Manager.ViewModel
                 AddToObjectCompositeCollection();
             }
 
-            ////łaczy wybrane wierzchołki z innym który nie jest zaznaczony
-            //else if (IndexAction == 0 && AnySelected == true && IsImageSelectedLeftButton > -1)// && e.OriginalSource is Image)
-            //{
-            //    var vertex = Graph.Vertexes.First(v => v.IdVertex == IsImageSelectedLeftButton);
-            //    AddEdge(vertex);
-
-            //}
+            //łaczy wybrane wierzchołki z innym który nie jest zaznaczony
+            else if (IndexAction == 0 && AnySelected == true && IsImageSelectedLeftButton==true)
+            {
+                var vertex = Graph.Vertexes.First(v => v.IsMouseLeftButtonDown==true);
+                AddEdge(vertex);
+                AddToObjectCompositeCollection();
+                Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true).IsMouseLeftButtonDown = false;
+            }
 
             ////usuwa dowolny wierzchołek
             //else if (IndexAction == 1)// && e.OriginalSource is Image)
