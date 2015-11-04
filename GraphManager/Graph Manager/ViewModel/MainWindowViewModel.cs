@@ -5,6 +5,7 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
 using Graph_Manager.Model;
+using Graph_Manager.View;
 using PropertyChanged;
 
 namespace Graph_Manager.ViewModel
@@ -16,6 +17,7 @@ namespace Graph_Manager.ViewModel
         private bool _isImageSelectedRightButton;
         private bool _isLineSelectedRightButton;
         public Graph Graph { get; set; }
+        public Graph GraphNew { get; set; }
         public string PathDeleteVertex { get; set; }
         public string PathAddVertex { get; set; }
         public string PathMoveVertex { get; set; }
@@ -27,6 +29,8 @@ namespace Graph_Manager.ViewModel
         public ICommand MoveVertexCommand { get; set; }
         public ICommand DeleteVertexCommand { get; set; }
         public ICommand CanvasMouseLeftButtonDownCommand { get; set; }
+        public ICommand OpenWindowRandomCommand { get; set; }
+
         public bool IsLineSelectedRightButton
         {
             get
@@ -62,6 +66,7 @@ namespace Graph_Manager.ViewModel
         public MainWindowViewModel()
         {
             Graph = new Graph();
+           
             ObjectCompositeCollection = new CompositeCollection();
             PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddSelected.png";
             PathDeleteVertex = AppDomain.CurrentDomain.BaseDirectory + "DeleteUnselected.png";
@@ -72,6 +77,24 @@ namespace Graph_Manager.ViewModel
             MoveVertexCommand = new RelayCommand(MoveVertex, (n) => true);
             DeleteVertexCommand = new RelayCommand(DeleteVertex, (n) => true);
             CanvasMouseLeftButtonDownCommand = new RelayCommand(CanvasMouseLeftButtonDown, (n) => true);
+            OpenWindowRandomCommand=new RelayCommand(OpenWindowRandom, (n)=>true);
+        }
+
+        private void OpenWindowRandom(object obj)
+        {
+            GraphNew = new Graph();
+         
+            RandomWindow winMain =new RandomWindow(Graph, 400,400 );
+            // winMain.DataContext = this;
+            winMain.ShowDialog();
+          
+            //if (winMain.== MessageBoxResult.Yes)
+
+            //foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
+            //{
+            //    window.Close();
+            //    break;
+            //}
         }
 
         private void CanvasMouseLeftButtonDown(object obj)

@@ -9,6 +9,7 @@ namespace Graph_Manager.ViewModel
 {
     class RandomViewModel
     {
+        public bool ReadTo { get; set; }
         private Graph _graph;
         private bool _onCircle;
         private int _canvasWidth;
@@ -16,6 +17,7 @@ namespace Graph_Manager.ViewModel
 
         public RandomViewModel(Graph graph, int canvasWidth, int canvasHeight)
         {
+            ReadTo = false;
             _canvasWidth = canvasWidth;
             _canvasHeight = canvasHeight;
             _graph = graph;
@@ -32,70 +34,74 @@ namespace Graph_Manager.ViewModel
         public ICommand CloseCommand;
         public void Randomize(object obj)
         {
-            string sequenceString = (string)obj;
-            List<int> degreeSequence = SplitDegreeSequence(sequenceString);
-            int maxEdges = 0, radius, vertexIndex, angleChange = 0, angle, sum = degreeSequence.Sum();
-            Vertex maxEdgesVertex = new Vertex();
-            Random r = new Random();
-            Point p = new Point();
-            angle = 360 / _graph.Vertexes.Count;
+            ReadTo = true;
+            //string sequenceString = (string)obj;
+            //List<int> degreeSequence = SplitDegreeSequence(sequenceString);
+            //int maxEdges = 0, radius, vertexIndex, angleChange = 0, angle, sum = degreeSequence.Sum();
+            //Vertex maxEdgesVertex = new Vertex();
+            //Random r = new Random();
+            //Point p = new Point();
+            //angle = 360 / _graph.Vertexes.Count;
 
-            foreach (var x in degreeSequence)
-            {
+            //foreach (var x in degreeSequence)
+            //{
 
-                if (OnCircle)
-                {
-                    radius = (_canvasHeight/2) - 20;
-                    p.X = 0.5 * _canvasWidth + (radius * Math.Sin(angleChange));
-                    p.Y = 0.5 * _canvasHeight + (radius * Math.Cos(angleChange));
-                    angleChange += angle;
-                }
-                else
-                {
-                    p.X = r.Next(10, _canvasWidth - 10);
-                    p.Y = r.Next(10, _canvasHeight - 10);
-                }
+            //    if (OnCircle)
+            //    {
+            //        radius = (_canvasHeight/2) - 20;
+            //        p.X = 0.5 * _canvasWidth + (radius * Math.Sin(angleChange));
+            //        p.Y = 0.5 * _canvasHeight + (radius * Math.Cos(angleChange));
+            //        angleChange += angle;
+            //    }
+            //    else
+            //    {
+            //        p.X = r.Next(10, _canvasWidth - 10);
+            //        p.Y = r.Next(10, _canvasHeight - 10);
+            //    }
 
-                _graph.Vertexes.Add(new Vertex {Position = p});
-            }
+            //    _graph.Vertexes.Add(new Vertex {Position = p});
+            //}
             
-            while (sum > -1)
-            {
-                for (int i = 0; i < _graph.Vertexes[i].ConnectedEdges.Count; i++)
-                {
-                    if (_graph.Vertexes[i].ConnectedEdges.Count < degreeSequence[i])
-                    {
-                        foreach (var x in _graph.Vertexes)
-                        {
-                            if (x.ConnectedEdges.Count > maxEdges)
-                            {
-                                maxEdges = x.ConnectedEdges.Count;
-                                maxEdgesVertex = x;
-                            }
-                        }
+            //while (sum > -1)
+            //{
+            //    for (int i = 0; i < _graph.Vertexes[i].ConnectedEdges.Count; i++)
+            //    {
+            //        if (_graph.Vertexes[i].ConnectedEdges.Count < degreeSequence[i])
+            //        {
+            //            foreach (var x in _graph.Vertexes)
+            //            {
+            //                if (x.ConnectedEdges.Count > maxEdges)
+            //                {
+            //                    maxEdges = x.ConnectedEdges.Count;
+            //                    maxEdgesVertex = x;
+            //                }
+            //            }
 
-                        _graph.Vertexes[i].ConnectedEdges.Add(new Edge
-                        {
+            //            _graph.Vertexes[i].ConnectedEdges.Add(new Edge
+            //            {
 
-                            EndPoint = new Point(r.Next(0,400),r.Next(0,400)),
-                            StartPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
-                            StartVertex = _graph.Vertexes[i],
-                            EndVertex = maxEdgesVertex,
-                            IdEdge = i
-                        });
+            //                EndPoint = new Point(r.Next(0,400),r.Next(0,400)),
+            //                StartPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
+            //                StartVertex = _graph.Vertexes[i],
+            //                EndVertex = maxEdgesVertex,
+            //                IdEdge = i
+            //            });
 
-                        _graph.Vertexes[i].ConnectedVertexes.Add(maxEdgesVertex);
-                        degreeSequence[i]--;
-                        sum--;
-                    } 
-                }
-            }
+            //            _graph.Vertexes[i].ConnectedVertexes.Add(maxEdgesVertex);
+            //            degreeSequence[i]--;
+            //            sum--;
+            //        } 
+            //    }
+            //}
 
-            vertexIndex = _graph.Vertexes.Count;
-            foreach (var x in _graph.Vertexes)
-            {
-                x.IdVertex = vertexIndex++;
-            }
+            //vertexIndex = _graph.Vertexes.Count;
+            //foreach (var x in _graph.Vertexes)
+            //{
+            //    x.IdVertex = vertexIndex++;
+            //}
+            var window = obj as Window;
+          //  DialogResult = true;
+            window.Close();
         }
 
         public bool IsEven(object obj) // Parzysta
