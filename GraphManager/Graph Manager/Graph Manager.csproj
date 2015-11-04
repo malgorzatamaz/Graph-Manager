@@ -133,8 +133,16 @@
   <ItemGroup>
     <Resource Include="FodyWeavers.xml" />
   </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
-    <Folder Include="Images1\" />
+    <Resource Include="Images\AddSelected.png" />
+    <Resource Include="Images\AddUnselected.png" />
+    <Resource Include="Images\CircleBlue.png" />
+    <Resource Include="Images\CircleOrange.png" />
+    <Resource Include="Images\DeleteSelected.png" />
+    <Resource Include="Images\DeleteUnselected.png" />
+    <Resource Include="Images\DragSelected.png" />
+    <Resource Include="Images\DragUnselected.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\Fody.1.29.2\build\dotnet\Fody.targets" Condition="Exists('..\packages\Fody.1.29.2\build\dotnet\Fody.targets')" />

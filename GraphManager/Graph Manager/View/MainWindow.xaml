@@ -15,11 +15,10 @@
         MinWidth="540"
         MinHeight="370"
         mc:Ignorable="d">
-
     <Grid Background="#FFC0DAFF">
         <Grid.ColumnDefinitions>
             <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="4*" />
+            <ColumnDefinition Width="8*" />
         </Grid.ColumnDefinitions>
         <Button x:Name="BtnClear"
                 Grid.Column="0"
@@ -29,48 +28,46 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Content="Czyść" />
-        <WrapPanel Grid.Column="0"
-                   Width="150"
-                   Height="100"
+        <StackPanel Grid.Column="0" 
+                   
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
-                  
-                   Orientation="Horizontal">
+                   Orientation="Vertical">
             <Button x:Name="BtnAdd"
-                    Width="40"
-                    Height="40"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    Width="60"
+                    Height="60"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    
                     Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding AddVertexCommand}">
                 <Image Source="{Binding PathAddVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </Button>
             <Button x:Name="BtnMove"
-                    Width="40"
-                    Height="40"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    Width="60"
+                    Height="60"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding MoveVertexCommand}">
                 <Image Source="{Binding PathMoveVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </Button>
             <Button x:Name="BtnDelete"
-                    Width="40"
-                    Height="40"
-                    HorizontalAlignment="Left"
-                    VerticalAlignment="Top"
+                    Width="60"
+                    Height="60"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
                     Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding DeleteVertexCommand}">
-                <Image Width="40"
-                       Height="40"
+                <Image 
                        Source="{Binding PathDeleteVertex,
                                         Mode=OneWay,
                                         UpdateSourceTrigger=PropertyChanged}" />
             </Button>
-        </WrapPanel>
+        </StackPanel>
         <ItemsControl Grid.Column="1" ItemsSource="{Binding ObjectCompositeCollection}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
@@ -125,7 +122,6 @@
                 </DataTemplate>
             </ItemsControl.Resources>
         </ItemsControl>
-
     </Grid>
 </Window>
 
