@@ -10,10 +10,10 @@ namespace Graph_Manager.View
     /// </summary>
     public partial class RandomWindow : Window
     {
-        public RandomWindow(Graph graph,int width,int height)
+        public RandomWindow(RandomViewModel randomViewModel)
         {
             InitializeComponent();
-            DataContext = new RandomViewModel(graph,width,height);
+            DataContext = randomViewModel;
         }
     }
 }
