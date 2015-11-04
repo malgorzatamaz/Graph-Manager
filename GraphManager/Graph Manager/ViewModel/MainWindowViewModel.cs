@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -28,11 +30,13 @@ namespace Graph_Manager.ViewModel
         public static int IdEdge { get; set; }
         public int IndexAction { get; set; }
         public CompositeCollection ObjectCompositeCollection { get; set; }
+        public ObservableCollection<Graph> GraphCollection { get; set; }
         public ICommand AddVertexCommand { get; set; }
         public ICommand MoveVertexCommand { get; set; }
         public ICommand DeleteVertexCommand { get; set; }
         public ICommand CanvasMouseLeftButtonDownCommand { get; set; }
         public ICommand OpenWindowRandomCommand { get; set; }
+        public ICommand BackCommand { get; set; }
 
         public bool IsLineSelectedRightButton
         {
@@ -69,7 +73,7 @@ namespace Graph_Manager.ViewModel
         public MainWindowViewModel()
         {
             Graph = new Graph();
-           
+            GraphCollection=new ObservableCollection<Graph>();
             ObjectCompositeCollection = new CompositeCollection();
             PathDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
             PathAddVertex = PathDirectory + Resources.AddSelected;
@@ -82,31 +86,73 @@ namespace Graph_Manager.ViewModel
             DeleteVertexCommand = new RelayCommand(DeleteVertex, (n) => true);
             CanvasMouseLeftButtonDownCommand = new RelayCommand(CanvasMouseLeftButtonDown, (n) => true);
             OpenWindowRandomCommand=new RelayCommand(OpenWindowRandom, (n)=>true);
+            BackCommand=new RelayCommand(Back,(n)=>GraphCollection.Count>0?true:false);
+        }
+
+        private void Back(object obj)
+        {
+            Graph = GraphCollection[GraphCollection.Count - 2];
+            GraphCollection.Remove(GraphCollection.Last());
+            AddToObjectCompositeCollection();
+        }
+
+        private void Save()
+        {
+            GraphCollection.Add(new Graph
+            {
+                Vertexes = new ObservableCollection<Vertex> (),
+                Edges = new ObservableCollection<Edge>()
+            });
+            foreach (var v in Graph.Vertexes)
+            {
+                GraphCollection.Last().Vertexes.Add(new Vertex
+                {
+                    IsMouseRightButtonDown=v.IsMouseRightButtonDown,
+                    IsMouseLeftButtonDown = v.IsMouseLeftButtonDown,
+                    IdVertex = v.IdVertex,
+                    Position = v.Position,
+                    Path = v.Path,
+                    Margin = v.Margin,
+                    ConnectedVertexes = new List<Vertex>(),
+                    ConnectedEdges = new List<Edge>()
+                });
+                foreach (var conver in v.ConnectedVertexes)
+                {
+                    GraphCollection.Last().Vertexes.Last().ConnectedVertexes.Add(new Vertex
+                    {
+                        IsMouseRightButtonDown = conver.IsMouseRightButtonDown,
+                        IsMouseLeftButtonDown = conver.IsMouseLeftButtonDown,
+                        IdVertex = conver.IdVertex,
+                        Position = conver.Position,
+                        Path = conver.Path,
+                        Margin = conver.Margin
+                    }); 
+                }
+                foreach (var coned in v.ConnectedEdges)
+                {
+                    GraphCollection.Last().Edges.Add(new Edge
+                    {
+                       StartPoint = coned.StartPoint,
+                       EndPoint = coned.EndPoint,
+                       EndVertex = coned.EndVertex,
+                       IdEdge = coned.IdEdge,
+                       IsMouseLeftButtonDown = coned.IsMouseLeftButtonDown,
+                       StartVertex = coned.StartVertex
+                    });
+                }
+            }
         }
 
         private void OpenWindowRandom(object obj)
         {
             GraphNew = new Graph();
-
-            RandomViewModel randomViewModel = new RandomViewModel(GraphNew, 400, 400);
-         
-            var winMain = new RandomWindow(randomViewModel);
-            // winMain.DataContext = this;
-            winMain.ShowDialog();
-
+            RandomViewModel randomViewModel = new RandomViewModel(GraphNew, 400, 400);        
+            var winRandom = new RandomWindow(randomViewModel);
+            winRandom.ShowDialog();
             if (randomViewModel.ReadTo)
             {
                 Graph = GraphNew;
             }
-          
-            //if (winMain.== MessageBoxResult.Yes)
-
-            //foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
-            //{
-            //    window.Close();
-            //    break;
-            //}
-
         }
 
         private void CanvasMouseLeftButtonDown(object obj)
@@ -124,7 +170,6 @@ namespace Graph_Manager.ViewModel
                     Margin = new Thickness(point.X, point.Y, 0, 0)
                 });
                 IdImage++;
-                AddToObjectCompositeCollection();
             }
 
             //dodaje wierzchołek połączony z aktualnie wybranymi (sprawdza czy nie kliknięto na inny wierzchołek,
@@ -172,13 +217,17 @@ namespace Graph_Manager.ViewModel
                 var edge = Graph.Edges.FirstOrDefault(v => v.IsMouseLeftButtonDown == true);
                 Graph.Edges.Remove(edge);
             }
+
             AddToObjectCompositeCollection();
+            Save();
         }
 
         private void AddToObjectCompositeCollection()
         {
+            ObjectCompositeCollection.Clear();
             ObjectCompositeCollection.Add(new CollectionContainer() { Collection = Graph.Vertexes });
             ObjectCompositeCollection.Add(new CollectionContainer() { Collection = Graph.Edges });
+           
         }
 
         private void AddEdge(Vertex vertex)
