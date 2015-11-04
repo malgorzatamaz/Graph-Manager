@@ -83,10 +83,16 @@ namespace Graph_Manager.ViewModel
         private void OpenWindowRandom(object obj)
         {
             GraphNew = new Graph();
+            RandomViewModel randomViewModel = new RandomViewModel(GraphNew, 400, 400);
          
-            RandomWindow winMain =new RandomWindow(Graph, 400,400 );
+            var winMain = new RandomWindow(randomViewModel);
             // winMain.DataContext = this;
             winMain.ShowDialog();
+
+            if (randomViewModel.ReadTo)
+            {
+                Graph = GraphNew;
+            }
           
             //if (winMain.== MessageBoxResult.Yes)
 

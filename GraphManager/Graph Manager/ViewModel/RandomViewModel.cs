@@ -7,7 +7,7 @@ using Graph_Manager.Model;
 
 namespace Graph_Manager.ViewModel
 {
-    class RandomViewModel
+    public class RandomViewModel
     {
         public bool ReadTo { get; set; }
         private Graph _graph;
@@ -35,86 +35,93 @@ namespace Graph_Manager.ViewModel
         public void Randomize(object obj)
         {
             ReadTo = true;
-            //string sequenceString = (string)obj;
-            //List<int> degreeSequence = SplitDegreeSequence(sequenceString);
-            //int maxEdges = 0, radius, vertexIndex, angleChange = 0, angle, sum = degreeSequence.Sum();
-            //Vertex maxEdgesVertex = new Vertex();
-            //Random r = new Random();
-            //Point p = new Point();
-            //angle = 360 / _graph.Vertexes.Count;
+            string sequenceString = (string)obj;
+            List<int> degreeSequence = SplitDegreeSequence(sequenceString);
+            int maxEdges = 0, radius, vertexIndex, angleChange = 0, angle, sum = degreeSequence.Sum();
+            Vertex maxEdgesVertex = new Vertex();
+            Random r = new Random();
+            Point p = new Point();
+            angle = 360 / degreeSequence.Count;
 
-            //foreach (var x in degreeSequence)
-            //{
+            foreach (var x in degreeSequence)
+            {
 
-            //    if (OnCircle)
-            //    {
-            //        radius = (_canvasHeight/2) - 20;
-            //        p.X = 0.5 * _canvasWidth + (radius * Math.Sin(angleChange));
-            //        p.Y = 0.5 * _canvasHeight + (radius * Math.Cos(angleChange));
-            //        angleChange += angle;
-            //    }
-            //    else
-            //    {
-            //        p.X = r.Next(10, _canvasWidth - 10);
-            //        p.Y = r.Next(10, _canvasHeight - 10);
-            //    }
+                if (OnCircle)
+                {
+                    radius = (_canvasHeight / 2) - 20;
+                    p.X = 0.5 * _canvasWidth + (radius * Math.Sin(angleChange));
+                    p.Y = 0.5 * _canvasHeight + (radius * Math.Cos(angleChange));
+                    angleChange += angle;
+                }
+                else
+                {
+                    p.X = r.Next(10, _canvasWidth - 10);
+                    p.Y = r.Next(10, _canvasHeight - 10);
+                }
 
-            //    _graph.Vertexes.Add(new Vertex {Position = p});
-            //}
-            
-            //while (sum > -1)
-            //{
-            //    for (int i = 0; i < _graph.Vertexes[i].ConnectedEdges.Count; i++)
-            //    {
-            //        if (_graph.Vertexes[i].ConnectedEdges.Count < degreeSequence[i])
-            //        {
-            //            foreach (var x in _graph.Vertexes)
-            //            {
-            //                if (x.ConnectedEdges.Count > maxEdges)
-            //                {
-            //                    maxEdges = x.ConnectedEdges.Count;
-            //                    maxEdgesVertex = x;
-            //                }
-            //            }
+                _graph.Vertexes.Add(new Vertex { Position = p });
+            }
 
-            //            _graph.Vertexes[i].ConnectedEdges.Add(new Edge
-            //            {
+            while (sum > -1)
+            {
+                for (int i = 0; i < _graph.Vertexes[i].ConnectedEdges.Count; i++)
+                {
+                    if (_graph.Vertexes[i].ConnectedEdges.Count < degreeSequence[i])
+                    {
+                        foreach (var x in _graph.Vertexes)
+                        {
+                            if (x.ConnectedEdges.Count > maxEdges)
+                            {
+                                maxEdges = x.ConnectedEdges.Count;
+                                maxEdgesVertex = x;
+                            }
+                        }
 
-            //                EndPoint = new Point(r.Next(0,400),r.Next(0,400)),
-            //                StartPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
-            //                StartVertex = _graph.Vertexes[i],
-            //                EndVertex = maxEdgesVertex,
-            //                IdEdge = i
-            //            });
+                        _graph.Vertexes[i].ConnectedEdges.Add(new Edge
+                        {
 
-            //            _graph.Vertexes[i].ConnectedVertexes.Add(maxEdgesVertex);
-            //            degreeSequence[i]--;
-            //            sum--;
-            //        } 
-            //    }
-            //}
+                            EndPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
+                            StartPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
+                            StartVertex = _graph.Vertexes[i],
+                            EndVertex = maxEdgesVertex,
+                            IdEdge = i
+                        });
 
-            //vertexIndex = _graph.Vertexes.Count;
-            //foreach (var x in _graph.Vertexes)
-            //{
-            //    x.IdVertex = vertexIndex++;
-            //}
-            var window = obj as Window;
-          //  DialogResult = true;
-            window.Close();
+                        _graph.Vertexes[i].ConnectedVertexes.Add(maxEdgesVertex);
+                        degreeSequence[i]--;
+                        sum--;
+                    }
+                }
+            }
+
+            vertexIndex = _graph.Vertexes.Count;
+            foreach (var x in _graph.Vertexes)
+            {
+                x.IdVertex = vertexIndex++;
+            }
         }
 
         public bool IsEven(object obj) // Parzysta
         {
+
             string sequenceString = (string)obj;
-            List<int> degreeSequence = SplitDegreeSequence(sequenceString);
-            int sum = degreeSequence.Sum();
-            return sum%2 == 0;
+
+            if (!string.IsNullOrEmpty(sequenceString) && sequenceString.Last() != ',')
+            {
+                List<int> degreeSequence = SplitDegreeSequence(sequenceString);
+                int sum = degreeSequence.Sum();
+                return sum % 2 == 0;
+            }
+            else
+            {
+                return false;
+            }
         }
 
         public List<int> SplitDegreeSequence(string str)
         {
+
             return str.Split(',').Select(int.Parse).ToList();
-        } 
+        }
     }
 }
