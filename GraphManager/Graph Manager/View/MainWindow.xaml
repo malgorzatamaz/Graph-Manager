@@ -28,8 +28,7 @@
                 HorizontalAlignment="Left"
                 VerticalAlignment="Bottom"
                 Content="Czyść" />
-        <StackPanel Grid.Column="0" 
-                   
+        <StackPanel Grid.Column="0"      
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
                    Orientation="Vertical">
@@ -38,11 +37,21 @@
                     Height="60"
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
-                    
                     Background="Transparent"
                     BorderThickness="0"
                     Command="{Binding AddVertexCommand}">
                 <Image Source="{Binding PathAddVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+            </Button>
+            <Button x:Name="BtnSettings"
+                    
+                    Width="60"
+                    Height="60"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    Background="Red"
+                    BorderThickness="0"
+                    Command="{Binding OpenWindowRandomCommand}">
+      
             </Button>
             <Button x:Name="BtnMove"
                     Width="60"
