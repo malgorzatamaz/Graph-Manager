@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
@@ -19,6 +20,8 @@ namespace Graph_Manager.ViewModel
         public Graph Graph { get; set; }
         public Graph GraphNew { get; set; }
         public string PathDeleteVertex { get; set; }
+        public string PathDirectory { get; set; }
+        public string PathRandom { get; set; }
         public string PathAddVertex { get; set; }
         public string PathMoveVertex { get; set; }
         public static int IdImage { get; set; }
@@ -68,9 +71,10 @@ namespace Graph_Manager.ViewModel
             Graph = new Graph();
            
             ObjectCompositeCollection = new CompositeCollection();
-            PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddSelected.png";
-            PathDeleteVertex = AppDomain.CurrentDomain.BaseDirectory + "DeleteUnselected.png";
-            PathMoveVertex = AppDomain.CurrentDomain.BaseDirectory + "DragUnselected.png";
+            PathDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            PathAddVertex = PathDirectory + Resources.AddSelected;
+            PathDeleteVertex = PathDirectory + Resources.DeleteUnselected;
+            PathMoveVertex = PathDirectory + Resources.DragUnselected;
             IdImage = IdEdge = 0;
             IndexAction = 1;
             AddVertexCommand = new RelayCommand(AddVertex, (n) => true);
@@ -83,18 +87,6 @@ namespace Graph_Manager.ViewModel
         private void OpenWindowRandom(object obj)
         {
             GraphNew = new Graph();
-         
-            RandomWindow winMain =new RandomWindow(Graph, 400,400 );
-            // winMain.DataContext = this;
-            winMain.ShowDialog();
-          
-            //if (winMain.== MessageBoxResult.Yes)
-
-            //foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
-            //{
-            //    window.Close();
-            //    break;
-            //}
         }
 
         private void CanvasMouseLeftButtonDown(object obj)
@@ -217,25 +209,25 @@ namespace Graph_Manager.ViewModel
         private void DeleteVertex(object obj)
         {
             IndexAction = 3;
-            PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddUnselected.png";
-            PathDeleteVertex = AppDomain.CurrentDomain.BaseDirectory + "DeleteSelected.png";
-            PathMoveVertex = AppDomain.CurrentDomain.BaseDirectory + "DragUnselected.png";
+            PathAddVertex = PathDirectory + Resources.AddUnselected;
+            PathDeleteVertex = PathDirectory + Resources.DeleteSelected;
+            PathMoveVertex = PathDirectory + Resources.DragUnselected;
         }
 
         private void MoveVertex(object obj)
         {
             IndexAction = 2;
-            PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddUnselected.png";
-            PathDeleteVertex = AppDomain.CurrentDomain.BaseDirectory + "DeleteUnselected.png";
-            PathMoveVertex = AppDomain.CurrentDomain.BaseDirectory + "DragSelected.png";
+            PathAddVertex = PathDirectory + Resources.AddUnselected;
+            PathDeleteVertex = PathDirectory + Resources.DeleteUnselected;
+            PathMoveVertex = PathDirectory + Resources.DragSelected;
         }
 
         private void AddVertex(object obj) // 1-dodaj, 2 -move, 3- delete
         {
             IndexAction = 1;
-            PathAddVertex = AppDomain.CurrentDomain.BaseDirectory + "AddSelected.png";
-            PathDeleteVertex = AppDomain.CurrentDomain.BaseDirectory + "DeleteUnselected.png";
-            PathMoveVertex = AppDomain.CurrentDomain.BaseDirectory + "DragUnselected.png";
+            PathAddVertex = PathDirectory + Resources.AddSelected;
+            PathDeleteVertex = PathDirectory + Resources.DeleteUnselected;
+            PathMoveVertex = PathDirectory + Resources.DragUnselected;
         }
     }
 }

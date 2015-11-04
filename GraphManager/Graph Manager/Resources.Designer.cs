@@ -61,6 +61,60 @@ namespace Graph_Manager {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to \\Images\\AddSelected.png.
+        /// </summary>
+        public static string AddSelected {
+            get {
+                return ResourceManager.GetString("AddSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \\Images\\AddUnselected.png.
+        /// </summary>
+        public static string AddUnselected {
+            get {
+                return ResourceManager.GetString("AddUnselected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \\Images\\DeleteSelected.png.
+        /// </summary>
+        public static string DeleteSelected {
+            get {
+                return ResourceManager.GetString("DeleteSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \\Images\\DeleteUnselected.png.
+        /// </summary>
+        public static string DeleteUnselected {
+            get {
+                return ResourceManager.GetString("DeleteUnselected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \\Images\\DragSelected.png.
+        /// </summary>
+        public static string DragSelected {
+            get {
+                return ResourceManager.GetString("DragSelected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \\Images\\DragUnselected.png.
+        /// </summary>
+        public static string DragUnselected {
+            get {
+                return ResourceManager.GetString("DragUnselected", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to 30.
         /// </summary>
         public static string ImageHeight {

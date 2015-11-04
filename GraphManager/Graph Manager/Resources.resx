@@ -117,6 +117,24 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="AddSelected" xml:space="preserve">
+    <value>\\Images\\AddSelected.png</value>
+  </data>
+  <data name="AddUnselected" xml:space="preserve">
+    <value>\\Images\\AddUnselected.png</value>
+  </data>
+  <data name="DeleteSelected" xml:space="preserve">
+    <value>\\Images\\DeleteSelected.png</value>
+  </data>
+  <data name="DeleteUnselected" xml:space="preserve">
+    <value>\\Images\\DeleteUnselected.png</value>
+  </data>
+  <data name="DragSelected" xml:space="preserve">
+    <value>\\Images\\DragSelected.png</value>
+  </data>
+  <data name="DragUnselected" xml:space="preserve">
+    <value>\\Images\\DragUnselected.png</value>
+  </data>
   <data name="ImageHeight" xml:space="preserve">
     <value>30</value>
   </data>

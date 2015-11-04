@@ -3,11 +3,10 @@
     <!--<BitmapImage x:Key="CircleBlue"  UriSource="C:\Work\Anna_st\GRAFY\Graph\GraphManager\Graph Manager\Images\CircleBlue.png"/>-->
 
     <!--<BitmapImage x:Key="CircleBlue"  UriSource="/Images/Circle_Blue.png"/>-->
-    <BitmapImage x:Key="CircleBlue" UriSource="../Images1/CircleBlue.png" />
-    <BitmapImage x:Key="CircleOrange" UriSource="C:\Work\Anna_st\GRAFY\Graph\GraphManager\Graph Manager\Images\Circle_Orange.png" />
-
-
-
+    <BitmapImage x:Key="Random" UriSource="/Images/Random.png" />
+    <BitmapImage x:Key="Redo" UriSource="/Images/redo.jpg" />
+    <BitmapImage x:Key="Undo" UriSource="/Images/undo.jpg" />
+    <BitmapImage x:Key="DeleteAll" UriSource="/Images/DeleteAll.png" />
 
 
 
