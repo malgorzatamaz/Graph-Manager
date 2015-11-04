@@ -34,7 +34,7 @@
                    Height="100"
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
-                   Background="Bisque"
+                  
                    Orientation="Horizontal">
             <Button x:Name="BtnAdd"
                     Width="40"
@@ -74,7 +74,7 @@
         <ItemsControl Grid.Column="1" ItemsSource="{Binding ObjectCompositeCollection}">
             <ItemsControl.ItemsPanel>
                 <ItemsPanelTemplate>
-                    <Canvas Name="Canvas" Background="GreenYellow">
+                    <Canvas Name="Canvas" Background="White">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonDown">
                                 <i:InvokeCommandAction Command="{Binding CanvasMouseLeftButtonDownCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Canvas}" />
@@ -110,12 +110,12 @@
                     </Image>
                 </DataTemplate>
                 <DataTemplate DataType="{x:Type model:Edge}">
-                    <Line Stroke="DarkBlue"
+                    <Line Stroke="LightSteelBlue"
                           StrokeThickness="3"
                           X1="{Binding StartPoint.X}"
                           X2="{Binding EndPoint.X}"
                           Y1="{Binding StartPoint.Y}"
-                          Y2="{Binding EndPoint.Y}" >
+                          Y2="{Binding EndPoint.Y}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonDown">
                                 <i:InvokeCommandAction Command="{Binding LineMouseLeftButtonDownCommand, Mode=OneWay}" />
