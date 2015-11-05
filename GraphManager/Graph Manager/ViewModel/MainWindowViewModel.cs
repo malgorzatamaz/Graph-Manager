@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Drawing.Drawing2D;
 using System.IO;
 using System.Linq;
 using System.Windows;
@@ -69,7 +70,7 @@ namespace Graph_Manager.ViewModel
         public MainWindowViewModel()
         {
             Graph = new Graph();
-           
+
             ObjectCompositeCollection = new CompositeCollection();
             PathDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
             PathAddVertex = PathDirectory + Resources.AddSelected;
@@ -81,7 +82,7 @@ namespace Graph_Manager.ViewModel
             MoveVertexCommand = new RelayCommand(MoveVertex, (n) => true);
             DeleteVertexCommand = new RelayCommand(DeleteVertex, (n) => true);
             CanvasMouseLeftButtonDownCommand = new RelayCommand(CanvasMouseLeftButtonDown, (n) => true);
-            OpenWindowRandomCommand=new RelayCommand(OpenWindowRandom, (n)=>true);
+            OpenWindowRandomCommand = new RelayCommand(OpenWindowRandom, (n) => true);
         }
 
         private void OpenWindowRandom(object obj)
@@ -89,24 +90,16 @@ namespace Graph_Manager.ViewModel
             GraphNew = new Graph();
 
             RandomViewModel randomViewModel = new RandomViewModel(GraphNew, 400, 400);
-         
+
             var winMain = new RandomWindow(randomViewModel);
-            // winMain.DataContext = this;
             winMain.ShowDialog();
 
             if (randomViewModel.ReadTo)
             {
                 Graph = GraphNew;
+                
+                winMain.Close();
             }
-          
-            //if (winMain.== MessageBoxResult.Yes)
-
-            //foreach (System.Windows.Window window in System.Windows.Application.Current.Windows)
-            //{
-            //    window.Close();
-            //    break;
-            //}
-
         }
 
         private void CanvasMouseLeftButtonDown(object obj)
@@ -147,7 +140,7 @@ namespace Graph_Manager.ViewModel
             else if (IndexAction == 1 && AnySelected == true && IsImageSelectedLeftButton == true)
             {
                 var vertex = Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true);
-                if(vertex.ConnectedVertexes.Any()==false)
+                if (vertex.ConnectedVertexes.Any() == false)
                     AddEdge(vertex);
                 else if (Graph.Vertexes.First().ConnectedVertexes.First(m => m.IdVertex == vertex.IdVertex) == null)
                     AddEdge(vertex);

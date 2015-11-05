@@ -73,7 +73,7 @@
                     VerticalAlignment="Center"
                     BorderThickness="0"
                     Command="{Binding OpenWindowRandomCommand}">
-                <Image  Source="{StaticResource Random}" />
+                <Image Source="{StaticResource Random}" />
             </Button>
         </StackPanel>
         <ItemsControl Grid.Column="1" ItemsSource="{Binding ObjectCompositeCollection}">

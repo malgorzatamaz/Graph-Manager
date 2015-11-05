@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using Graph_Manager.Model;
@@ -14,6 +15,7 @@ namespace Graph_Manager.ViewModel
         private bool _onCircle;
         private int _canvasWidth;
         private int _canvasHeight;
+        private Regex _expression;
 
         public RandomViewModel(Graph graph, int canvasWidth, int canvasHeight)
         {
@@ -21,8 +23,11 @@ namespace Graph_Manager.ViewModel
             _canvasWidth = canvasWidth;
             _canvasHeight = canvasHeight;
             _graph = graph;
+            _expression = new Regex("[1-9]+([,]{1}[1-9]+)*");
+            OnCircle = true;
             RandomizeGraph = new RelayCommand(Randomize, IsEven);
             CloseCommand = new RelayCommand(o => ((Window)o).Close());
+
         }
 
         public bool OnCircle
@@ -66,7 +71,7 @@ namespace Graph_Manager.ViewModel
             {
                 for (int i = 0; i < _graph.Vertexes[i].ConnectedEdges.Count; i++)
                 {
-                    if (_graph.Vertexes[i].ConnectedEdges.Count < degreeSequence[i])
+                    if (_graph.Vertexes[i].ConnectedEdges.Count > degreeSequence[i])
                     {
                         foreach (var x in _graph.Vertexes)
                         {
@@ -103,19 +108,25 @@ namespace Graph_Manager.ViewModel
 
         public bool IsEven(object obj) // Parzysta
         {
-
+            int sum;
             string sequenceString = (string)obj;
 
-            if (!string.IsNullOrEmpty(sequenceString) && sequenceString.Last() != ',')
+            if (!string.IsNullOrEmpty(sequenceString))
             {
-                List<int> degreeSequence = SplitDegreeSequence(sequenceString);
-                int sum = degreeSequence.Sum();
-                return sum % 2 == 0;
-            }
-            else
-            {
+                if (sequenceString.Last() != ',' && _expression.IsMatch(sequenceString))
+                {
+                    List<int> degreeSequence = SplitDegreeSequence(sequenceString);
+                    degreeSequence = degreeSequence.OrderByDescending(x => x).ToList();
+                    sum = degreeSequence.Sum();
+                    if (degreeSequence[0] < degreeSequence.Count)
+                    {
+                        return sum%2 == 0;
+                    }
+                }
                 return false;
             }
+
+            return false;
         }
 
         public List<int> SplitDegreeSequence(string str)

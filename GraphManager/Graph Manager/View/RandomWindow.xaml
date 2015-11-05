@@ -5,8 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Graph_Manager"
         mc:Ignorable="d"
-        Title="RandomWindow" Height="123" Width="394" ResizeMode="NoResize" >
-    <Grid>
+        Title="RandomWindow" Height="128" Width="399" ResizeMode="NoResize" >
+    <Grid Margin="0,0,0,-3">
         <Button x:Name="BtnRandomize" Command="{Binding RandomizeGraph}" CommandParameter="{Binding ElementName=TxbDegreeSequence, Path=Text}"  Content="Losuj graf" HorizontalAlignment="Left" Margin="219,64,0,0" Width="160" VerticalAlignment="Top"/>
         <CheckBox x:Name="ChbOnCircle" IsChecked="{Binding OnCircle}" Content=" Rozkład po kole" HorizontalAlignment="Left" Margin="265,23,-5,0" VerticalAlignment="Top" Width="128" Height="23"/>
         <TextBox x:Name="TxbDegreeSequence" HorizontalAlignment="Left" Height="20" Margin="10,21,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
