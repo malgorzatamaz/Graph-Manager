@@ -16,10 +16,6 @@ namespace Graph_Manager.ViewModel
     [ImplementPropertyChanged]
     public class MainWindowViewModel
     {
-        private bool _isImageSelectedLeftButton;
-        private bool _isImageSelectedRightButton;
-        private bool _isLineSelectedRightButton;
-
         public Dictionary<int, List<int>> VertexesMatrix { get; set; }
         public Graph Graph { get; set; }
         public Graph GraphNew { get; set; }
@@ -135,8 +131,6 @@ namespace Graph_Manager.ViewModel
                 {
                     GraphCollection.Last().Edges.Add(new Edge
                     {
-                       StartPoint = coned.StartPoint,
-                       EndPoint = coned.EndPoint,
                        EndVertex = coned.EndVertex,
                        IdEdge = coned.IdEdge,
                        IsMouseLeftButtonDown = coned.IsMouseLeftButtonDown,
@@ -160,17 +154,19 @@ namespace Graph_Manager.ViewModel
 
         private void CanvasMouseLeftButtonDown(object obj)
         {
-            Point point = Mouse.GetPosition(obj as Canvas);
-            point.X = point.X - Convert.ToDouble(Resources.ImageWidth) / 2;
-            point.Y = point.Y - Convert.ToDouble(Resources.ImageHeight) / 2;
+            Point vertexCenterPoint = Mouse.GetPosition(obj as Canvas);
+
+            Point drawingPoint = Mouse.GetPosition(obj as Canvas);
+            drawingPoint.Offset(-Convert.ToDouble(Resources.ImageWidth) / 2, -Convert.ToDouble(Resources.ImageHeight) / 2);
+
             //dodaje wolne wierzchołki
             if (IndexAction == 1 && AnySelected == false && IsImageSelectedLeftButton == false)
             {
                 Graph.Vertexes.Add(new Vertex()
                 {
-                    Position = point,
+                    Position = vertexCenterPoint,
                     IdVertex = IdImage,
-                    Margin = new Thickness(point.X, point.Y, 0, 0)
+                    Margin = new Thickness(drawingPoint.X, drawingPoint.Y, 0, 0)       
                 });
                 IdImage++;
             }
@@ -182,9 +178,9 @@ namespace Graph_Manager.ViewModel
             {
                 var vertex = new Vertex()
                 {
-                    Position = point,
+                    Position = vertexCenterPoint,
                     IdVertex = IdImage,
-                    Margin = new Thickness(point.X, point.Y, 0, 0)
+                    Margin = new Thickness(drawingPoint.X, drawingPoint.Y, 0, 0)
                 };
                 IdImage++;
                 Graph.Vertexes.Add(vertex);
@@ -280,13 +276,10 @@ namespace Graph_Manager.ViewModel
             {
                 var edge = new Edge()
                 {
-                    StartPoint = item.Position,
-                    EndPoint = vertex.Position,
                     StartVertex = item,
                     EndVertex = vertex,
                     IdEdge = IdEdge
                 };
-                CalculateStartEndPoint(edge);
                 Graph.Edges.Add(edge);
                 IdEdge++;
                 item.ConnectedEdges.Add(edge);
@@ -295,28 +288,6 @@ namespace Graph_Manager.ViewModel
                 vertex.ConnectedEdges.Add(edge);
                 vertex.ConnectedVertexes.Add(item);
             }
-        }
-        /// <summary>
-        /// sluzy do obcinania line, zeby linii nie bylo na obrazku + przemieszczenie do centru obrazka
-        /// </summary>
-        /// <param name="edge"></param>
-
-        private void CalculateStartEndPoint(Edge edge)
-        {
-            double DiagonalBig = Math.Sqrt(Math.Pow(edge.EndPoint.X - edge.StartPoint.X, 2) + Math.Pow(edge.EndPoint.Y - edge.StartPoint.Y, 2));
-            Point pointStart = new Point();
-            Point pointEnd = new Point();
-            pointStart.X = (edge.EndPoint.X - edge.StartPoint.X) / DiagonalBig * Convert.ToUInt32(Resources.Radius) + edge.StartPoint.X;
-            pointStart.Y = (edge.EndPoint.Y - edge.StartPoint.Y) / DiagonalBig * Convert.ToUInt32(Resources.Radius) + edge.StartPoint.Y;
-            pointEnd.X = edge.EndPoint.X - (edge.EndPoint.X - edge.StartPoint.X) / DiagonalBig * Convert.ToUInt32(Resources.Radius);
-            pointEnd.Y = edge.EndPoint.Y - (edge.EndPoint.Y - edge.StartPoint.Y) / DiagonalBig * Convert.ToUInt32(Resources.Radius);
-            pointStart.X = pointStart.X + Convert.ToDouble(Resources.ImageWidth) / 2;
-            pointStart.Y = pointStart.Y + Convert.ToDouble(Resources.ImageHeight) / 2;
-            pointEnd.X = pointEnd.X + Convert.ToDouble(Resources.ImageWidth) / 2;
-            pointEnd.Y = pointEnd.Y + Convert.ToDouble(Resources.ImageHeight) / 2;
-
-            edge.StartPoint = pointStart;
-            edge.EndPoint = pointEnd;
         }
 
         private void DeleteVertex(object obj)

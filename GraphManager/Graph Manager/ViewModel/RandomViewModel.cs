@@ -85,8 +85,8 @@ namespace Graph_Manager.ViewModel
                         _graph.Vertexes[i].ConnectedEdges.Add(new Edge
                         {
 
-                            EndPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
-                            StartPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
+                            //EndPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
+                            //StartPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
                             StartVertex = _graph.Vertexes[i],
                             EndVertex = maxEdgesVertex,
                             IdEdge = i

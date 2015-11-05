@@ -117,10 +117,10 @@
                 <DataTemplate DataType="{x:Type model:Edge}">
                     <Line Stroke="LightSteelBlue"
                           StrokeThickness="3"
-                          X1="{Binding StartPoint.X}"
-                          X2="{Binding EndPoint.X}"
-                          Y1="{Binding StartPoint.Y}"
-                          Y2="{Binding EndPoint.Y}">
+                          X1="{Binding StartVertex.Position.X}"
+                          X2="{Binding EndVertex.Position.X}"
+                          Y1="{Binding StartVertex.Position.Y}"
+                          Y2="{Binding EndVertex.Position.Y}">
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonDown">
                                 <i:InvokeCommandAction Command="{Binding LineMouseLeftButtonDownCommand, Mode=OneWay}" />
