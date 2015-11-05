@@ -142,6 +142,7 @@
                 <Image Stretch="Fill" Source="{StaticResource Undo}" />
             </Button>
             <Button Margin="5"
+                    Command="{Binding FrontCommand }"
                     Width="40"
                     Height="30"
                     HorizontalAlignment="Right"
