@@ -137,6 +137,7 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Background="Transparent"
+                    Command="{Binding BackCommand}"
                     BorderThickness="0">
                 <Image Stretch="Fill" Source="{StaticResource Undo}" />
             </Button>
