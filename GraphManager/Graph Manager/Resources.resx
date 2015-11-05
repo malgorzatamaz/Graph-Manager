@@ -123,6 +123,12 @@
   <data name="AddUnselected" xml:space="preserve">
     <value>\\Images\\AddUnselected.png</value>
   </data>
+  <data name="CircleBlue" xml:space="preserve">
+    <value>\\Images\\CircleBlue.png</value>
+  </data>
+  <data name="CircleOrange" xml:space="preserve">
+    <value>\\Images\\CircleOrange.png</value>
+  </data>
   <data name="DeleteSelected" xml:space="preserve">
     <value>\\Images\\DeleteSelected.png</value>
   </data>

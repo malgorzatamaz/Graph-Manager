@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Input;
 using Graph_Manager.ViewModel;
 using PropertyChanged;
+using System.IO;
 
 namespace Graph_Manager.Model
 {
@@ -17,9 +18,11 @@ namespace Graph_Manager.Model
             ConnectedEdges = new List<Edge>();
             ConnectedVertexes = new List<Vertex>();
             Selected = false;
-            Path = AppDomain.CurrentDomain.BaseDirectory + "CircleBlue.png";
+            PathDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
+            Path = PathDirectory + Resources.CircleBlue;
             ImageMouseRightButtonDownCommand = new RelayCommand(ImageMouseRightButtonDown, (n) => true);
             ImageMouseLeftButtonDownCommand = new RelayCommand((m)=> IsMouseLeftButtonDown = true, (n) => true);
+            
         }
 
         private void ImageMouseRightButtonDown(object obj)
@@ -28,14 +31,15 @@ namespace Graph_Manager.Model
             if (Selected == false)
             {
                 Selected = true;
-                Path = AppDomain.CurrentDomain.BaseDirectory + "CircleOrange.png"; ;
+                Path = PathDirectory + Resources.CircleOrange;
             }
             else
             {
                 Selected = false;
-                Path = AppDomain.CurrentDomain.BaseDirectory + "CircleBlue.png";
+                Path = PathDirectory + Resources.CircleBlue;
             }
         }
+        public string PathDirectory { get; set; }
         public bool IsMouseRightButtonDown { get; set; }
         public bool IsMouseLeftButtonDown { get; set; }
         public int IdVertex { get; set; }

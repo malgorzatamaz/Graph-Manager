@@ -19,6 +19,8 @@ namespace Graph_Manager.ViewModel
         private bool _isImageSelectedLeftButton;
         private bool _isImageSelectedRightButton;
         private bool _isLineSelectedRightButton;
+
+        public Dictionary<int, List<int>> VertexesMatrix { get; set; }
         public Graph Graph { get; set; }
         public Graph GraphNew { get; set; }
         public string PathDeleteVertex { get; set; }
@@ -72,6 +74,7 @@ namespace Graph_Manager.ViewModel
 
         public MainWindowViewModel()
         {
+            VertexesMatrix = new Dictionary<int, List<int>>();
             Graph = new Graph();
             GraphCollection=new ObservableCollection<Graph>();
             ObjectCompositeCollection = new CompositeCollection();
@@ -185,6 +188,7 @@ namespace Graph_Manager.ViewModel
                 };
                 IdImage++;
                 Graph.Vertexes.Add(vertex);
+                AddVertexToMatrix(vertex);
                 AddEdge(vertex);
             }
 
@@ -197,6 +201,7 @@ namespace Graph_Manager.ViewModel
                 else if (Graph.Vertexes.First().ConnectedVertexes.First(m => m.IdVertex == vertex.IdVertex) == null)
                     AddEdge(vertex);
 
+                AddVertexToMatrix(vertex);
                 Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true).IsMouseLeftButtonDown = false;
             }
 
@@ -209,17 +214,56 @@ namespace Graph_Manager.ViewModel
                     Graph.Edges.Remove(m);
                 });
                 Graph.Vertexes.Remove(vertex);
+
+                RemoveVertexFromMatrix(vertex);
             }
 
             //usuwa dowolną krawędź
             else if (IndexAction == 3 && IsLineSelectedRightButton == true)
             {
                 var edge = Graph.Edges.FirstOrDefault(v => v.IsMouseLeftButtonDown == true);
+
+                VertexesMatrix[edge.StartVertex.IdVertex].Remove(edge.EndVertex.IdVertex);
                 Graph.Edges.Remove(edge);
             }
 
+            //przesuwanie wierzcholkow
+
             AddToObjectCompositeCollection();
             Save();
+        }
+
+
+        private void RemoveVertexFromMatrix(Vertex vertex)
+        {
+            if (VertexesMatrix.ContainsKey(vertex.IdVertex))
+                VertexesMatrix.Remove(vertex.IdVertex);
+
+            foreach (var key in VertexesMatrix.Keys)
+            {
+                if (VertexesMatrix[key].Contains(vertex.IdVertex))
+                    VertexesMatrix[key].Remove(vertex.IdVertex);
+
+                if (VertexesMatrix[key].Count == 0)
+                    VertexesMatrix.Remove(vertex.IdVertex);
+            }
+        }
+
+        private void AddVertexToMatrix(Vertex vertex)
+        {
+            var selectedVertexes = Graph.Vertexes.Where(v => v.Selected == true);
+            foreach (var selected in selectedVertexes)
+            {
+                if (!VertexesMatrix.ContainsKey(selected.IdVertex))
+                    VertexesMatrix.Add(
+                                        selected.IdVertex,
+                                        new List<int> { vertex.IdVertex }
+                                        );
+                else
+                    VertexesMatrix[selected.IdVertex].Add(vertex.IdVertex);
+            }
+            
+            
         }
 
         private void AddToObjectCompositeCollection()

@@ -79,6 +79,24 @@ namespace Graph_Manager {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to \\Images\\CircleBlue.png.
+        /// </summary>
+        public static string CircleBlue {
+            get {
+                return ResourceManager.GetString("CircleBlue", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to \\Images\\CircleOrange.png.
+        /// </summary>
+        public static string CircleOrange {
+            get {
+                return ResourceManager.GetString("CircleOrange", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to \\Images\\DeleteSelected.png.
         /// </summary>
         public static string DeleteSelected {
