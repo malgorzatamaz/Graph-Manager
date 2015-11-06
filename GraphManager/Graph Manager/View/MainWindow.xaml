@@ -66,7 +66,7 @@
                                         Mode=OneWay,
                                         UpdateSourceTrigger=PropertyChanged}" />
             </Button>
-            <Button x:Name="BtnSettings"
+            <Button x:Name="BtnRandom"
                     Width="60"
                     Height="60"
                     HorizontalAlignment="Center"
@@ -88,6 +88,12 @@
                             <i:EventTrigger EventName="MouseRightButtonDown">
                                 <i:InvokeCommandAction Command="{Binding CanvasMouseRightButtonDownCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Canvas}" />
                             </i:EventTrigger>
+
+                            <i:EventTrigger EventName="MouseMove">
+                                <viewModel:CustomCommandInvoker Command="{Binding DragVertexCommand}"/>
+                            </i:EventTrigger>
+
+
                         </i:Interaction.Triggers>
                     </Canvas>
                 </ItemsPanelTemplate>
