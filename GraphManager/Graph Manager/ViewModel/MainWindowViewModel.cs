@@ -197,7 +197,7 @@ namespace Graph_Manager.ViewModel
                 Vertex = Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true);
                 if(Vertex.ConnectedVertexes.Any()==false)
                     AddEdge(Vertex);
-                else if (Graph.Vertexes.First().ConnectedVertexes.First(m => m.IdVertex == Vertex.IdVertex) == null)
+                else if (Vertex.ConnectedVertexes.FirstOrDefault(m => m.IdVertex == Vertex.IdVertex) == null)
                     AddEdge(Vertex);
 
                 AddVertexToMatrix(Vertex);
@@ -230,7 +230,6 @@ namespace Graph_Manager.ViewModel
             else if (IndexAction == 2 && IsImageSelectedLeftButton == true)
             {
                 Vertex = Graph.Vertexes.FirstOrDefault(v => v.IsMouseLeftButtonDown);
-                
                 DragVertexCommand = new RelayCommand(DragVertex, (n) => true);
             }
 
