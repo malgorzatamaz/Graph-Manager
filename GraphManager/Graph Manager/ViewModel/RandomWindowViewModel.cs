@@ -25,8 +25,8 @@ namespace Graph_Manager.ViewModel
             _graph = graph;
             _expression = new Regex("[1-9]+([,]{1}[1-9]+)*");
             OnCircle = true;
-            RandomizeGraph = new RelayCommand(Randomize, IsEven);
-            CloseCommand = new RelayCommand(o => ((Window)o).Close());
+            RandomizeCommand = new RelayCommand(Randomize, Validation.IsEven);
+            CloseCommand = new RelayCommand(o => ((Window) o).Close());
 
         }
 
@@ -35,27 +35,35 @@ namespace Graph_Manager.ViewModel
             get { return _onCircle; }
             set { _onCircle = value; }
         }
-        public ICommand RandomizeGraph { get; set; }
+
+        public ICommand RandomizeCommand { get; set; }
         public ICommand CloseCommand;
+
         public void Randomize(object obj)
         {
             ReadTo = true;
-            string sequenceString = (string)obj;
-            List<int> degreeSequence = SplitDegreeSequence(sequenceString);
-            int maxEdgesIndex = 0, maxDegree = 0, radius, vertexIndex, angleChange = 0, angle, sum = degreeSequence.Sum();
+            string sequenceString = (string) obj;
+            List<int> degreeSequence = Validation.SplitSequence(sequenceString);
+            int maxEdgesIndex = 0,
+                maxDegree = 0,
+                radius,
+                vertexIndex,
+                angleChange = 0,
+                angle,
+                sum = degreeSequence.Sum();
             Vertex maxEdgesVertex = new Vertex();
             Edge newEdge;
             Random r = new Random();
             Point p = new Point();
-            angle = 360 / degreeSequence.Count;
+            angle = 360/degreeSequence.Count;
 
             for (int i = 0; i < degreeSequence.Count; i++)
             {
                 if (OnCircle)
                 {
-                    radius = (_canvasHeight / 2) - 20;
-                    p.X = 0.5 * _canvasWidth + (radius * Math.Sin(angleChange));
-                    p.Y = 0.5 * _canvasHeight + (radius * Math.Cos(angleChange));
+                    radius = (_canvasHeight/2) - 20;
+                    p.X = 0.5*_canvasWidth + (radius*Math.Sin(angleChange));
+                    p.Y = 0.5*_canvasHeight + (radius*Math.Cos(angleChange));
                     angleChange += angle;
                 }
                 else
@@ -64,12 +72,12 @@ namespace Graph_Manager.ViewModel
                     p.Y = r.Next(10, _canvasHeight - 10);
                 }
 
-                _graph.Vertexes.Add(new Vertex { Position = p });
+                _graph.Vertexes.Add(new Vertex {Position = p});
             }
 
             while (sum > 0)
             {
-                for (int k = 0; k < _graph.Vertexes.Count; k++)
+                for (int k = 0; k < degreeSequence.Count; k++)
                 {
                     maxDegree = 0;
 
@@ -115,35 +123,6 @@ namespace Graph_Manager.ViewModel
             {
                 x.IdVertex = vertexIndex++;
             }
-        }
-
-        public bool IsEven(object obj) // Parzysta
-        {
-            int sum;
-            string sequenceString = (string)obj;
-
-            if (!string.IsNullOrEmpty(sequenceString))
-            {
-                if (sequenceString.Last() != ',' && _expression.IsMatch(sequenceString))
-                {
-                    List<int> degreeSequence = SplitDegreeSequence(sequenceString);
-                    degreeSequence = degreeSequence.OrderByDescending(x => x).ToList();
-                    sum = degreeSequence.Sum();
-                    if (degreeSequence[0] < degreeSequence.Count)
-                    {
-                        return sum % 2 == 0;
-                    }
-                }
-                return false;
-            }
-
-            return false;
-        }
-
-        public List<int> SplitDegreeSequence(string str)
-        {
-
-            return str.Split(',').Select(int.Parse).ToList();
         }
     }
 }

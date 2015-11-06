@@ -11,6 +11,8 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Graph_Manager.Model;
+using Graph_Manager.ViewModel;
 
 namespace Graph_Manager.View
 {
@@ -19,9 +21,10 @@ namespace Graph_Manager.View
     /// </summary>
     public partial class PruferWindow : Window
     {
-        public PruferWindow()
+        public PruferWindow(Graph graph, int canvasWidth, int canvasHeight)
         {
             InitializeComponent();
+            this.DataContext = new PruferWindowViewModel(graph, canvasWidth, canvasHeight);
         }
     }
 }

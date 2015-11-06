@@ -10,7 +10,7 @@ using Graph_Manager.Model;
 
 namespace Graph_Manager.ViewModel
 {
-    class PruferWindowViewModel
+    internal class PruferWindowViewModel
     {
 
         public bool ReadTo { get; set; }
@@ -29,8 +29,8 @@ namespace Graph_Manager.ViewModel
             _graph = graph;
             _expression = new Regex("[1-9]+([,]{1}[1-9]+)*");
             OnCircle = true;
-            RandomizeGraph = new RelayCommand(Recreation, IsEven);
-            CloseCommand = new RelayCommand(o => ((Window)o).Close());
+            RecreateCommand = new RelayCommand(Recreation, Validation.IsPruferCode);
+            CloseCommand = new RelayCommand(o => ((Window) o).Close());
 
         }
 
@@ -39,31 +39,55 @@ namespace Graph_Manager.ViewModel
             get { return _onCircle; }
             set { _onCircle = value; }
         }
-        public ICommand RandomizeGraph { get; set; }
+
+        public ICommand RecreateCommand { get; set; }
         public ICommand CloseCommand;
 
         public void Recreation(object obj)
         {
-            
-        }
-        public bool IsEven(object obj) // Parzysta
-        {
-            string sequenceString = (string)obj;
-            if (!string.IsNullOrEmpty(sequenceString))
+            string sequenceString = (string) obj;
+            List<int> pruferCodeList = Validation.SplitSequence(sequenceString);
+            int radius, angleChange = 0, angle, index;
+            Point p = new Point();
+            Random r = new Random();
+            angle = 360/pruferCodeList.Count;
+            Edge newEdge;
+
+            for (int i = 0; i < pruferCodeList.Count; i++)
             {
-                if (sequenceString.Last() != ',' && _expression.IsMatch(sequenceString))
+                if (OnCircle)
                 {
-                    return true;
+                    radius = (_canvasHeight/2) - 20;
+                    p.X = 0.5*_canvasWidth + (radius*Math.Sin(angleChange));
+                    p.Y = 0.5*_canvasHeight + (radius*Math.Cos(angleChange));
+                    angleChange += angle;
                 }
+                else
+                {
+                    p.X = r.Next(10, _canvasWidth - 10);
+                    p.Y = r.Next(10, _canvasHeight - 10);
+                }
+
+                _graph.Vertexes.Add(new Vertex {Position = p});
             }
 
-            return false;
-        }
 
-        public List<int> SplitDegreeSequence(string str)
-        {
+            for (int i = 0; i < pruferCodeList.Count; i++)
+            {
+                index = pruferCodeList[i];
 
-            return str.Split(',').Select(int.Parse).ToList();
+                newEdge = new Edge
+                {
+                    EndPoint = _graph.Vertexes[i].Position,
+                    StartPoint = _graph.Vertexes[index].Position,
+                    StartVertex = _graph.Vertexes[i],
+                    EndVertex = _graph.Vertexes[index],
+                    IdEdge = i
+                };
+
+                _graph.Vertexes[i].ConnectedEdges.Add(newEdge);
+                _graph.Vertexes[index].ConnectedEdges.Add(newEdge);
+            }
         }
     }
 }
