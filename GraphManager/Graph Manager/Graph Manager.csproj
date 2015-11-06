@@ -77,10 +77,14 @@
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
     <Compile Include="ViewModel\MainWindowViewModel.cs" />
-    <Compile Include="ViewModel\RandomViewModel.cs" />
+    <Compile Include="ViewModel\PruferWindowViewModel.cs" />
+    <Compile Include="ViewModel\RandomWindowViewModel.cs" />
     <Compile Include="ViewModel\RelayCommand.cs" />
     <Compile Include="View\MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\PruferWindow.xaml.cs">
+      <DependentUpon>PruferWindow.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\RandomWindow.xaml.cs">
       <DependentUpon>RandomWindow.xaml</DependentUpon>
@@ -92,6 +96,10 @@
     <Page Include="View\MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="View\PruferWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\RandomWindow.xaml">
       <Generator>MSBuild:Compile</Generator>

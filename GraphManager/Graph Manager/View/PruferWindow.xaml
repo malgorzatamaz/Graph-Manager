@@ -1,0 +1,19 @@
+﻿<Window x:Class="Graph_Manager.View.PruferWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Graph_Manager.View"
+        mc:Ignorable="d"
+        
+        Title="PruferAlgoritmWindow" Height="128" Width="399" ResizeMode="NoResize" >
+    <Grid Margin="0,0,0,-3">
+        <Button x:Name="BtnRandomize" Command="{Binding RecreationGraph}" CommandParameter="{Binding ElementName=TxbDegreeSequence, Path=Text}"  Content="Odtwórz graf" HorizontalAlignment="Left" Margin="219,64,0,0" Width="160" VerticalAlignment="Top"/>
+        <CheckBox x:Name="ChbOnCircle" IsChecked="{Binding OnCircle}" Content=" Rozkład po kole" HorizontalAlignment="Left" Margin="265,23,-5,0" VerticalAlignment="Top" Width="128" Height="23"/>
+        <TextBox x:Name="TxbDegreeSequence" HorizontalAlignment="Left" Height="20" Margin="10,21,0,0" TextWrapping="Wrap" Text="" VerticalAlignment="Top" Width="120"/>
+        <Label x:Name="label" Content="Kod Prufera" HorizontalAlignment="Left" Margin="135,16,0,0" VerticalAlignment="Top" Width="125" Height="29" RenderTransformOrigin="0.464,1.552"/>
+        <Button x:Name="BtnCancel" Content="Anuluj" Command="{Binding CloseCommand}"
+        CommandParameter="{Binding RelativeSource={RelativeSource FindAncestor, AncestorType={x:Type Window}}}"
+        HorizontalAlignment="Left" Margin="10,64,0,0" VerticalAlignment="Top" Width="160"/>
+    </Grid>
+</Window>

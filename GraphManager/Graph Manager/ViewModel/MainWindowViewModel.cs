@@ -146,12 +146,15 @@ namespace Graph_Manager.ViewModel
         private void OpenWindowRandom(object obj)
         {
             GraphNew = new Graph();
-            RandomViewModel randomViewModel = new RandomViewModel(GraphNew, 400, 400);        
+            RandomWindowViewModel randomViewModel = new RandomWindowViewModel(GraphNew, 400, 400);        
             var winRandom = new RandomWindow(randomViewModel);
             winRandom.ShowDialog();
             if (randomViewModel.ReadTo)
             {
                 Graph = GraphNew;
+                winRandom.Close();
+                GraphCollection.Add(GraphNew);
+                AddToObjectCompositeCollection();
             }
         }
 

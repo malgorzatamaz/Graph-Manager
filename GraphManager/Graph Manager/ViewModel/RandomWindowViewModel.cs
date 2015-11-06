@@ -8,7 +8,7 @@ using Graph_Manager.Model;
 
 namespace Graph_Manager.ViewModel
 {
-    public class RandomViewModel
+    public class RandomWindowViewModel
     {
         public bool ReadTo { get; set; }
         private Graph _graph;
@@ -17,7 +17,7 @@ namespace Graph_Manager.ViewModel
         private int _canvasHeight;
         private Regex _expression;
 
-        public RandomViewModel(Graph graph, int canvasWidth, int canvasHeight)
+        public RandomWindowViewModel(Graph graph, int canvasWidth, int canvasHeight)
         {
             ReadTo = false;
             _canvasWidth = canvasWidth;
@@ -42,15 +42,15 @@ namespace Graph_Manager.ViewModel
             ReadTo = true;
             string sequenceString = (string)obj;
             List<int> degreeSequence = SplitDegreeSequence(sequenceString);
-            int maxEdges = 0, radius, vertexIndex, angleChange = 0, angle, sum = degreeSequence.Sum();
+            int maxEdgesIndex = 0, maxDegree = 0, radius, vertexIndex, angleChange = 0, angle, sum = degreeSequence.Sum();
             Vertex maxEdgesVertex = new Vertex();
+            Edge newEdge;
             Random r = new Random();
             Point p = new Point();
             angle = 360 / degreeSequence.Count;
 
-            foreach (var x in degreeSequence)
+            for (int i = 0; i < degreeSequence.Count; i++)
             {
-
                 if (OnCircle)
                 {
                     radius = (_canvasHeight / 2) - 20;
@@ -67,34 +67,45 @@ namespace Graph_Manager.ViewModel
                 _graph.Vertexes.Add(new Vertex { Position = p });
             }
 
-            while (sum > -1)
+            while (sum > 0)
             {
-                for (int i = 0; i < _graph.Vertexes[i].ConnectedEdges.Count; i++)
+                for (int k = 0; k < _graph.Vertexes.Count; k++)
                 {
-                    if (_graph.Vertexes[i].ConnectedEdges.Count > degreeSequence[i])
+                    maxDegree = 0;
+
+                    if (_graph.Vertexes[k].ConnectedEdges.Count < degreeSequence[k])
                     {
-                        foreach (var x in _graph.Vertexes)
+                        for (int j = 0; j < _graph.Vertexes.Count; j++)
                         {
-                            if (x.ConnectedEdges.Count > maxEdges)
+
+                            if (_graph.Vertexes[j].ConnectedEdges.Count >= maxDegree &&
+                                _graph.Vertexes[j].ConnectedEdges.Count < degreeSequence[j] &&
+                                j != k)
                             {
-                                maxEdges = x.ConnectedEdges.Count;
-                                maxEdgesVertex = x;
+                                maxDegree = degreeSequence[j];
+                                maxEdgesVertex = _graph.Vertexes[j];
+                                maxEdgesIndex = j;
                             }
                         }
 
-                        _graph.Vertexes[i].ConnectedEdges.Add(new Edge
+                        newEdge = new Edge
                         {
-
-                            EndPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
-                            StartPoint = new Point(r.Next(0, 400), r.Next(0, 400)),
-                            StartVertex = _graph.Vertexes[i],
+                            EndPoint = _graph.Vertexes[k].Position,
+                            StartPoint = maxEdgesVertex.Position,
+                            StartVertex = _graph.Vertexes[k],
                             EndVertex = maxEdgesVertex,
-                            IdEdge = i
-                        });
+                            IdEdge = k
+                        };
 
-                        _graph.Vertexes[i].ConnectedVertexes.Add(maxEdgesVertex);
-                        degreeSequence[i]--;
-                        sum--;
+                        _graph.Vertexes[k].ConnectedEdges.Add(newEdge);
+                        maxEdgesVertex.ConnectedEdges.Add(newEdge);
+
+                        _graph.Vertexes[k].ConnectedVertexes.Add(maxEdgesVertex);
+                        maxEdgesVertex.ConnectedVertexes.Add(_graph.Vertexes[k]);
+
+                        degreeSequence[k]--;
+                        degreeSequence[maxEdgesIndex]--;
+                        sum -= 2;
                     }
                 }
             }
@@ -120,7 +131,7 @@ namespace Graph_Manager.ViewModel
                     sum = degreeSequence.Sum();
                     if (degreeSequence[0] < degreeSequence.Count)
                     {
-                        return sum%2 == 0;
+                        return sum % 2 == 0;
                     }
                 }
                 return false;

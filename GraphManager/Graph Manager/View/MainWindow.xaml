@@ -133,17 +133,16 @@
         <StackPanel Orientation="Horizontal" Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button Margin="5"
                     Width="40"
-                    Height="30"
+                    Height="40"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Background="Transparent"
-                    Command="{Binding BackCommand}"
                     BorderThickness="0">
                 <Image Stretch="Fill" Source="{StaticResource Undo}" />
             </Button>
             <Button Margin="5"
                     Width="40"
-                    Height="30"
+                    Height="40"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Background="Transparent"
