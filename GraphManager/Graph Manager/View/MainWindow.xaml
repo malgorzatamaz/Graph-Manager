@@ -25,7 +25,9 @@
                 Width="60"
                 Height="60"
                 HorizontalAlignment="Left"
-                VerticalAlignment="Bottom">
+                VerticalAlignment="Bottom"
+                ToolTip="Wyczyść graf"
+                ToolTipService.InitialShowDelay="0">
             <Image Source="{StaticResource DeleteAll}"/>
         </Button>
                 <StackPanel Grid.Column="0"      
@@ -39,10 +41,11 @@
                     VerticalAlignment="Center"
                     Background="Transparent"
                     BorderThickness="0"
+                    ToolTip="Dodaj wierzchołek"
+                    ToolTipService.InitialShowDelay="0"
                     Command="{Binding AddVertexCommand}">
                 <Image Source="{Binding PathAddVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </Button>
-           
             <Button x:Name="BtnMove"
                     Width="60"
                     Height="60"
@@ -50,6 +53,8 @@
                     VerticalAlignment="Center"
                     Background="Transparent"
                     BorderThickness="0"
+                    ToolTip="Przesuń wierzchołek"
+                    ToolTipService.InitialShowDelay="0"
                     Command="{Binding MoveVertexCommand}">
                 <Image Source="{Binding PathMoveVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
             </Button>
@@ -60,6 +65,8 @@
                     VerticalAlignment="Center"
                     Background="Transparent"
                     BorderThickness="0"
+                    ToolTip="Usuń"
+                    ToolTipService.InitialShowDelay="0"
                     Command="{Binding DeleteVertexCommand}">
                 <Image 
                        Source="{Binding PathDeleteVertex,
@@ -72,6 +79,8 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     BorderThickness="0"
+                    ToolTip="Losuj graf"
+                    ToolTipService.InitialShowDelay="0"
                     Command="{Binding OpenWindowRandomCommand}">
                 <Image Source="{StaticResource Random}" />
             </Button>
@@ -84,16 +93,12 @@
                             <i:EventTrigger EventName="MouseLeftButtonDown">
                                 <i:InvokeCommandAction Command="{Binding CanvasMouseLeftButtonDownCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Canvas}" />
                             </i:EventTrigger>
-
                             <i:EventTrigger EventName="MouseRightButtonDown">
                                 <i:InvokeCommandAction Command="{Binding CanvasMouseRightButtonDownCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Canvas}" />
                             </i:EventTrigger>
-
                             <i:EventTrigger EventName="MouseMove">
-                                <viewModel:CustomCommandInvoker Command="{Binding DragVertexCommand}"/>
+                                <viewModel:CustomCommandInvoker Command="{Binding DragVertexCommand, Mode=OneWay}"/>
                             </i:EventTrigger>
-
-
                         </i:Interaction.Triggers>
                     </Canvas>
                 </ItemsPanelTemplate>
@@ -108,14 +113,18 @@
                            Source="{Binding Path,
                                             Mode=TwoWay,
                                             UpdateSourceTrigger=PropertyChanged}">
-
-                        <i:Interaction.Triggers>
+                    <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseRightButtonDown">
                                 <i:InvokeCommandAction Command="{Binding ImageMouseRightButtonDownCommand, Mode=OneWay}" />
                             </i:EventTrigger>
-
                             <i:EventTrigger EventName="MouseLeftButtonDown">
                                 <i:InvokeCommandAction Command="{Binding ImageMouseLeftButtonDownCommand, Mode=OneWay}" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="MouseEnter">
+                                <i:InvokeCommandAction Command="{Binding OnEnterChangeCursorCommand, Mode=OneWay}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="MouseLeave">
+                                <i:InvokeCommandAction Command="{Binding OnLeaveChangeCursorCommand, Mode=OneWay}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Image>
@@ -123,13 +132,23 @@
                 <DataTemplate DataType="{x:Type model:Edge}">
                     <Line Stroke="LightSteelBlue"
                           StrokeThickness="3"
-                          X1="{Binding StartVertex.Position.X}"
+                          X1="{Binding EdgeStart.X}"
+                          X2="{Binding EdgeEnd.X}"
+                          Y1="{Binding EdgeStart.Y}"
+                          Y2="{Binding EdgeEnd.Y}">
+                        <!--X1="{Binding StartVertex.Position.X}"
                           X2="{Binding EndVertex.Position.X}"
                           Y1="{Binding StartVertex.Position.Y}"
-                          Y2="{Binding EndVertex.Position.Y}">
+                          Y2="{Binding EndVertex.Position.Y}">-->
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonDown">
                                 <i:InvokeCommandAction Command="{Binding LineMouseLeftButtonDownCommand, Mode=OneWay}" />
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="MouseEnter">
+                                <i:InvokeCommandAction Command="{Binding OnEnterChangeCursorCommand, Mode=OneWay}"/>
+                            </i:EventTrigger>
+                            <i:EventTrigger EventName="MouseLeave">
+                                <i:InvokeCommandAction Command="{Binding OnLeaveChangeCursorCommand, Mode=OneWay}"/>
                             </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Line>
@@ -144,7 +163,9 @@
                     VerticalAlignment="Bottom"
                     Background="Transparent"
                     Command="{Binding BackCommand}"
-                    BorderThickness="0">
+                    BorderThickness="0"
+                    ToolTip="Cofnij"
+                    ToolTipService.InitialShowDelay="0">
                 <Image Stretch="Fill" Source="{StaticResource Undo}" />
             </Button>
             <Button Margin="5"
@@ -153,7 +174,9 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Background="Transparent"
-                    BorderThickness="0">
+                    BorderThickness="0"
+                    ToolTip="Powtórz"
+                    ToolTipService.InitialShowDelay="0">
                 <Image Stretch="Fill" Source="{StaticResource Redo}" />
             </Button>
         </StackPanel>

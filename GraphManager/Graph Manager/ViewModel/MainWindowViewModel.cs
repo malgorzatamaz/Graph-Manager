@@ -16,6 +16,9 @@ namespace Graph_Manager.ViewModel
     [ImplementPropertyChanged]
     public class MainWindowViewModel
     {
+        static public int IndexAction { get; set; }
+        public static int IdImage { get; set; }
+        public static int IdEdge { get; set; }
         public Vertex Vertex { get; set; }
         public Dictionary<int, List<int>> VertexesMatrix { get; set; }
         public Graph Graph { get; set; }
@@ -25,9 +28,6 @@ namespace Graph_Manager.ViewModel
         public string PathRandom { get; set; }
         public string PathAddVertex { get; set; }
         public string PathMoveVertex { get; set; }
-        public static int IdImage { get; set; }
-        public static int IdEdge { get; set; }
-        public int IndexAction { get; set; }
         public CompositeCollection ObjectCompositeCollection { get; set; }
         public ObservableCollection<Graph> GraphCollection { get; set; }
         public ICommand AddVertexCommand { get; set; }
@@ -37,6 +37,7 @@ namespace Graph_Manager.ViewModel
         public ICommand OpenWindowRandomCommand { get; set; }
         public ICommand BackCommand { get; set; }
         public ICommand DragVertexCommand { get; set; }
+        
 
         public bool IsLineSelectedRightButton
         {
@@ -158,30 +159,35 @@ namespace Graph_Manager.ViewModel
 
         private void CanvasMouseLeftButtonDown(object obj)
         {
-            Point vertexCenterPoint = Mouse.GetPosition(obj as Canvas);
             Point drawingPoint = Mouse.GetPosition(obj as Canvas);
             drawingPoint.Offset(-Convert.ToDouble(Resources.ImageWidth) / 2, -Convert.ToDouble(Resources.ImageHeight) / 2);
 
+            //w przypadku kiedy zostal zaznaczony wierzcholek przy dodawaniu nowych (niemozliwe jest pozniej dodanie nowych wierzcholkow)
+            if (IndexAction == 1 && AnySelected == false && IsImageSelectedLeftButton == true)
+            {
+                Vertex = Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true);
+                Vertex.IsMouseLeftButtonDown = false;
+            }
+
             //dodaje wolne wierzchołki
-            if (IndexAction == 1 && AnySelected == false && IsImageSelectedLeftButton == false)
+            else if (IndexAction == 1 && AnySelected == false && IsImageSelectedLeftButton == false)
             {
                 Graph.Vertexes.Add(new Vertex()
                 {
-                    Position = vertexCenterPoint,
+                    Position = drawingPoint,
                     IdVertex = IdImage,
                     Margin = new Thickness(drawingPoint.X, drawingPoint.Y, 0, 0)       
                 });
                 IdImage++;
             }
-
+  
             //dodaje wierzchołek połączony z aktualnie wybranymi (sprawdza czy nie kliknięto na inny wierzchołek,
             //jeśli tak to nie wykonuje operacji)
-
             else if (IndexAction == 1 && AnySelected == true && IsImageSelectedLeftButton == false)
             {
                 Vertex = new Vertex()
                 {
-                    Position = vertexCenterPoint,
+                    Position = drawingPoint,
                     IdVertex = IdImage,
                     Margin = new Thickness(drawingPoint.X, drawingPoint.Y, 0, 0)
                 };
@@ -243,15 +249,32 @@ namespace Graph_Manager.ViewModel
             {
                 MouseEventArgs mouseArgs = (MouseEventArgs)args;
                 Point newPosition = mouseArgs.GetPosition(args as Canvas);
-                newPosition.Offset(-Convert.ToDouble(Resources.ImageWidth) * 2, 0);
+                newPosition.Offset(-Convert.ToDouble(Resources.ImageWidth) * 2.5, -Convert.ToDouble(Resources.ImageHeight) / 2);
                 Vertex.Position = newPosition;
-                
-                newPosition.Offset(-Convert.ToDouble(Resources.ImageWidth) /2, -Convert.ToDouble(Resources.ImageHeight) / 2);
+
+                var startEdges = Vertex.ConnectedEdges.Where(n => n.StartVertex == Vertex).ToList();
+                var endEdges = Vertex.ConnectedEdges.Where(n => n.EndVertex == Vertex).ToList();
+                foreach (var edge in startEdges)
+                {
+                    edge.EdgeStart = newPosition;
+                    edge.CalculateStartEndPoint();
+                }
+
+                foreach (var edge in endEdges)
+                {
+                    edge.EdgeEnd = newPosition;
+                    edge.CalculateStartEndPoint();
+                }
+
                 Vertex.Margin = new Thickness(newPosition.X, newPosition.Y, 0, 0);
+
                 Vertex.IsMouseLeftButtonDown = false;
             }
             else
                 DragVertexCommand = new RelayCommand(DragVertex, (n) => false);
+
+            AddToObjectCompositeCollection();
+            
         }
 
         private void RemoveVertexFromMatrix(Vertex vertex)
@@ -304,6 +327,7 @@ namespace Graph_Manager.ViewModel
                     EndVertex = vertex,
                     IdEdge = IdEdge
                 };
+                edge.CalculateStartEndPoint();
                 Graph.Edges.Add(edge);
                 IdEdge++;
                 item.ConnectedEdges.Add(edge);
@@ -313,6 +337,7 @@ namespace Graph_Manager.ViewModel
                 vertex.ConnectedVertexes.Add(item);
             }
         }
+
 
         private void DeleteVertex(object obj)
         {
