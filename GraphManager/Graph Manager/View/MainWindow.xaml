@@ -15,142 +15,143 @@
         MinWidth="540"
         MinHeight="370"
         mc:Ignorable="d">
-    <Grid Background="#FFC0DAFF">
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="1*" />
-            <ColumnDefinition Width="11*" />
-        </Grid.ColumnDefinitions>
-        <Button x:Name="BtnClear"
-                Grid.Column="0"
-                Width="60"
-                Height="60"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom">
-            <Image Source="{StaticResource DeleteAll}"/>
-        </Button>
-                <StackPanel Grid.Column="0"      
-                   HorizontalAlignment="Left"
-                   VerticalAlignment="Top"
-                   Orientation="Vertical">
-            <Button x:Name="BtnAdd"
-                    Width="60"
-                    Height="60"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding AddVertexCommand}">
-                <Image Source="{Binding PathAddVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-            </Button>
-           
-            <Button x:Name="BtnMove"
-                    Width="60"
-                    Height="60"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding MoveVertexCommand}">
-                <Image Source="{Binding PathMoveVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
-            </Button>
-            <Button x:Name="BtnDelete"
-                    Width="60"
-                    Height="60"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    Background="Transparent"
-                    BorderThickness="0"
-                    Command="{Binding DeleteVertexCommand}">
-                <Image 
-                       Source="{Binding PathDeleteVertex,
+  <Grid Background="#FFC0DAFF">
+    <Grid.ColumnDefinitions>
+      <ColumnDefinition Width="1*" />
+      <ColumnDefinition Width="11*" />
+    </Grid.ColumnDefinitions>
+    <Button x:Name="BtnClear"
+            Grid.Column="0"
+            Width="60"
+            Height="60"
+            HorizontalAlignment="Left"
+            VerticalAlignment="Bottom">
+      <Image Source="{StaticResource DeleteAll}"/>
+    </Button>
+    <StackPanel Grid.Column="0"
+       HorizontalAlignment="Left"
+       VerticalAlignment="Top"
+       Orientation="Vertical">
+      <Button x:Name="BtnAdd"
+              Width="60"
+              Height="60"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Background="Transparent"
+              BorderThickness="0"
+              Command="{Binding AddVertexCommand}">
+        <Image Source="{Binding PathAddVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+      </Button>
+
+      <Button x:Name="BtnMove"
+              Width="60"
+              Height="60"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Background="Transparent"
+              BorderThickness="0"
+              Command="{Binding MoveVertexCommand}">
+        <Image Source="{Binding PathMoveVertex, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}" />
+      </Button>
+      <Button x:Name="BtnDelete"
+              Width="60"
+              Height="60"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              Background="Transparent"
+              BorderThickness="0"
+              Command="{Binding DeleteVertexCommand}">
+        <Image
+               Source="{Binding PathDeleteVertex,
                                         Mode=OneWay,
                                         UpdateSourceTrigger=PropertyChanged}" />
-            </Button>
-            <Button x:Name="BtnSettings"
-                    Width="60"
-                    Height="60"
-                    HorizontalAlignment="Center"
-                    VerticalAlignment="Center"
-                    BorderThickness="0"
-                    Command="{Binding OpenWindowRandomCommand}">
-                <Image Source="{StaticResource Random}" />
-            </Button>
-        </StackPanel>
-        <ItemsControl Grid.Column="1" ItemsSource="{Binding ObjectCompositeCollection}">
-            <ItemsControl.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <Canvas Name="Canvas" Background="White">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding CanvasMouseLeftButtonDownCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Canvas}" />
-                            </i:EventTrigger>
+      </Button>
+      <Button x:Name="BtnSettings"
+              Width="60"
+              Height="60"
+              HorizontalAlignment="Center"
+              VerticalAlignment="Center"
+              BorderThickness="0"
+              Command="{Binding OpenWindowRandomCommand}">
+        <Image Source="{StaticResource Random}" />
+      </Button>
+    </StackPanel>
+    <ItemsControl Grid.Column="1" ItemsSource="{Binding ObjectCompositeCollection}">
+      <ItemsControl.ItemsPanel>
+        <ItemsPanelTemplate>
+          <Canvas Name="Canvas" Background="White">
+            <i:Interaction.Triggers>
+              <i:EventTrigger EventName="MouseLeftButtonDown">
+                <i:InvokeCommandAction Command="{Binding CanvasMouseLeftButtonDownCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Canvas}" />
+              </i:EventTrigger>
 
-                            <i:EventTrigger EventName="MouseRightButtonDown">
-                                <i:InvokeCommandAction Command="{Binding CanvasMouseRightButtonDownCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Canvas}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Canvas>
-                </ItemsPanelTemplate>
-            </ItemsControl.ItemsPanel>
-            <ItemsControl.Resources>
-                <DataTemplate DataType="{x:Type model:Vertex}">
-                    <Image Height="30"
-                           MaxWidth="30"
-                           Margin="{Binding Margin}"
-                           HorizontalAlignment="Left"
-                           VerticalAlignment="Top"
-                           Source="{Binding Path,
+              <i:EventTrigger EventName="MouseRightButtonDown">
+                <i:InvokeCommandAction Command="{Binding CanvasMouseRightButtonDownCommand, Mode=OneWay}" CommandParameter="{Binding ElementName=Canvas}" />
+              </i:EventTrigger>
+            </i:Interaction.Triggers>
+          </Canvas>
+        </ItemsPanelTemplate>
+      </ItemsControl.ItemsPanel>
+      <ItemsControl.Resources>
+        <DataTemplate DataType="{x:Type model:Vertex}">
+          <Image Height="30"
+                 MaxWidth="30"
+                 Margin="{Binding Margin}"
+                 HorizontalAlignment="Left"
+                 VerticalAlignment="Top"
+                 Source="{Binding Path,
                                             Mode=TwoWay,
                                             UpdateSourceTrigger=PropertyChanged}">
 
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseRightButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ImageMouseRightButtonDownCommand, Mode=OneWay}" />
-                            </i:EventTrigger>
+            <i:Interaction.Triggers>
+              <i:EventTrigger EventName="MouseRightButtonDown">
+                <i:InvokeCommandAction Command="{Binding ImageMouseRightButtonDownCommand, Mode=OneWay}" />
+              </i:EventTrigger>
 
-                            <i:EventTrigger EventName="MouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding ImageMouseLeftButtonDownCommand, Mode=OneWay}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Image>
-                </DataTemplate>
-                <DataTemplate DataType="{x:Type model:Edge}">
-                    <Line Stroke="LightSteelBlue"
-                          StrokeThickness="3"
-                          X1="{Binding StartPoint.X}"
-                          X2="{Binding EndPoint.X}"
-                          Y1="{Binding StartPoint.Y}"
-                          Y2="{Binding EndPoint.Y}">
-                        <i:Interaction.Triggers>
-                            <i:EventTrigger EventName="MouseLeftButtonDown">
-                                <i:InvokeCommandAction Command="{Binding LineMouseLeftButtonDownCommand, Mode=OneWay}" />
-                            </i:EventTrigger>
-                        </i:Interaction.Triggers>
-                    </Line>
-                </DataTemplate>
-            </ItemsControl.Resources>
-        </ItemsControl>
-        <StackPanel Orientation="Horizontal" Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Bottom">
-            <Button Margin="5"
-                    Width="40"
-                    Height="40"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Background="Transparent"
-                    BorderThickness="0">
-                <Image Stretch="Fill" Source="{StaticResource Undo}" />
-            </Button>
-            <Button Margin="5"
-                    Command="{Binding FrontCommand }"
-                    Width="40"
-                    Height="40"
-                    HorizontalAlignment="Right"
-                    VerticalAlignment="Bottom"
-                    Background="Transparent"
-                    BorderThickness="0">
-                <Image Stretch="Fill" Source="{StaticResource Redo}" />
-            </Button>
-        </StackPanel>
-    </Grid>
+              <i:EventTrigger EventName="MouseLeftButtonDown">
+                <i:InvokeCommandAction Command="{Binding ImageMouseLeftButtonDownCommand, Mode=OneWay}" />
+              </i:EventTrigger>
+            </i:Interaction.Triggers>
+          </Image>
+        </DataTemplate>
+        <DataTemplate DataType="{x:Type model:Edge}">
+          <Line Stroke="LightSteelBlue"
+                StrokeThickness="3"
+                X1="{Binding StartPoint.X}"
+                X2="{Binding EndPoint.X}"
+                Y1="{Binding StartPoint.Y}"
+                Y2="{Binding EndPoint.Y}">
+            <i:Interaction.Triggers>
+              <i:EventTrigger EventName="MouseLeftButtonDown">
+                <i:InvokeCommandAction Command="{Binding LineMouseLeftButtonDownCommand, Mode=OneWay}" />
+              </i:EventTrigger>
+            </i:Interaction.Triggers>
+          </Line>
+        </DataTemplate>
+      </ItemsControl.Resources>
+    </ItemsControl>
+    <StackPanel Orientation="Horizontal" Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Bottom">
+      <Button Margin="5"
+              Width="40"
+              Height="30"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Bottom"
+              Background="Transparent"
+              Command="{Binding BackCommand}"
+              BorderThickness="0">
+        <Image Stretch="Fill" Source="{StaticResource Undo}" />
+      </Button>
+      <Button Margin="5"
+              Command="{Binding FrontCommand }"
+              Width="40"
+              Height="30"
+              HorizontalAlignment="Right"
+              VerticalAlignment="Bottom"
+              Background="Transparent"
+              BorderThickness="0">
+        <Image Stretch="Fill" Source="{StaticResource Redo}" />
+      </Button>
+    </StackPanel>
+  </Grid>
 </Window>
 
