@@ -136,10 +136,6 @@
                           X2="{Binding EdgeEnd.X}"
                           Y1="{Binding EdgeStart.Y}"
                           Y2="{Binding EdgeEnd.Y}">
-                        <!--X1="{Binding StartVertex.Position.X}"
-                          X2="{Binding EndVertex.Position.X}"
-                          Y1="{Binding StartVertex.Position.Y}"
-                          Y2="{Binding EndVertex.Position.Y}">-->
                         <i:Interaction.Triggers>
                             <i:EventTrigger EventName="MouseLeftButtonDown">
                                 <i:InvokeCommandAction Command="{Binding LineMouseLeftButtonDownCommand, Mode=OneWay}" />
