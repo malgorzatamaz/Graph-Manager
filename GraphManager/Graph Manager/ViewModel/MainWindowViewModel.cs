@@ -146,7 +146,7 @@ namespace Graph_Manager.ViewModel
         private void OpenWindowRandom(object obj)
         {
             GraphNew = new Graph();
-            RandomWindowViewModel randomViewModel = new RandomWindowViewModel(GraphNew, 400, 400);        
+            RandomWindowViewModel randomViewModel = new RandomWindowViewModel(GraphNew, 200,200);        
             var winRandom = new RandomWindow(randomViewModel);
             winRandom.ShowDialog();
             if (randomViewModel.ReadTo)

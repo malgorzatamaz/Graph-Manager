@@ -123,6 +123,7 @@ namespace Graph_Manager.ViewModel
             {
                 x.IdVertex = vertexIndex++;
             }
+            
         }
     }
 }
