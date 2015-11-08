@@ -5,6 +5,7 @@ using System.Text.RegularExpressions;
 using System.Windows;
 using System.Windows.Input;
 using Graph_Manager.Model;
+using Graph_Manager.View;
 
 namespace Graph_Manager.ViewModel
 {
@@ -14,10 +15,11 @@ namespace Graph_Manager.ViewModel
         private Graph _graph;
         private bool _onCircle;
         private int _canvasWidth;
+        public RandomWindow Window { get; set; }
         private int _canvasHeight;
         private Regex _expression;
 
-        public RandomWindowViewModel(Graph graph, int canvasWidth, int canvasHeight)
+        public RandomWindowViewModel(Graph graph, int canvasWidth, int canvasHeight,Window window)
         {
             ReadTo = false;
             _canvasWidth = canvasWidth;
@@ -123,7 +125,7 @@ namespace Graph_Manager.ViewModel
             {
                 x.IdVertex = vertexIndex++;
             }
-            
+            Window.Close();
         }
     }
 }

@@ -7,7 +7,9 @@
     <BitmapImage x:Key="Redo" UriSource="/Images/redo.jpg" />
     <BitmapImage x:Key="Undo" UriSource="/Images/undo.jpg" />
     <BitmapImage x:Key="DeleteAll" UriSource="/Images/DeleteAll.png" />
-
+    <BitmapImage x:Key="Save" UriSource="/Images/save.png" />
+    <BitmapImage x:Key="Open" UriSource="/Images/open.png" />
+    <BitmapImage x:Key="Prufer" UriSource="/Images/prufer.png" />
 
 
     <Style x:Key="DropShadowImageStyle" TargetType="{x:Type Image}">

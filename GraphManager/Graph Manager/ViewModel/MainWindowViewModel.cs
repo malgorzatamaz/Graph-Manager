@@ -20,7 +20,6 @@ namespace Graph_Manager.ViewModel
         private bool _isImageSelectedRightButton;
         private bool _isLineSelectedRightButton;
         public Graph Graph { get; set; }
-        public Graph GraphNew { get; set; }
         public string PathDeleteVertex { get; set; }
         public string PathDirectory { get; set; }
         public string PathRandom { get; set; }
@@ -28,7 +27,7 @@ namespace Graph_Manager.ViewModel
         public string PathMoveVertex { get; set; }
         public static int IdImage { get; set; }
         public static int IdEdge { get; set; }
-        public int IndexAction { get; set; }
+        public static int IndexAction { get; set; }
         public CompositeCollection ObjectCompositeCollection { get; set; }
         public ObservableCollection<Graph> GraphCollection { get; set; }
         public ICommand AddVertexCommand { get; set; }
@@ -36,6 +35,7 @@ namespace Graph_Manager.ViewModel
         public ICommand DeleteVertexCommand { get; set; }
         public ICommand CanvasMouseLeftButtonDownCommand { get; set; }
         public ICommand OpenWindowRandomCommand { get; set; }
+        public ICommand OpenWindowPruferCommand { get; set; }
         public ICommand BackCommand { get; set; }
 
         public bool IsLineSelectedRightButton
@@ -86,7 +86,22 @@ namespace Graph_Manager.ViewModel
             DeleteVertexCommand = new RelayCommand(DeleteVertex, (n) => true);
             CanvasMouseLeftButtonDownCommand = new RelayCommand(CanvasMouseLeftButtonDown, (n) => true);
             OpenWindowRandomCommand=new RelayCommand(OpenWindowRandom, (n)=>true);
-            BackCommand=new RelayCommand(Back,(n)=>GraphCollection.Count>0?true:false);
+            OpenWindowPruferCommand = new RelayCommand(OpenWindowPrufer, (n) => true);
+            BackCommand =new RelayCommand(Back,(n)=>GraphCollection.Count>0?true:false);
+        }
+
+        private void OpenWindowPrufer(object obj)
+        {
+            Graph = new Graph();
+            PruferWindowViewModel pruferViewModel = new PruferWindowViewModel(Graph, 200, 200);
+            var winPrufer = new PruferWindow(pruferViewModel);
+            pruferViewModel.Window = winPrufer;
+            winPrufer.ShowDialog();
+            if (pruferViewModel.ReadTo)
+            {
+                GraphCollection.Add(Graph);
+                AddToObjectCompositeCollection();
+            }
         }
 
         private void Back(object obj)
@@ -132,8 +147,8 @@ namespace Graph_Manager.ViewModel
                 {
                     GraphCollection.Last().Edges.Add(new Edge
                     {
-                       StartPoint = coned.StartPoint,
-                       EndPoint = coned.EndPoint,
+                        EdgeStart = coned.EdgeStart,
+                        EdgeEnd = coned.EdgeEnd,
                        EndVertex = coned.EndVertex,
                        IdEdge = coned.IdEdge,
                        IsMouseLeftButtonDown = coned.IsMouseLeftButtonDown,
@@ -145,15 +160,14 @@ namespace Graph_Manager.ViewModel
 
         private void OpenWindowRandom(object obj)
         {
-            GraphNew = new Graph();
-            RandomWindowViewModel randomViewModel = new RandomWindowViewModel(GraphNew, 200,200);        
+            Graph = new Graph();
+            RandomWindowViewModel randomViewModel = new RandomWindowViewModel(Graph, 200,200, Application.Current.MainWindow);
             var winRandom = new RandomWindow(randomViewModel);
-            winRandom.ShowDialog();
+            randomViewModel.Window = winRandom;
+           winRandom.ShowDialog();
             if (randomViewModel.ReadTo)
             {
-                Graph = GraphNew;
-                winRandom.Close();
-                GraphCollection.Add(GraphNew);
+                GraphCollection.Add(Graph);
                 AddToObjectCompositeCollection();
             }
         }
@@ -239,13 +253,13 @@ namespace Graph_Manager.ViewModel
             {
                 var edge = new Edge()
                 {
-                    StartPoint = item.Position,
-                    EndPoint = vertex.Position,
+                    EdgeStart = item.Position,
+                    EdgeEnd = vertex.Position,
                     StartVertex = item,
                     EndVertex = vertex,
                     IdEdge = IdEdge
                 };
-                CalculateStartEndPoint(edge);
+                CalculateStartEndEdge(edge);
                 Graph.Edges.Add(edge);
                 IdEdge++;
                 item.ConnectedEdges.Add(edge);
@@ -260,22 +274,22 @@ namespace Graph_Manager.ViewModel
         /// </summary>
         /// <param name="edge"></param>
 
-        private void CalculateStartEndPoint(Edge edge)
+        private void CalculateStartEndEdge(Edge edge)
         {
-            double DiagonalBig = Math.Sqrt(Math.Pow(edge.EndPoint.X - edge.StartPoint.X, 2) + Math.Pow(edge.EndPoint.Y - edge.StartPoint.Y, 2));
+            double DiagonalBig = Math.Sqrt(Math.Pow(edge.EdgeEnd.X - edge.EdgeStart.X, 2) + Math.Pow(edge.EdgeEnd.Y - edge.EdgeStart.Y, 2));
             Point pointStart = new Point();
             Point pointEnd = new Point();
-            pointStart.X = (edge.EndPoint.X - edge.StartPoint.X) / DiagonalBig * Convert.ToUInt32(Resources.Radius) + edge.StartPoint.X;
-            pointStart.Y = (edge.EndPoint.Y - edge.StartPoint.Y) / DiagonalBig * Convert.ToUInt32(Resources.Radius) + edge.StartPoint.Y;
-            pointEnd.X = edge.EndPoint.X - (edge.EndPoint.X - edge.StartPoint.X) / DiagonalBig * Convert.ToUInt32(Resources.Radius);
-            pointEnd.Y = edge.EndPoint.Y - (edge.EndPoint.Y - edge.StartPoint.Y) / DiagonalBig * Convert.ToUInt32(Resources.Radius);
+            pointStart.X = (edge.EdgeEnd.X - edge.EdgeStart.X) / DiagonalBig * Convert.ToUInt32(Resources.Radius) + edge.EdgeStart.X;
+            pointStart.Y = (edge.EdgeEnd.Y - edge.EdgeStart.Y) / DiagonalBig * Convert.ToUInt32(Resources.Radius) + edge.EdgeStart.Y;
+            pointEnd.X = edge.EdgeEnd.X - (edge.EdgeEnd.X - edge.EdgeStart.X) / DiagonalBig * Convert.ToUInt32(Resources.Radius);
+            pointEnd.Y = edge.EdgeEnd.Y - (edge.EdgeEnd.Y - edge.EdgeStart.Y) / DiagonalBig * Convert.ToUInt32(Resources.Radius);
             pointStart.X = pointStart.X + Convert.ToDouble(Resources.ImageWidth) / 2;
             pointStart.Y = pointStart.Y + Convert.ToDouble(Resources.ImageHeight) / 2;
             pointEnd.X = pointEnd.X + Convert.ToDouble(Resources.ImageWidth) / 2;
             pointEnd.Y = pointEnd.Y + Convert.ToDouble(Resources.ImageHeight) / 2;
 
-            edge.StartPoint = pointStart;
-            edge.EndPoint = pointEnd;
+            edge.EdgeStart = pointStart;
+            edge.EdgeEnd = pointEnd;
         }
 
         private void DeleteVertex(object obj)

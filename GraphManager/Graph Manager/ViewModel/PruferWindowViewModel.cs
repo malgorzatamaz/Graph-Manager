@@ -7,13 +7,15 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Input;
 using Graph_Manager.Model;
+using Graph_Manager.View;
 
 namespace Graph_Manager.ViewModel
 {
-    internal class PruferWindowViewModel
+    public class PruferWindowViewModel
     {
 
         public bool ReadTo { get; set; }
+        public PruferWindow Window { get; set; }
         private Graph _graph;
         private bool _onCircle;
         private int _canvasWidth;
@@ -31,7 +33,6 @@ namespace Graph_Manager.ViewModel
             OnCircle = true;
             RecreateCommand = new RelayCommand(Recreation, Validation.IsPruferCode);
             CloseCommand = new RelayCommand(o => ((Window) o).Close());
-
         }
 
         public bool OnCircle
@@ -88,6 +89,8 @@ namespace Graph_Manager.ViewModel
                 _graph.Vertexes[i].ConnectedEdges.Add(newEdge);
                 _graph.Vertexes[index].ConnectedEdges.Add(newEdge);
             }
+
+            Window.Close();
         }
     }
 }

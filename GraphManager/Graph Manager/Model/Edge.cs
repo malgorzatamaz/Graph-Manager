@@ -17,6 +17,7 @@ namespace Graph_Manager.Model
         public Point EdgeStart { get; set; }
         public Point EdgeEnd { get; set; }
 
+
         public Edge()
         {
             LineMouseLeftButtonDownCommand = new RelayCommand((m)=> IsMouseLeftButtonDown = true, (n) => true);

@@ -11,7 +11,7 @@
         xmlns:viewModel="clr-namespace:Graph_Manager.ViewModel"
         Title="MainWindow"
         Width="750"
-        Height="440"
+        Height="518"
         MinWidth="540"
         MinHeight="370"
         mc:Ignorable="d">
@@ -20,16 +20,6 @@
             <ColumnDefinition Width="1*" />
             <ColumnDefinition Width="11*" />
         </Grid.ColumnDefinitions>
-        <Button x:Name="BtnClear"
-                Grid.Column="0"
-                Width="60"
-                Height="60"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                ToolTip="Wyczyść graf"
-                ToolTipService.InitialShowDelay="0">
-            <Image Source="{StaticResource DeleteAll}"/>
-        </Button>
                 <StackPanel Grid.Column="0"      
                    HorizontalAlignment="Left"
                    VerticalAlignment="Top"
@@ -65,7 +55,7 @@
                     VerticalAlignment="Center"
                     Background="Transparent"
                     BorderThickness="0"
-                    ToolTip="Usuń"
+                    ToolTip="Usuń wierzchołek lub krawędź"
                     ToolTipService.InitialShowDelay="0"
                     Command="{Binding DeleteVertexCommand}">
                 <Image 
@@ -79,10 +69,54 @@
                     HorizontalAlignment="Center"
                     VerticalAlignment="Center"
                     BorderThickness="0"
-                    ToolTip="Losuj graf"
+                    ToolTip="Losuj graf za pomocą ciągu stopni"
                     ToolTipService.InitialShowDelay="0"
                     Command="{Binding OpenWindowRandomCommand}">
                 <Image Source="{StaticResource Random}" />
+            </Button>
+            <Button x:Name="BtnPrufer"
+                    Width="60"
+                    Height="60"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    BorderThickness="0"
+                    ToolTip="Utwórz drzewo z kodu Prufera"
+                    ToolTipService.InitialShowDelay="0"
+                    Command="{Binding OpenWindowPruferCommand}">
+                <Image Source="{StaticResource Prufer}" />
+            </Button>
+            <Button x:Name="BtnOpen"
+                    Width="60"
+                    Height="60"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    BorderThickness="0"
+                    ToolTip="Wczytaj graf"
+                    ToolTipService.InitialShowDelay="0">
+                <Image Source="{StaticResource Open}" />
+                </Button>
+
+            <Button x:Name="BtnSave"
+                    Width="60"
+                    Height="60"
+                    HorizontalAlignment="Center"
+                    VerticalAlignment="Center"
+                    BorderThickness="0"
+                    ToolTip="Zapisz graf do pliku"
+                    ToolTipService.InitialShowDelay="0">
+                <Image Source="{StaticResource Save}" />
+            </Button>
+
+            <Button x:Name="BtnClear"
+                Grid.Column="0"
+                Width="60"
+                Height="60"
+                BorderThickness="0"
+                HorizontalAlignment="Left"
+                VerticalAlignment="Bottom"
+                ToolTip="Wyczyść graf"
+                ToolTipService.InitialShowDelay="0">
+                <Image Source="{StaticResource DeleteAll}"/>
             </Button>
         </StackPanel>
         <ItemsControl Grid.Column="1" ItemsSource="{Binding ObjectCompositeCollection}">
@@ -153,8 +187,8 @@
         </ItemsControl>
         <StackPanel Orientation="Horizontal" Grid.Column="1"  HorizontalAlignment="Right" VerticalAlignment="Bottom">
             <Button Margin="5"
-                    Width="40"
-                    Height="30"
+                    Width="50"
+                    Height="50"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Background="Transparent"
@@ -165,8 +199,8 @@
                 <Image Stretch="Fill" Source="{StaticResource Undo}" />
             </Button>
             <Button Margin="5"
-                    Width="40"
-                    Height="30"
+                    Width="50"
+                    Height="50"
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Background="Transparent"

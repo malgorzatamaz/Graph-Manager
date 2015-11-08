@@ -21,10 +21,10 @@ namespace Graph_Manager.View
     /// </summary>
     public partial class PruferWindow : Window
     {
-        public PruferWindow(Graph graph, int canvasWidth, int canvasHeight)
+        public PruferWindow(PruferWindowViewModel pruferWindowViewModel)
         {
             InitializeComponent();
-            this.DataContext = new PruferWindowViewModel(graph, canvasWidth, canvasHeight);
+            this.DataContext = pruferWindowViewModel;
         }
     }
 }
