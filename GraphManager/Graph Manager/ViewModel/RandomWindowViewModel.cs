@@ -100,8 +100,8 @@ namespace Graph_Manager.ViewModel
 
                         newEdge = new Edge
                         {
-                            EdgeEnd = _graph.Vertexes[k].Position,
-                            EdgeStart = maxEdgesVertex.Position,
+                            EndPoint = _graph.Vertexes[k].Position,
+                            StartPoint = maxEdgesVertex.Position,
                             StartVertex = _graph.Vertexes[k],
                             EndVertex = maxEdgesVertex,
                             IdEdge = k

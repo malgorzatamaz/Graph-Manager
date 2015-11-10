@@ -14,8 +14,8 @@ namespace Graph_Manager.Model
         public bool IsMouseLeftButtonDown { get; set; }
         public ICommand OnEnterChangeCursorCommand { get; set; }
         public ICommand OnLeaveChangeCursorCommand { get; set; }
-        public Point EdgeStart { get; set; }
-        public Point EdgeEnd { get; set; }
+        public Point StartPoint { get; set; }
+        public Point EndPoint { get; set; }
 
 
         public Edge()
@@ -55,8 +55,8 @@ namespace Graph_Manager.Model
             pointEnd.X = pointEnd.X + Convert.ToDouble(Resources.ImageWidth) / 2;
             pointEnd.Y = pointEnd.Y + Convert.ToDouble(Resources.ImageHeight) / 2;
 
-            EdgeStart = pointStart;
-            EdgeEnd = pointEnd;
+            StartPoint = pointStart;
+            EndPoint = pointEnd;
         }
     }
 }
