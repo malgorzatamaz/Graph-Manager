@@ -198,6 +198,7 @@ namespace Graph_Manager.ViewModel
             var winPrufer = new PruferWindow(pruferViewModel);
             pruferViewModel.Window = winPrufer;
             winPrufer.ShowDialog();
+
             if (pruferViewModel.ReadTo)
             {
                 GraphCollection.Add(Graph);
@@ -212,7 +213,7 @@ namespace Graph_Manager.ViewModel
             RandomWindowViewModel randomViewModel = new RandomWindowViewModel(Graph, 200,200, Application.Current.MainWindow);
             var winRandom = new RandomWindow(randomViewModel);
             randomViewModel.Window = winRandom;
-           winRandom.ShowDialog();
+            winRandom.ShowDialog();
             if (randomViewModel.ReadTo)
             {
                 GraphCollection.Add(Graph);

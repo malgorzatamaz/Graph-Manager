@@ -46,6 +46,7 @@ namespace Graph_Manager.ViewModel
 
         public void Recreation(object obj)
         {
+            ReadTo = true;
             string sequenceString = (string) obj;
             List<int> pruferCodeList = Validation.SplitSequence(sequenceString);
             int radius, angleChange = 0, angle, index;
@@ -54,6 +55,7 @@ namespace Graph_Manager.ViewModel
             angle = 360/pruferCodeList.Count;
             Edge newEdge;
 
+            
             for (int i = 0; i < pruferCodeList.Count; i++)
             {
                 if (OnCircle)
@@ -69,7 +71,7 @@ namespace Graph_Manager.ViewModel
                     p.Y = r.Next(10, _canvasHeight - 10);
                 }
 
-                _graph.Vertexes.Add(new Vertex {Position = p});
+                _graph.Vertexes.Add(new Vertex {Position = p, Margin = new Thickness(p.X,p.Y,0,0)});
             }
 
 
@@ -79,15 +81,19 @@ namespace Graph_Manager.ViewModel
 
                 newEdge = new Edge
                 {
-                    EndPoint = _graph.Vertexes[i].Position,
-                    StartPoint = _graph.Vertexes[index].Position,
                     StartVertex = _graph.Vertexes[i],
                     EndVertex = _graph.Vertexes[index],
                     IdEdge = i
                 };
+                
+                newEdge.CalculateStartEndPoint();
+                _graph.Edges.Add(newEdge);
 
                 _graph.Vertexes[i].ConnectedEdges.Add(newEdge);
                 _graph.Vertexes[index].ConnectedEdges.Add(newEdge);
+
+                _graph.Vertexes[i].ConnectedVertexes.Add(_graph.Vertexes[index]);
+                _graph.Vertexes[index].ConnectedVertexes.Add(_graph.Vertexes[i]);
             }
 
             Window.Close();

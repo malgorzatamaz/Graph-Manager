@@ -46,6 +46,7 @@ namespace Graph_Manager.ViewModel
             ReadTo = true;
             string sequenceString = (string) obj;
             List<int> degreeSequence = Validation.SplitSequence(sequenceString);
+
             int maxEdgesIndex = 0,
                 maxDegree = 0,
                 radius,
@@ -53,6 +54,7 @@ namespace Graph_Manager.ViewModel
                 angleChange = 0,
                 angle,
                 sum = degreeSequence.Sum();
+
             Vertex maxEdgesVertex = new Vertex();
             Edge newEdge;
             Random r = new Random();
@@ -74,7 +76,7 @@ namespace Graph_Manager.ViewModel
                     p.Y = r.Next(10, _canvasHeight - 10);
                 }
 
-                _graph.Vertexes.Add(new Vertex {Position = p});
+                _graph.Vertexes.Add(new Vertex {Position = p, Margin = new Thickness(p.X, p.Y, 0, 0) });
             }
 
             while (sum > 0)
@@ -100,12 +102,14 @@ namespace Graph_Manager.ViewModel
 
                         newEdge = new Edge
                         {
-                            EndPoint = _graph.Vertexes[k].Position,
-                            StartPoint = maxEdgesVertex.Position,
                             StartVertex = _graph.Vertexes[k],
                             EndVertex = maxEdgesVertex,
                             IdEdge = k
                         };
+
+
+                        newEdge.CalculateStartEndPoint();
+                        _graph.Edges.Add(newEdge);
 
                         _graph.Vertexes[k].ConnectedEdges.Add(newEdge);
                         maxEdgesVertex.ConnectedEdges.Add(newEdge);
@@ -121,10 +125,12 @@ namespace Graph_Manager.ViewModel
             }
 
             vertexIndex = _graph.Vertexes.Count;
+
             foreach (var x in _graph.Vertexes)
             {
                 x.IdVertex = vertexIndex++;
             }
+
             Window.Close();
         }
     }
