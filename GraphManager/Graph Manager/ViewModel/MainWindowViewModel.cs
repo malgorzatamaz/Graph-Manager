@@ -27,7 +27,9 @@ namespace Graph_Manager.ViewModel
 		public string PathMoveVertex { get; set; }
 		public int IdState { get; set; }
 		public Dictionary<int, List<int>> VertexesMatrix { get; set; }
-		
+		public List<Dictionary<int, List<int>>> VertexesMatrixList { get; set; }
+		public int VertexesMatrixListActualIndex { get; set; }
+
 		public Vertex Vertex { get; set; }
 		public Graph Graph { get; set; }
 		public Graph GraphNew { get; set; }
@@ -81,6 +83,7 @@ namespace Graph_Manager.ViewModel
 		{
 			Vertex = new Vertex();
 			VertexesMatrix = new Dictionary<int, List<int>>();
+			VertexesMatrixList = new List<Dictionary<int, List<int>>> { new Dictionary<int, List<int>>() };
 			Graph = new Graph();
 			GraphCollection=new ObservableCollection<Graph>();
 			ObjectCompositeCollection = new CompositeCollection();
@@ -107,11 +110,15 @@ namespace Graph_Manager.ViewModel
 				IdState++;
 			Graph = GraphCollection[IdState - 1];
 			AddToObjectCompositeCollection();
+			if (VertexesMatrixList.Count > 0 && VertexesMatrixListActualIndex != VertexesMatrixList.Count - 1)
+				VertexesMatrixListActualIndex++;
+
 		}
 
 		private void Refresh()
 		{
 			IdImage = IdEdge = IdState = 0;
+			VertexesMatrixListActualIndex = 0;
 			Graph = new Graph();
 			AddToObjectCompositeCollection();
 		}
@@ -127,7 +134,12 @@ namespace Graph_Manager.ViewModel
 				Graph = GraphCollection[IdState - 2];
 				AddToObjectCompositeCollection();
 				IdState--;
+
+				VertexesMatrixListActualIndex = VertexesMatrixList.Count - 2;
 			}
+
+			if(VertexesMatrixList.Count > 0)
+				VertexesMatrix = VertexesMatrixList[VertexesMatrixListActualIndex];
 		}
 		
 		private void Save()
@@ -352,6 +364,9 @@ namespace Graph_Manager.ViewModel
 				if (VertexesMatrix[key].Count == 0)
 					VertexesMatrix.Remove(vertex.IdVertex);
 			}
+
+			VertexesMatrixList.Add(VertexesMatrix);
+			VertexesMatrixListActualIndex++;
 		}
 
 		private void AddVertexToMatrix(Vertex vertex)
@@ -367,6 +382,9 @@ namespace Graph_Manager.ViewModel
 				else
 					VertexesMatrix[selected.IdVertex].Add(vertex.IdVertex);
 			}
+
+			VertexesMatrixList.Add(VertexesMatrix);
+			VertexesMatrixListActualIndex++;
 		}
 
 		private void AddToObjectCompositeCollection()

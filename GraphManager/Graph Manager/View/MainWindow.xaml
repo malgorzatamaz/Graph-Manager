@@ -204,6 +204,7 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Background="Transparent"
+                    Command="{Binding FrontCommand}"
                     BorderThickness="0"
                     ToolTip="Powtórz"
                     ToolTipService.InitialShowDelay="0">
