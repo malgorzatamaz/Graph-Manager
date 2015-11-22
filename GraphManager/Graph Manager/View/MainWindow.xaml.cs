@@ -1,5 +1,6 @@
 ﻿using System.Windows;
 using Graph_Manager.ViewModel;
+using System;
 
 namespace Graph_Manager.View
 {
@@ -9,7 +10,8 @@ namespace Graph_Manager.View
     public partial class MainWindow : Window
     {
         public MainWindow()
-        {         
+        {
+            AppDomain.CurrentDomain.SetData("DataDirectory", AppDomain.CurrentDomain.BaseDirectory);
             InitializeComponent();
             DataContext=new MainWindowViewModel();
         }

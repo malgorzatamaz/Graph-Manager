@@ -6,16 +6,33 @@ using Graph_Manager.ViewModel;
 using PropertyChanged;
 using System.IO;
 using System.Windows.Controls;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Graph_Manager.Model
 {
     [ImplementPropertyChanged]
     public class Vertex
     {
+        public int VertexId { get; set; }
+        public int IdVertex { get; set; }
+        public string PathDirectory { get; set; }
+        public string Path { get; set; }
+        public bool IsMouseRightButtonDown { get; set; }
+        public bool IsMouseLeftButtonDown { get; set; }
+        public List<Vertex> ConnectedVertexes { get; set; }
+        public List<Edge> ConnectedEdges { get; set; }
+        public Boolean Selected { get; set; }
+        public Thickness Margin { get; set; }
+        public string Margin_string { get; set; }
+        public Point Position { get; set; }
+        public string Position_string { get; set; }
         public ICommand ImageMouseRightButtonDownCommand { get; set; }
         public ICommand ImageMouseLeftButtonDownCommand { get; set; }
         public ICommand OnEnterChangeCursorCommand { get; set; }
         public ICommand OnLeaveChangeCursorCommand { get; set; }
+        public virtual Graph Graph { get; set; }
+        public int GraphId { get; set; }
+
         public Vertex()
         {
             ConnectedEdges = new List<Edge>();
@@ -58,16 +75,7 @@ namespace Graph_Manager.Model
             Mouse.OverrideCursor = Cursors.Arrow;
         }
 
-        public string PathDirectory { get; set; }
-        public bool IsMouseRightButtonDown { get; set; }
-        public bool IsMouseLeftButtonDown { get; set; }
-        public int IdVertex { get; set; }
-        public Thickness Margin { get; set; }
-        public Point Position { get; set; }
-        public string Path { get; set; }
-        public List<Vertex> ConnectedVertexes { get; set; }
-        public List<Edge> ConnectedEdges { get; set; }
-        public Boolean Selected { get; set; }
+
 
     }
 }

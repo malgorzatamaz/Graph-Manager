@@ -71,7 +71,7 @@ namespace Graph_Manager.ViewModel
                     p.Y = r.Next(10, _canvasHeight - 10);
                 }
 
-                _graph.Vertexes.Add(new Vertex {Position = p, Margin = new Thickness(p.X,p.Y,0,0)});
+                _graph.Vertexes.Add(new Vertex {Position = p, Margin = new Thickness(p.X,p.Y,0,0), IdVertex = i });
             }
 
 
@@ -81,12 +81,12 @@ namespace Graph_Manager.ViewModel
 
                 newEdge = new Edge
                 {
-                    StartVertex = _graph.Vertexes[i],
-                    EndVertex = _graph.Vertexes[index],
+                    StartVertexId = _graph.Vertexes[i].IdVertex,
+                    EndVertexId = _graph.Vertexes[index].IdVertex,
                     IdEdge = i
                 };
                 
-                newEdge.CalculateStartEndPoint();
+                newEdge.CalculateStartEndPoint(_graph);
                 _graph.Edges.Add(newEdge);
 
                 _graph.Vertexes[i].ConnectedEdges.Add(newEdge);
