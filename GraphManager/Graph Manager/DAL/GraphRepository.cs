@@ -127,10 +127,10 @@ namespace Graph_Manager.DAL
             int IdEdge = 0;
             foreach (var selected in connectedVertexesIdDict.Keys)
             {
-                var selectedVertex = Vertexes.FirstOrDefault(n => n.IdVertex == selected);
+                var selectedVertex = graph.Vertexes.FirstOrDefault(n => n.IdVertex == selected);
                 foreach (var conVer in connectedVertexesIdDict[selected])
                 {
-                    var connectedVertex = Vertexes.FirstOrDefault(n => n.IdVertex == conVer);
+                    var connectedVertex = graph.Vertexes.FirstOrDefault(n => n.IdVertex == conVer);
                     var edge = new Edge()
                     {
                         StartVertexId = selected,
