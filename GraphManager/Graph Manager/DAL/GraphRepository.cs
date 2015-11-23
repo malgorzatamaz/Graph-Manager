@@ -101,7 +101,6 @@ namespace Graph_Manager.DAL
             Edges = _graphContext.Edges.Where(n => n.GraphId == _graphId).ToList();
 
             var startVertexList = Edges.GroupBy(n => n.StartVertexId).Select(n => n.FirstOrDefault()).ToList();
-            var endVertexList = Edges.GroupBy(n => n.EndVertexId).Select(n => n.FirstOrDefault()).ToList();
             Dictionary<int, List<int>> connectedVertexesIdDict = new Dictionary<int, List<int>>();
             //dodawanie wierzcholkow polaczonych ze soba do slownika
             foreach (var vertex in startVertexList)
@@ -110,86 +109,45 @@ namespace Graph_Manager.DAL
                     vertex.StartVertexId,
                     new List<int>(Edges.Where(n => n.StartVertexId == vertex.StartVertexId).Select(n => n.EndVertexId).ToList()));
             }
-            foreach (var vertex in endVertexList)
-            {
-                var ends = Edges.Where(n => n.EndVertexId == vertex.EndVertexId).Select(n => n.StartVertexId).ToList();
-                if (connectedVertexesIdDict.ContainsKey(vertex.EndVertexId))
-                {
-                    foreach (var end in ends)
-                        connectedVertexesIdDict[vertex.EndVertexId].Add(end);
-                }
-                else
-                    connectedVertexesIdDict.Add(
-                        vertex.EndVertexId,
-                        new List<int>(ends));
-            }
-
-            //dodawanie krawedzi do poszczegolnych wierzcholkow
-            Dictionary<int, List<int>> connectedEdgesIdDict = new Dictionary<int, List<int>>();
-            foreach (var vertex in startVertexList)
-            {
-                connectedEdgesIdDict.Add(
-                    vertex.StartVertexId,
-                    new List<int>(Edges.Where(n => n.StartVertexId == vertex.StartVertexId).Select(n => n.IdEdge).ToList()));
-            }
-            foreach (var vertex in endVertexList)
-            {
-                var ends = Edges.Where(n => n.EndVertexId == vertex.EndVertexId).Select(n => n.IdEdge).ToList();
-                if (connectedEdgesIdDict.ContainsKey(vertex.EndVertexId))
-                {
-                    foreach (var end in ends)
-                        connectedEdgesIdDict[vertex.EndVertexId].Add(end);
-                }
-                else
-                    connectedEdgesIdDict.Add(
-                        vertex.EndVertexId,
-                        new List<int>(ends));
-            }
 
             _thicknessConverter = new ThicknessConverter();
 
 
             foreach (var vertex in Vertexes)
             {
-                //znajdywanie wierzcholkow polaczonych z aktualnie wskazanym
-                List<Vertex> connectedVertexes = new List<Vertex>();
-                if (connectedVertexesIdDict.ContainsKey(vertex.IdVertex))
-                {
-                    foreach (var v in connectedVertexesIdDict[vertex.IdVertex])
-                        connectedVertexes.Add(Vertexes.FirstOrDefault(n => n.IdVertex == v));
-                }
-
-                //znajdywanie krawedzi polaczonych z aktualnie wskazanym wierzcholkiem
-                List<Edge> connectedEdges = new List<Edge>();
-                if (connectedEdgesIdDict.ContainsKey(vertex.IdVertex))
-                {
-                    foreach (var e in connectedEdgesIdDict[vertex.IdVertex])
-                        connectedEdges.Add(Edges.FirstOrDefault(n => n.IdEdge == e));
-                }
-
                 graph.Vertexes.Add(new Vertex
                 {
                     Margin = (Thickness)_thicknessConverter.ConvertFromString(vertex.Margin_string),
                     Position = Point.Parse(vertex.Position_string),
                     IdVertex = vertex.IdVertex,
-                    ConnectedVertexes = connectedVertexes,
-                    ConnectedEdges = connectedEdges,
-                    
+                
                 });
             }
 
-            foreach (var edge in Edges)
+            int IdEdge = 0;
+            foreach (var selected in connectedVertexesIdDict.Keys)
             {
-                graph.Edges.Add(new Edge
+                var selectedVertex = Vertexes.FirstOrDefault(n => n.IdVertex == selected);
+                foreach (var conVer in connectedVertexesIdDict[selected])
                 {
-                    IdEdge = edge.IdEdge,
-                    StartPoint = Point.Parse(edge.StartPoint_String),
-                    EndPoint = Point.Parse(edge.EndPoint_String),
-                    StartVertexId = edge.StartVertexId,
-                    EndVertexId = edge.EndVertexId,
-                });
-            }
+                    var connectedVertex = Vertexes.FirstOrDefault(n => n.IdVertex == conVer);
+                    var edge = new Edge()
+                    {
+                        StartVertexId = selected,
+                        EndVertexId = conVer,
+                        IdEdge = IdEdge
+                    };
+                    edge.CalculateStartEndPoint(graph);
+                    graph.Edges.Add(edge);
+                    IdEdge++;
+                    selectedVertex.ConnectedEdges.Add(edge);
+                    selectedVertex.ConnectedVertexes.Add(connectedVertex);
 
+                    connectedVertex.ConnectedEdges.Add(edge);
+                    connectedVertex.ConnectedVertexes.Add(selectedVertex);
+                    IdEdge++;  
+                }
+            }
         }
 
         public void ShowGraphDetails(string fileName)
