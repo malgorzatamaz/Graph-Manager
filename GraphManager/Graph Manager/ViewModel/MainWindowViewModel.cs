@@ -365,17 +365,6 @@ namespace Graph_Manager.ViewModel
                     edge.CalculateStartEndPoint(Graph);
                 }
 
-                //foreach (var edge in startEdges)
-                //{
-                //    var e = Graph.Edges.FirstOrDefault(n => n.IdEdge == edge.IdEdge);
-                //    e = edge;
-                //}
-                //foreach (var edge in endEdges)
-                //{
-                //    var e = Graph.Edges.FirstOrDefault(n => n.IdEdge == edge.IdEdge);
-                //    e = edge;
-                //}
-
                 Vertex.Margin = new Thickness(newPosition.X, newPosition.Y, 0, 0);
 
                 Vertex.IsMouseLeftButtonDown = false;

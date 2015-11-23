@@ -25,6 +25,7 @@ namespace Graph_Manager.DAL
         public List<Edge> Edges { get; set; }
 
         private ThicknessConverter _thicknessConverter { get; set; }
+        private Dictionary<int, List<int>> _connectedVertexesIdDict { get; set; }
         public void SaveGraph(Graph graph)
         {
 
@@ -97,21 +98,7 @@ namespace Graph_Manager.DAL
 
         public void LoadGraph(Graph graph)
         {
-            Vertexes = _graphContext.Vertexes.Where(n => n.GraphId == _graphId).ToList();
-            Edges = _graphContext.Edges.Where(n => n.GraphId == _graphId).ToList();
-
-            var startVertexList = Edges.GroupBy(n => n.StartVertexId).Select(n => n.FirstOrDefault()).ToList();
-            Dictionary<int, List<int>> connectedVertexesIdDict = new Dictionary<int, List<int>>();
-            //dodawanie wierzcholkow polaczonych ze soba do slownika
-            foreach (var vertex in startVertexList)
-            {
-                connectedVertexesIdDict.Add(
-                    vertex.StartVertexId,
-                    new List<int>(Edges.Where(n => n.StartVertexId == vertex.StartVertexId).Select(n => n.EndVertexId).ToList()));
-            }
-
             _thicknessConverter = new ThicknessConverter();
-
 
             foreach (var vertex in Vertexes)
             {
@@ -125,10 +112,10 @@ namespace Graph_Manager.DAL
             }
 
             int IdEdge = 0;
-            foreach (var selected in connectedVertexesIdDict.Keys)
+            foreach (var selected in _connectedVertexesIdDict.Keys)
             {
                 var selectedVertex = graph.Vertexes.FirstOrDefault(n => n.IdVertex == selected);
-                foreach (var conVer in connectedVertexesIdDict[selected])
+                foreach (var conVer in _connectedVertexesIdDict[selected])
                 {
                     var connectedVertex = graph.Vertexes.FirstOrDefault(n => n.IdVertex == conVer);
                     var edge = new Edge()
@@ -161,8 +148,18 @@ namespace Graph_Manager.DAL
             VertexesNumber = _graphContext.Vertexes.Where(n => n.GraphId == _graphId).Count();
             EdgesNumber = _graphContext.Edges.Where(n => n.GraphId == _graphId).Count();
 
+            Vertexes = _graphContext.Vertexes.Where(n => n.GraphId == _graphId).ToList();
+            Edges = _graphContext.Edges.Where(n => n.GraphId == _graphId).ToList();
 
-
+            var startVertexList = Edges.GroupBy(n => n.StartVertexId).Select(n => n.FirstOrDefault()).ToList();
+            _connectedVertexesIdDict = new Dictionary<int, List<int>>();
+            //dodawanie wierzcholkow polaczonych ze soba do slownika
+            foreach (var vertex in startVertexList)
+            {
+                _connectedVertexesIdDict.Add(
+                    vertex.StartVertexId,
+                    new List<int>(Edges.Where(n => n.StartVertexId == vertex.StartVertexId).Select(n => n.EndVertexId).ToList()));
+            }
         }
     }
 }

@@ -54,7 +54,7 @@ namespace Graph_Manager.Model
             {
                 if (v.IdVertex == StartVertexId)
                     startVertex = v;
-                if (v.IdVertex == EndVertexId)
+                else if(v.IdVertex == EndVertexId)
                     endVertex = v;
             }
 
