@@ -194,7 +194,7 @@ namespace Graph_Manager.ViewModel
         private void OpenWindowPrufer(object obj)
         {
             Graph = new Graph();
-            PruferWindowViewModel pruferViewModel = new PruferWindowViewModel(Graph, 200, 200);
+            PruferWindowViewModel pruferViewModel = new PruferWindowViewModel(Graph, 400, 400);
             var winPrufer = new PruferWindow(pruferViewModel);
             pruferViewModel.Window = winPrufer;
             winPrufer.ShowDialog();
@@ -210,7 +210,7 @@ namespace Graph_Manager.ViewModel
         private void OpenWindowRandom(object obj)
         {
             Graph = new Graph();
-            RandomWindowViewModel randomViewModel = new RandomWindowViewModel(Graph, 200,200, Application.Current.MainWindow);
+            RandomWindowViewModel randomViewModel = new RandomWindowViewModel(Graph, 400,400);
             var winRandom = new RandomWindow(randomViewModel);
             randomViewModel.Window = winRandom;
             winRandom.ShowDialog();

@@ -49,18 +49,24 @@ namespace Graph_Manager.ViewModel
             ReadTo = true;
             string sequenceString = (string) obj;
             List<int> pruferCodeList = Validation.SplitSequence(sequenceString);
-            int radius, angleChange = 0, angle, index;
+            List<int> Vertexes = new List<int>();
+            int min,radius, angleChange = 0, angle, index,c;
             Point p = new Point();
             Random r = new Random();
+
             angle = 360/pruferCodeList.Count;
             Edge newEdge;
 
+            for (int i = 0; i < pruferCodeList.Count ; i++)
+            {
+                Vertexes[i] = i;
+            }
             
             for (int i = 0; i < pruferCodeList.Count; i++)
             {
                 if (OnCircle)
                 {
-                    radius = (_canvasHeight/2) - 20;
+                    radius = (_canvasHeight) - 20;
                     p.X = 0.5*_canvasWidth + (radius*Math.Sin(angleChange));
                     p.Y = 0.5*_canvasHeight + (radius*Math.Cos(angleChange));
                     angleChange += angle;
@@ -74,26 +80,63 @@ namespace Graph_Manager.ViewModel
                 _graph.Vertexes.Add(new Vertex {Position = p, Margin = new Thickness(p.X,p.Y,0,0)});
             }
 
+   
+            c = 0;
 
             for (int i = 0; i < pruferCodeList.Count; i++)
             {
-                index = pruferCodeList[i];
+                min = 100000;
+                index = 0;
 
-                newEdge = new Edge
+                for (int j = 0; j < Vertexes.Count; j++)
                 {
-                    StartVertex = _graph.Vertexes[i],
-                    EndVertex = _graph.Vertexes[index],
-                    IdEdge = i
-                };
-                
-                newEdge.CalculateStartEndPoint();
-                _graph.Edges.Add(newEdge);
+                    if (Vertexes[i] < min && !pruferCodeList.Contains(Vertexes[i]))
+                    {
+                        min = Vertexes[i];
+                        index = i;
+                    } 
+                }
 
-                _graph.Vertexes[i].ConnectedEdges.Add(newEdge);
-                _graph.Vertexes[index].ConnectedEdges.Add(newEdge);
+                if (c != 0)
+                {
+                    pruferCodeList.RemoveAt(c);
+                    Vertexes.RemoveAt(index);
 
-                _graph.Vertexes[i].ConnectedVertexes.Add(_graph.Vertexes[index]);
-                _graph.Vertexes[index].ConnectedVertexes.Add(_graph.Vertexes[i]);
+                    newEdge = new Edge
+                    {
+                        StartVertex = _graph.Vertexes[c],
+                        EndVertex = _graph.Vertexes[index],
+                        IdEdge = index
+                    };
+
+                    newEdge.CalculateStartEndPoint();
+                    _graph.Edges.Add(newEdge);
+
+                    _graph.Vertexes[index].ConnectedEdges.Add(newEdge);
+                    _graph.Vertexes[c].ConnectedEdges.Add(newEdge);
+                    _graph.Vertexes[index].ConnectedVertexes.Add(_graph.Vertexes[c]);
+                    _graph.Vertexes[c].ConnectedVertexes.Add(_graph.Vertexes[index]);
+
+                    c++;
+                }
+                else
+                {
+                    newEdge = new Edge
+                    {
+                        StartVertex = _graph.Vertexes[Vertexes[0]],
+                        EndVertex = _graph.Vertexes[Vertexes[1]],
+                        IdEdge = index
+                    };
+
+                    newEdge.CalculateStartEndPoint();
+                    _graph.Edges.Add(newEdge);
+
+                    _graph.Vertexes[Vertexes[0]].ConnectedEdges.Add(newEdge);
+                    _graph.Vertexes[Vertexes[1]].ConnectedEdges.Add(newEdge);
+                    _graph.Vertexes[Vertexes[0]].ConnectedVertexes.Add(_graph.Vertexes[c]);
+                    _graph.Vertexes[Vertexes[1]].ConnectedVertexes.Add(_graph.Vertexes[index]);
+                }
+
             }
 
             Window.Close();

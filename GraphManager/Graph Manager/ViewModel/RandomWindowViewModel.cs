@@ -19,7 +19,7 @@ namespace Graph_Manager.ViewModel
         private int _canvasHeight;
         private Regex _expression;
 
-        public RandomWindowViewModel(Graph graph, int canvasWidth, int canvasHeight,Window window)
+        public RandomWindowViewModel(Graph graph, int canvasWidth, int canvasHeight)
         {
             ReadTo = false;
             _canvasWidth = canvasWidth;
@@ -65,7 +65,7 @@ namespace Graph_Manager.ViewModel
             {
                 if (OnCircle)
                 {
-                    radius = (_canvasHeight/2) - 20;
+                    radius = (_canvasHeight) - 20;
                     p.X = 0.5*_canvasWidth + (radius*Math.Sin(angleChange));
                     p.Y = 0.5*_canvasHeight + (radius*Math.Cos(angleChange));
                     angleChange += angle;
