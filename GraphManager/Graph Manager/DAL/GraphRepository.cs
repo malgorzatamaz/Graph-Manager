@@ -7,6 +7,7 @@ using Graph_Manager.Model;
 using System.Collections.ObjectModel;
 using System.Windows;
 using System.Text.RegularExpressions;
+using Graph_Manager.ViewModel;
 
 namespace Graph_Manager.DAL
 {
@@ -19,7 +20,7 @@ namespace Graph_Manager.DAL
         private int _graphId { get; set; }
         public int VertexesNumber { get; set; }
         public int EdgesNumber { get; set; }
-
+        public int IdIamge { get; set; }
         public Graph Graph { get; set; }
         public List<Vertex> Vertexes { get; set; }
         public List<Edge> Edges { get; set; }
@@ -98,7 +99,9 @@ namespace Graph_Manager.DAL
 
         public void LoadGraph(Graph graph)
         {
-            _thicknessConverter = new ThicknessConverter();
+            MainWindowViewModel.IdImage = 0;
+            MainWindowViewModel.IdEdge = 0;
+             _thicknessConverter = new ThicknessConverter();
 
             foreach (var vertex in Vertexes)
             {
@@ -109,9 +112,9 @@ namespace Graph_Manager.DAL
                     IdVertex = vertex.IdVertex,
                 
                 });
+                MainWindowViewModel.IdImage++;
             }
 
-            int IdEdge = 0;
             foreach (var selected in _connectedVertexesIdDict.Keys)
             {
                 var selectedVertex = graph.Vertexes.FirstOrDefault(n => n.IdVertex == selected);
@@ -122,17 +125,17 @@ namespace Graph_Manager.DAL
                     {
                         StartVertexId = selected,
                         EndVertexId = conVer,
-                        IdEdge = IdEdge
+                        IdEdge = MainWindowViewModel.IdEdge
                     };
                     edge.CalculateStartEndPoint(graph);
                     graph.Edges.Add(edge);
-                    IdEdge++;
+                    MainWindowViewModel.IdEdge++;
                     selectedVertex.ConnectedEdges.Add(edge);
                     selectedVertex.ConnectedVertexes.Add(connectedVertex);
 
                     connectedVertex.ConnectedEdges.Add(edge);
                     connectedVertex.ConnectedVertexes.Add(selectedVertex);
-                    IdEdge++;  
+                    MainWindowViewModel.IdEdge++;  
                 }
             }
         }

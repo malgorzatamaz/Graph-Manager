@@ -61,11 +61,14 @@ namespace Graph_Manager.ViewModel
             Point p = new Point();
             angle = 360/degreeSequence.Count;
 
+            MainWindowViewModel.IdImage = 0;
+            MainWindowViewModel.IdEdge = 0;
+
             for (int i = 0; i < degreeSequence.Count; i++)
             {
                 if (OnCircle)
                 {
-                    radius = (_canvasHeight) - 20;
+                    radius = (_canvasHeight/2) - 20;
                     p.X = 0.5*_canvasWidth + (radius*Math.Sin(angleChange));
                     p.Y = 0.5*_canvasHeight + (radius*Math.Cos(angleChange));
                     angleChange += angle;
@@ -76,7 +79,13 @@ namespace Graph_Manager.ViewModel
                     p.Y = r.Next(10, _canvasHeight - 10);
                 }
 
-                _graph.Vertexes.Add(new Vertex {Position = p, Margin = new Thickness(p.X, p.Y, 0, 0), IdVertex = i });
+                _graph.Vertexes.Add(new Vertex
+                {
+                    Position = p,
+                    Margin = new Thickness(p.X, p.Y, 0, 0),
+                    IdVertex = MainWindowViewModel.IdImage
+                });
+                MainWindowViewModel.IdImage++;
             }
 
             while (sum > 0)
@@ -104,10 +113,10 @@ namespace Graph_Manager.ViewModel
                         {
                             StartVertexId = _graph.Vertexes[k].IdVertex,
                             EndVertexId = maxEdgesVertex.IdVertex,
-                            IdEdge = k
+                            IdEdge = MainWindowViewModel.IdEdge
                         };
 
-
+                        MainWindowViewModel.IdEdge++;
                         newEdge.CalculateStartEndPoint(_graph);
                         _graph.Edges.Add(newEdge);
 
@@ -125,11 +134,6 @@ namespace Graph_Manager.ViewModel
             }
 
             vertexIndex = _graph.Vertexes.Count;
-
-            foreach (var x in _graph.Vertexes)
-            {
-                x.IdVertex = vertexIndex++;
-            }
 
             Window.Close();
         }
