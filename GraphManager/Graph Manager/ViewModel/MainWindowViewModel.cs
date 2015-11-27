@@ -10,35 +10,34 @@ using System.Windows.Input;
 using Graph_Manager.Model;
 using Graph_Manager.View;
 using PropertyChanged;
+using Graph_Manager.DAL;
 
 namespace Graph_Manager.ViewModel
 {
     [ImplementPropertyChanged]
     public class MainWindowViewModel
     {
-        // private bool _isImageSelectedLeftButton;
-        // private bool _isImageSelectedRightButton;
-        // private bool _isLineSelectedRightButton;
-		
-		public static int IdImage { get; set; }
+        public static int IdImage { get; set; }
         public static int IdEdge { get; set; }
         public static int IndexAction { get; set; }
-		
+        
         public string PathDeleteVertex { get; set; }
         public string PathDirectory { get; set; }
         public string PathRandom { get; set; }
         public string PathAddVertex { get; set; }
         public string PathMoveVertex { get; set; }
         public int IdState { get; set; }
-		public Dictionary<int, List<int>> VertexesMatrix { get; set; }
-		
-		public Vertex Vertex { get; set; }
+        public Dictionary<int, List<int>> VertexesMatrix { get; set; }
+        public List<Dictionary<int, List<int>>> VertexesMatrixList { get; set; }
+        public int VertexesMatrixListActualIndex { get; set; }
+
+        public Vertex Vertex { get; set; }
         public Graph Graph { get; set; }
-		public Graph GraphNew { get; set; }
-		
+        public Graph GraphNew { get; set; }
+        
         public CompositeCollection ObjectCompositeCollection { get; set; }
         public ObservableCollection<Graph> GraphCollection { get; set; }
-		
+        
         public ICommand AddVertexCommand { get; set; }
         public ICommand MoveVertexCommand { get; set; }
         public ICommand DeleteVertexCommand { get; set; }
@@ -46,8 +45,10 @@ namespace Graph_Manager.ViewModel
         public ICommand OpenWindowRandomCommand { get; set; }
         public ICommand OpenWindowPruferCommand { get; set; }
         public ICommand BackCommand { get; set; }
-		public ICommand DragVertexCommand { get; set; }
+        public ICommand DragVertexCommand { get; set; }
         public ICommand FrontCommand { get; set; }
+        public ICommand OpenWindowSaveCommand { get; set; }
+        public ICommand OpenWindowLoadGraphCommand { get; set; }
 
         public bool IsLineSelectedRightButton
         {
@@ -83,8 +84,9 @@ namespace Graph_Manager.ViewModel
 
         public MainWindowViewModel()
         {
-			Vertex = new Vertex();
+            Vertex = new Vertex();
             VertexesMatrix = new Dictionary<int, List<int>>();
+            VertexesMatrixList = new List<Dictionary<int, List<int>>> { new Dictionary<int, List<int>>() };
             Graph = new Graph();
             GraphCollection=new ObservableCollection<Graph>();
             ObjectCompositeCollection = new CompositeCollection();
@@ -101,28 +103,34 @@ namespace Graph_Manager.ViewModel
             OpenWindowRandomCommand=new RelayCommand(OpenWindowRandom, (n)=>true);
             OpenWindowPruferCommand = new RelayCommand(OpenWindowPrufer, (n) => true);
             BackCommand = new RelayCommand(Back, (n) => IdState > 0 ? true : false);
-			DragVertexCommand = new RelayCommand(DragVertex, (n) => false);
-			FrontCommand = new RelayCommand(Front, (n) => true);
+            DragVertexCommand = new RelayCommand(DragVertex, (n) => false);
+            FrontCommand = new RelayCommand(Front, (n) => true);
+            OpenWindowSaveCommand = new RelayCommand(OpenWindowSaveToDatabase, (n) => true);
+            OpenWindowLoadGraphCommand = new RelayCommand(OpenWindowLoadGraph, (n) => true);
         }
 
-		private void Front(object obj)
+        private void Front(object obj)
         {
             if (GraphCollection.Count > IdState)
                 IdState++;
             Graph = GraphCollection[IdState - 1];
             AddToObjectCompositeCollection();
+            if (VertexesMatrixList.Count > 0 && VertexesMatrixListActualIndex != VertexesMatrixList.Count - 1)
+                VertexesMatrixListActualIndex++;
+
         }
 
         private void Refresh()
         {
             IdImage = IdEdge = IdState = 0;
+            VertexesMatrixListActualIndex = 0;
             Graph = new Graph();
             AddToObjectCompositeCollection();
         }
-		
-		private void Back(object obj)
+        
+        private void Back(object obj)
         {
-			if (IdState == 1)
+            if (IdState == 1)
             {
                 Refresh();
             }
@@ -131,9 +139,14 @@ namespace Graph_Manager.ViewModel
                 Graph = GraphCollection[IdState - 2];
                 AddToObjectCompositeCollection();
                 IdState--;
+
+                VertexesMatrixListActualIndex = VertexesMatrixList.Count - 2;
             }
+
+            if(VertexesMatrixList.Count > 0)
+                VertexesMatrix = VertexesMatrixList[VertexesMatrixListActualIndex];
         }
-		
+        
         private void Save()
         {
             int count = GraphCollection.Count;
@@ -157,6 +170,7 @@ namespace Graph_Manager.ViewModel
                 {
                     IsMouseRightButtonDown = v.IsMouseRightButtonDown,
                     IsMouseLeftButtonDown = v.IsMouseLeftButtonDown,
+                    
                     IdVertex = v.IdVertex,
                     Position = v.Position,
                     Path = v.Path,
@@ -180,17 +194,40 @@ namespace Graph_Manager.ViewModel
                 {
                     GraphCollection.Last().Edges.Add(new Edge
                     {
-						StartPoint = coned.StartPoint,
+                        StartPoint = coned.StartPoint,
                         EndPoint = coned.EndPoint,
-                        EndVertex = coned.EndVertex,
+                        EndVertexId = coned.EndVertexId,
                         IdEdge = coned.IdEdge,
                         IsMouseLeftButtonDown = coned.IsMouseLeftButtonDown,
-                        StartVertex = coned.StartVertex
+                        StartVertexId = coned.StartVertexId
                     });
                 }
             }
         }
-		
+
+        private void OpenWindowLoadGraph(object obj)
+        {
+            Graph = new Graph();
+            LoadGraphViewModel loadGraphViewModel = new LoadGraphViewModel(Graph);
+            var winLoad = new LoadGraphWindow(loadGraphViewModel);
+            loadGraphViewModel.Window = winLoad;
+            winLoad.ShowDialog();
+            if (loadGraphViewModel.ReadTo)
+            {
+                GraphCollection.Add(Graph);
+                AddToObjectCompositeCollection();
+            }
+
+        }
+
+        private void OpenWindowSaveToDatabase(object obj)
+        {
+            SaveToDatabaseViewModel saveViewModel = new SaveToDatabaseViewModel(Graph);
+            var winSave = new SaveToDatabaseWindow(saveViewModel);
+            saveViewModel.Window = winSave;
+            winSave.ShowDialog();
+        }
+
         private void OpenWindowPrufer(object obj)
         {
             Graph = new Graph();
@@ -265,10 +302,6 @@ namespace Graph_Manager.ViewModel
             else if (IndexAction == 1 && AnySelected == true && IsImageSelectedLeftButton == true)
             {
                 Vertex = Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true);
-                // if(Vertex.ConnectedVertexes.Any()==false)
-                    // AddEdge(Vertex);
-                // else if (Vertex.ConnectedVertexes.FirstOrDefault(m => m.IdVertex == Vertex.IdVertex) == null)
-                    // AddEdge(Vertex);
 
                 AddEdge(Vertex);
                 AddVertexToMatrix(Vertex);
@@ -280,10 +313,9 @@ namespace Graph_Manager.ViewModel
             else if (IndexAction == 3 && IsImageSelectedLeftButton == true)
             {
                 Vertex = Graph.Vertexes.FirstOrDefault(v => v.IsMouseLeftButtonDown);
-                Vertex.ConnectedEdges.ForEach(m =>
-                {
-                    Graph.Edges.Remove(m);
-                });
+                foreach (var edge in Vertex.ConnectedEdges)
+                    Graph.Edges.Remove(edge);
+
                 Graph.Vertexes.Remove(Vertex);
 
                 RemoveVertexFromMatrix(Vertex);
@@ -294,7 +326,7 @@ namespace Graph_Manager.ViewModel
             {
                 var edge = Graph.Edges.FirstOrDefault(v => v.IsMouseLeftButtonDown == true);
 
-                VertexesMatrix[edge.StartVertex.IdVertex].Remove(edge.EndVertex.IdVertex);
+                //VertexesMatrix[edge.StartVertex.VertexId].Remove(edge.EndVertex.VertexId);
                 Graph.Edges.Remove(edge);
             }
 
@@ -318,18 +350,19 @@ namespace Graph_Manager.ViewModel
                 newPosition.Offset(-Convert.ToDouble(Resources.ImageWidth) * 2.5, -Convert.ToDouble(Resources.ImageHeight) / 2);
                 Vertex.Position = newPosition;
 
-                var startEdges = Vertex.ConnectedEdges.Where(n => n.StartVertex == Vertex).ToList();
-                var endEdges = Vertex.ConnectedEdges.Where(n => n.EndVertex == Vertex).ToList();
+                var startEdges = Vertex.ConnectedEdges.Where(n => n.StartVertexId == Vertex.IdVertex).ToList();
+                var endEdges = Vertex.ConnectedEdges.Where(n => n.EndVertexId == Vertex.IdVertex).ToList();
                 foreach (var edge in startEdges)
                 {
                     edge.StartPoint = newPosition;
-                    edge.CalculateStartEndPoint();
+                    edge.CalculateStartEndPoint(Graph);
+
                 }
 
                 foreach (var edge in endEdges)
                 {
                     edge.EndPoint = newPosition;
-                    edge.CalculateStartEndPoint();
+                    edge.CalculateStartEndPoint(Graph);
                 }
 
                 Vertex.Margin = new Thickness(newPosition.X, newPosition.Y, 0, 0);
@@ -356,6 +389,9 @@ namespace Graph_Manager.ViewModel
                 if (VertexesMatrix[key].Count == 0)
                     VertexesMatrix.Remove(vertex.IdVertex);
             }
+
+            VertexesMatrixList.Add(VertexesMatrix);
+            VertexesMatrixListActualIndex++;
         }
 
         private void AddVertexToMatrix(Vertex vertex)
@@ -371,6 +407,9 @@ namespace Graph_Manager.ViewModel
                 else
                     VertexesMatrix[selected.IdVertex].Add(vertex.IdVertex);
             }
+
+            VertexesMatrixList.Add(VertexesMatrix);
+            VertexesMatrixListActualIndex++;
         }
 
         private void AddToObjectCompositeCollection()
@@ -388,33 +427,20 @@ namespace Graph_Manager.ViewModel
                 bool isVertex = false;
                 if (item.ConnectedVertexes.Count > 0)
                 {
-// <<<<<<< HEAD
-                    // StartVertex = item,
-                    // EndVertex = vertex,
-                    // IdEdge = IdEdge
-                // };
-                // edge.CalculateStartEndPoint();
-                // Graph.Edges.Add(edge);
-                // IdEdge++;
-                // item.ConnectedEdges.Add(edge);
-                // item.ConnectedVertexes.Add(vertex);
-
-                // vertex.ConnectedEdges.Add(edge);
-                // vertex.ConnectedVertexes.Add(item);
-// =======
                     var ver = item.ConnectedVertexes.FirstOrDefault(n => n.IdVertex == vertex.IdVertex);
                     if (ver != null)
                         isVertex = true;
                 }
+
                 if (isVertex == false)
                 {
                     var edge = new Edge()
                     {
-                        StartVertex = item,
-                        EndVertex = vertex,
+                        StartVertexId = item.IdVertex,
+                        EndVertexId = vertex.IdVertex,
                         IdEdge = IdEdge
                     };
-                    edge.CalculateStartEndPoint();
+                    edge.CalculateStartEndPoint(Graph);
                     Graph.Edges.Add(edge);
                     IdEdge++;
                     item.ConnectedEdges.Add(edge);
@@ -423,7 +449,6 @@ namespace Graph_Manager.ViewModel
                     vertex.ConnectedEdges.Add(edge);
                     vertex.ConnectedVertexes.Add(item);
                 }
-//>>>>>>> develop
             }
         }
 

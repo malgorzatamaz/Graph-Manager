@@ -92,7 +92,8 @@
                     VerticalAlignment="Center"
                     BorderThickness="0"
                     ToolTip="Wczytaj graf"
-                    ToolTipService.InitialShowDelay="0">
+                    ToolTipService.InitialShowDelay="0"
+                    Command="{Binding OpenWindowLoadGraphCommand}">                    
                 <Image Source="{StaticResource Open}" />
                 </Button>
 
@@ -103,7 +104,8 @@
                     VerticalAlignment="Center"
                     BorderThickness="0"
                     ToolTip="Zapisz graf do pliku"
-                    ToolTipService.InitialShowDelay="0">
+                    ToolTipService.InitialShowDelay="0"
+                    Command="{Binding OpenWindowSaveCommand}">                
                 <Image Source="{StaticResource Save}" />
             </Button>
 
@@ -204,6 +206,7 @@
                     HorizontalAlignment="Right"
                     VerticalAlignment="Bottom"
                     Background="Transparent"
+                    Command="{Binding FrontCommand}"
                     BorderThickness="0"
                     ToolTip="Powtórz"
                     ToolTipService.InitialShowDelay="0">
