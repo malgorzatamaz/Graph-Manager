@@ -10,7 +10,6 @@ using System.Windows.Input;
 using Graph_Manager.Model;
 using Graph_Manager.View;
 using PropertyChanged;
-using Graph_Manager.DAL;
 
 namespace Graph_Manager.ViewModel
 {
@@ -27,9 +26,6 @@ namespace Graph_Manager.ViewModel
         public string PathAddVertex { get; set; }
         public string PathMoveVertex { get; set; }
         public int IdState { get; set; }
-        public Dictionary<int, List<int>> VertexesMatrix { get; set; }
-        public List<Dictionary<int, List<int>>> VertexesMatrixList { get; set; }
-        public int VertexesMatrixListActualIndex { get; set; }
 
         public Vertex Vertex { get; set; }
         public Graph Graph { get; set; }
@@ -85,8 +81,6 @@ namespace Graph_Manager.ViewModel
         public MainWindowViewModel()
         {
             Vertex = new Vertex();
-            VertexesMatrix = new Dictionary<int, List<int>>();
-            VertexesMatrixList = new List<Dictionary<int, List<int>>> { new Dictionary<int, List<int>>() };
             Graph = new Graph();
             GraphCollection=new ObservableCollection<Graph>();
             ObjectCompositeCollection = new CompositeCollection();
@@ -115,15 +109,11 @@ namespace Graph_Manager.ViewModel
                 IdState++;
             Graph = GraphCollection[IdState - 1];
             AddToObjectCompositeCollection();
-            if (VertexesMatrixList.Count > 0 && VertexesMatrixListActualIndex != VertexesMatrixList.Count - 1)
-                VertexesMatrixListActualIndex++;
-
         }
 
         private void Refresh()
         {
             IdImage = IdEdge = IdState = 0;
-            VertexesMatrixListActualIndex = 0;
             Graph = new Graph();
             AddToObjectCompositeCollection();
         }
@@ -139,12 +129,7 @@ namespace Graph_Manager.ViewModel
                 Graph = GraphCollection[IdState - 2];
                 AddToObjectCompositeCollection();
                 IdState--;
-
-                VertexesMatrixListActualIndex = VertexesMatrixList.Count - 2;
             }
-
-            if(VertexesMatrixList.Count > 0)
-                VertexesMatrix = VertexesMatrixList[VertexesMatrixListActualIndex];
         }
         
         private void Save()
@@ -294,7 +279,6 @@ namespace Graph_Manager.ViewModel
                 };
                 IdImage++;
                 Graph.Vertexes.Add(Vertex);
-                AddVertexToMatrix(Vertex);
                 AddEdge(Vertex);
             }
 
@@ -304,7 +288,6 @@ namespace Graph_Manager.ViewModel
                 Vertex = Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true);
 
                 AddEdge(Vertex);
-                AddVertexToMatrix(Vertex);
 
                 Graph.Vertexes.First(v => v.IsMouseLeftButtonDown == true).IsMouseLeftButtonDown = false;
             }
@@ -318,15 +301,12 @@ namespace Graph_Manager.ViewModel
 
                 Graph.Vertexes.Remove(Vertex);
 
-                RemoveVertexFromMatrix(Vertex);
             }
 
             //usuwa dowolną krawędź
             else if (IndexAction == 3 && IsLineSelectedRightButton == true)
             {
                 var edge = Graph.Edges.FirstOrDefault(v => v.IsMouseLeftButtonDown == true);
-
-                //VertexesMatrix[edge.StartVertex.VertexId].Remove(edge.EndVertex.VertexId);
                 Graph.Edges.Remove(edge);
             }
 
@@ -374,42 +354,6 @@ namespace Graph_Manager.ViewModel
 
             AddToObjectCompositeCollection();
             
-        }
-
-        private void RemoveVertexFromMatrix(Vertex vertex)
-        {
-            if (VertexesMatrix.ContainsKey(vertex.IdVertex))
-                VertexesMatrix.Remove(vertex.IdVertex);
-
-            foreach (var key in VertexesMatrix.Keys)
-            {
-                if (VertexesMatrix[key].Contains(vertex.IdVertex))
-                    VertexesMatrix[key].Remove(vertex.IdVertex);
-
-                if (VertexesMatrix[key].Count == 0)
-                    VertexesMatrix.Remove(vertex.IdVertex);
-            }
-
-            VertexesMatrixList.Add(VertexesMatrix);
-            VertexesMatrixListActualIndex++;
-        }
-
-        private void AddVertexToMatrix(Vertex vertex)
-        {
-            var selectedVertexes = Graph.Vertexes.Where(v => v.Selected == true);
-            foreach (var selected in selectedVertexes)
-            {
-                if (!VertexesMatrix.ContainsKey(selected.IdVertex))
-                    VertexesMatrix.Add(
-                                        selected.IdVertex,
-                                        new List<int> { vertex.IdVertex }
-                                        );
-                else
-                    VertexesMatrix[selected.IdVertex].Add(vertex.IdVertex);
-            }
-
-            VertexesMatrixList.Add(VertexesMatrix);
-            VertexesMatrixListActualIndex++;
         }
 
         private void AddToObjectCompositeCollection()

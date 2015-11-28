@@ -1,6 +1,7 @@
 ﻿using Graph_Manager.DAL;
 using Graph_Manager.Model;
 using Graph_Manager.View;
+using PropertyChanged;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,6 +11,7 @@ using System.Windows.Input;
 
 namespace Graph_Manager.ViewModel
 {
+    [ImplementPropertyChanged]
     public class SaveToDatabaseViewModel
     {
         private Graph _graph { get; set; }
