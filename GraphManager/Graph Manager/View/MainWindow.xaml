@@ -110,14 +110,15 @@
             </Button>
 
             <Button x:Name="BtnClear"
-                Grid.Column="0"
-                Width="60"
-                Height="60"
-                BorderThickness="0"
-                HorizontalAlignment="Left"
-                VerticalAlignment="Bottom"
-                ToolTip="Wyczyść graf"
-                ToolTipService.InitialShowDelay="0">
+                    Grid.Column="0"
+                    Width="60"
+                    Height="60"
+                    BorderThickness="0"
+                    HorizontalAlignment="Left"
+                    VerticalAlignment="Bottom"
+                    ToolTip="Wyczyść graf"
+                    ToolTipService.InitialShowDelay="0"
+                    Command="{Binding CleanScreenCommand}">
                 <Image Source="{StaticResource DeleteAll}"/>
             </Button>
         </StackPanel>

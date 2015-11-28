@@ -45,6 +45,7 @@ namespace Graph_Manager.ViewModel
         public ICommand FrontCommand { get; set; }
         public ICommand OpenWindowSaveCommand { get; set; }
         public ICommand OpenWindowLoadGraphCommand { get; set; }
+        public ICommand CleanScreenCommand { get; set; }
 
         public bool IsLineSelectedRightButton
         {
@@ -101,6 +102,15 @@ namespace Graph_Manager.ViewModel
             FrontCommand = new RelayCommand(Front, (n) => true);
             OpenWindowSaveCommand = new RelayCommand(OpenWindowSaveToDatabase, (n) => true);
             OpenWindowLoadGraphCommand = new RelayCommand(OpenWindowLoadGraph, (n) => true);
+            CleanScreenCommand = new RelayCommand(CleanScreen, (n) => true);
+        }
+
+        private void CleanScreen(object obj)
+        {
+            Graph = new Graph();
+            GraphCollection.Add(Graph);
+            AddToObjectCompositeCollection();
+
         }
 
         private void Front(object obj)
