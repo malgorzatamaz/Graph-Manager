@@ -7,6 +7,7 @@ namespace Graph_Manager.Model
     public class Graph
     {
         public int GraphId { get; set; }
+        public string GraphSequence { get; set; }
         public string GraphName { get; set; }
         public ObservableCollection<Vertex> Vertexes { get; set; }
         public ObservableCollection<Edge> Edges { get; set; }

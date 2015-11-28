@@ -10,7 +10,7 @@ namespace Graph_Manager.DAL
 {
     interface IGraphRepository
     {
-        void SaveGraph(Graph graph);
+        void SaveGraph(Graph graph, string degreeSequence);
         void LoadGraph(Graph graph);
         void ShowGraphDetails(string fileName);
         void GetFileNames(ObservableCollection<string> fileNameList);

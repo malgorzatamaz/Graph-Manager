@@ -136,6 +136,9 @@
                             <i:EventTrigger EventName="MouseMove">
                                 <viewModel:CustomCommandInvoker Command="{Binding DragVertexCommand, Mode=OneWay}"/>
                             </i:EventTrigger>
+                            <i:EventTrigger EventName="MouseMove">
+                                <viewModel:CustomCommandInvoker Command="{Binding MoveMouseCommand, Mode=OneWay}"/>
+                            </i:EventTrigger>
                         </i:Interaction.Triggers>
                     </Canvas>
                 </ItemsPanelTemplate>
@@ -213,6 +216,30 @@
                     ToolTipService.InitialShowDelay="0">
                 <Image Stretch="Fill" Source="{StaticResource Redo}" />
             </Button>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Left" VerticalAlignment="Bottom">
+            <TextBox Margin="5" Height="20" Text="X:" FontSize="15" Padding="0" BorderThickness="0"/>
+            <TextBox Margin="0" Height="20" FontSize="15" TextAlignment="Left" BorderThickness="0" Text="{Binding MousePosX}"/>
+            <TextBox Margin="5" Height="20" Text="Y:" FontSize="15" Padding="0" BorderThickness="0"/>
+            <TextBox Margin="0" Height="20" FontSize="15" TextAlignment="Left" BorderThickness="0" Text="{Binding MousePosY}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top">
+            <TextBox Margin="5" Height="20" FontSize="15" TextAlignment="Right" BorderThickness="0" Text="Ciąg stopni wierzchołków:"/>
+            <TextBox Margin="0" Height="20" FontSize="15" TextAlignment="Left" BorderThickness="0" Text="{Binding DegreeSequence}"/>
+        </StackPanel>
+        <StackPanel Orientation="Horizontal" Grid.Column="1" HorizontalAlignment="Right" VerticalAlignment="Top" Margin="0,35,10,10">
+            <TextBox Margin="0" Height="20" FontSize="15" TextAlignment="Left" BorderThickness="0">
+                <TextBox.Style>
+                    <Style TargetType="TextBox">
+                        <Setter Property="Text" Value="Graf spójny"/>
+                        <Style.Triggers>
+                            <DataTrigger Binding="{Binding IsConnectedGraph}" Value="False">
+                                <Setter Property="Text" Value="Graf niespójny"/>
+                            </DataTrigger>
+                        </Style.Triggers>
+                    </Style>
+                </TextBox.Style>
+            </TextBox>
         </StackPanel>
     </Grid>
 </Window>

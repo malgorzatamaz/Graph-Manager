@@ -15,15 +15,17 @@ namespace Graph_Manager.ViewModel
     public class SaveToDatabaseViewModel
     {
         private Graph _graph { get; set; }
+        private string _degreeSequence { get; set; }
         public ICommand SaveCommand { get; set; }
         private GraphRepository _graphRepository { get; set; }
         public SaveToDatabaseWindow Window { get; set; }
         public bool IsName { get; set; }
         
-        public SaveToDatabaseViewModel(Graph graph)
+        public SaveToDatabaseViewModel(Graph graph, string degreeSequence)
         {
             _graph = new Graph();
             _graph = graph;
+            _degreeSequence = degreeSequence;
             _graphRepository = new GraphRepository();
             SaveCommand = new RelayCommand(SaveToDatabase, CheckFileName);
         }
@@ -43,8 +45,8 @@ namespace Graph_Manager.ViewModel
 
         private void SaveToDatabase(object obj)
         {
-            GraphRepository graphrepository = new GraphRepository();
-            graphrepository.SaveGraph(_graph);
+           // GraphRepository graphrepository = new GraphRepository();
+            _graphRepository.SaveGraph(_graph, _degreeSequence);
             Window.Close();
         }
     }

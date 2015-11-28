@@ -20,6 +20,8 @@ namespace Graph_Manager.DAL
         private int _graphId { get; set; }
         public int VertexesNumber { get; set; }
         public int EdgesNumber { get; set; }
+        public string GraphSequence { get; set; }
+        public string GraphConnectivity { get; set; }
         public int IdIamge { get; set; }
         public Graph Graph { get; set; }
         public List<Vertex> Vertexes { get; set; }
@@ -27,12 +29,12 @@ namespace Graph_Manager.DAL
 
         private ThicknessConverter _thicknessConverter { get; set; }
         private Dictionary<int, List<int>> _connectedVertexesIdDict { get; set; }
-        public void SaveGraph(Graph graph)
+        public void SaveGraph(Graph graph, string degreeSequence)
         {
-
             _graphContext.Graphs.Add(new Graph
             {
                 GraphName = graph.GraphName,
+                GraphSequence = degreeSequence
             });
             int graphId = _graphContext.Graphs.Where(n => n.GraphName == graph.GraphName).
                 Select(n => n.GraphId).FirstOrDefault();
@@ -103,6 +105,20 @@ namespace Graph_Manager.DAL
             MainWindowViewModel.IdEdge = 0;
              _thicknessConverter = new ThicknessConverter();
 
+            Vertexes = _graphContext.Vertexes.Where(n => n.GraphId == _graphId).ToList();
+            Edges = _graphContext.Edges.Where(n => n.GraphId == _graphId).ToList();
+
+            var startVertexList = Edges.GroupBy(n => n.StartVertexId).Select(n => n.FirstOrDefault()).ToList();
+            _connectedVertexesIdDict = new Dictionary<int, List<int>>();
+            
+            //dodawanie wierzcholkow polaczonych ze soba do slownika
+            foreach (var vertex in startVertexList)
+            {
+                _connectedVertexesIdDict.Add(
+                    vertex.StartVertexId,
+                    new List<int>(Edges.Where(n => n.StartVertexId == vertex.StartVertexId).Select(n => n.EndVertexId).ToList()));
+            }
+
             foreach (var vertex in Vertexes)
             {
                 graph.Vertexes.Add(new Vertex
@@ -151,18 +167,16 @@ namespace Graph_Manager.DAL
             VertexesNumber = _graphContext.Vertexes.Where(n => n.GraphId == _graphId).Count();
             EdgesNumber = _graphContext.Edges.Where(n => n.GraphId == _graphId).Count();
 
-            Vertexes = _graphContext.Vertexes.Where(n => n.GraphId == _graphId).ToList();
-            Edges = _graphContext.Edges.Where(n => n.GraphId == _graphId).ToList();
+            if (Graph.GraphSequence.Contains("0"))
+                GraphConnectivity = "Graf niespójny";
+            else
+                GraphConnectivity = "Graf spójny";
 
-            var startVertexList = Edges.GroupBy(n => n.StartVertexId).Select(n => n.FirstOrDefault()).ToList();
-            _connectedVertexesIdDict = new Dictionary<int, List<int>>();
-            //dodawanie wierzcholkow polaczonych ze soba do slownika
-            foreach (var vertex in startVertexList)
-            {
-                _connectedVertexesIdDict.Add(
-                    vertex.StartVertexId,
-                    new List<int>(Edges.Where(n => n.StartVertexId == vertex.StartVertexId).Select(n => n.EndVertexId).ToList()));
-            }
+            GraphSequence = Graph.GraphSequence;
+
+
+
+
         }
     }
 }

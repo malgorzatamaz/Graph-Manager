@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Graph_Manager.View"
         mc:Ignorable="d"
-        Title="Wczytaj graph z bazy danych" Height="250" Width="470">
+        Title="Wczytaj graph z bazy danych" Height="280" Width="470">
     <Grid>
         <ComboBox 
             Name="CbxFileName"
@@ -21,24 +21,43 @@
         <Label Content="Ilość wierzchołków:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,15,20,20"/>
         <Label Content="Ilość krawędzi:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,45,20,20" />
         <Label Content="Ciąg stopni grafu:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,75,20,20" />
-        <Label Content="Kod Prufera:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,105,20,20" />
-        <TextBox 
+        <Label Content="Spójność:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,105,20,20" />
+        <Label Content="Kod Prufera:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,135,20,20" />
+        <TextBox Name="TxbNoVertexes"
             HorizontalAlignment="Left" 
             VerticalAlignment="Top" 
             Margin="350,20,0,0" 
             Width="80" 
             TextAlignment="Left"
             Text="{Binding VertexesNumber}"/>
-        <TextBox 
+        <TextBox Name="TxbNoEdges"
             HorizontalAlignment="Left" 
             VerticalAlignment="Top" 
             Margin="350,50,0,0" 
             Width="80" 
             TextAlignment="Left"
             Text="{Binding EdgesNumber}"/>
-        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="350,80,0,0" Width="80" TextAlignment="Left"/>
-        <TextBox HorizontalAlignment="Left" VerticalAlignment="Top" Margin="350,110,0,0" Width="80" TextAlignment="Left"/>
-        <Button 
+        <TextBox Name="TxbDegreeSequence"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Margin="350,80,0,0" 
+            Width="80" 
+            TextAlignment="Left"
+            Text="{Binding GraphSequence}"/>
+        <TextBox Name="TxbConnectivity"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Margin="350,110,0,0" 
+            Width="80" 
+            TextAlignment="Left"
+            Text="{Binding GraphConnectivity}"/>
+        <TextBox Name="TxbPruferCode"
+            HorizontalAlignment="Left" 
+            VerticalAlignment="Top" 
+            Margin="350,140,0,0" 
+            Width="80" 
+            TextAlignment="Left"/>
+        <Button Name="BtnLoadGraph"
             HorizontalAlignment="Center" 
             VerticalAlignment="Bottom" 
             Margin="20" Height="30" 

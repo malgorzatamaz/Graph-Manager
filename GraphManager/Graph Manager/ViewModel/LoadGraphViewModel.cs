@@ -24,7 +24,9 @@ namespace Graph_Manager.ViewModel
 
         public int VertexesNumber { get; set; }
         public int EdgesNumber { get; set; }
-     
+        public string GraphSequence { get; set; }
+        public string GraphConnectivity { get; set; }
+
         public ObservableCollection<string> FileNameList { get; set; }
 
         public ICommand LoadGraphCommand { get; set; }
@@ -63,7 +65,9 @@ namespace Graph_Manager.ViewModel
             {
                 _graphRepository.ShowGraphDetails(FileNameList[SelectedIndexFileNames]);
                 VertexesNumber = _graphRepository.VertexesNumber;
-                EdgesNumber = _graphRepository.EdgesNumber; 
+                EdgesNumber = _graphRepository.EdgesNumber;
+                GraphSequence = _graphRepository.GraphSequence;
+                GraphConnectivity = _graphRepository.GraphConnectivity;
             }
         }
 

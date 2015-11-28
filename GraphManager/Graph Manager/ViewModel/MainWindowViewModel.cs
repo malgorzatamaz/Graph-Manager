@@ -16,6 +16,8 @@ namespace Graph_Manager.ViewModel
     [ImplementPropertyChanged]
     public class MainWindowViewModel
     {
+        public int MousePosX { get; set; }
+        public int MousePosY { get; set; }
         public static int IdImage { get; set; }
         public static int IdEdge { get; set; }
         public static int IndexAction { get; set; }
@@ -30,6 +32,10 @@ namespace Graph_Manager.ViewModel
         public Vertex Vertex { get; set; }
         public Graph Graph { get; set; }
         public Graph GraphNew { get; set; }
+
+        public string DegreeSequence { get; set; }
+        public bool IsConnectedGraph { get; set; }
+        public bool IsDragging { get; set; }
         
         public CompositeCollection ObjectCompositeCollection { get; set; }
         public ObservableCollection<Graph> GraphCollection { get; set; }
@@ -46,7 +52,7 @@ namespace Graph_Manager.ViewModel
         public ICommand OpenWindowSaveCommand { get; set; }
         public ICommand OpenWindowLoadGraphCommand { get; set; }
         public ICommand CleanScreenCommand { get; set; }
-
+        public ICommand MoveMouseCommand { get; set; }
         public bool IsLineSelectedRightButton
         {
             get
@@ -83,7 +89,8 @@ namespace Graph_Manager.ViewModel
         {
             Vertex = new Vertex();
             Graph = new Graph();
-            GraphCollection=new ObservableCollection<Graph>();
+            IsConnectedGraph = true;
+            GraphCollection = new ObservableCollection<Graph>();
             ObjectCompositeCollection = new CompositeCollection();
             PathDirectory = Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName;
             PathAddVertex = PathDirectory + Resources.AddSelected;
@@ -103,6 +110,15 @@ namespace Graph_Manager.ViewModel
             OpenWindowSaveCommand = new RelayCommand(OpenWindowSaveToDatabase, (n) => true);
             OpenWindowLoadGraphCommand = new RelayCommand(OpenWindowLoadGraph, (n) => true);
             CleanScreenCommand = new RelayCommand(CleanScreen, (n) => true);
+            MoveMouseCommand = new RelayCommand(MoveMouse, (n) => true);
+        }
+
+        private void MoveMouse(object obj)
+        {
+            MouseEventArgs mouseArgs = (MouseEventArgs)obj;
+            Point newPosition = mouseArgs.GetPosition(obj as Canvas);
+            MousePosX = (int)newPosition.X;
+            MousePosY = (int)newPosition.Y;
         }
 
         private void CleanScreen(object obj)
@@ -217,7 +233,7 @@ namespace Graph_Manager.ViewModel
 
         private void OpenWindowSaveToDatabase(object obj)
         {
-            SaveToDatabaseViewModel saveViewModel = new SaveToDatabaseViewModel(Graph);
+            SaveToDatabaseViewModel saveViewModel = new SaveToDatabaseViewModel(Graph, DegreeSequence);
             var winSave = new SaveToDatabaseWindow(saveViewModel);
             saveViewModel.Window = winSave;
             winSave.ShowDialog();
@@ -335,6 +351,7 @@ namespace Graph_Manager.ViewModel
         {
             if (Mouse.LeftButton.Equals(MouseButtonState.Pressed))
             {
+                IsDragging = true;
                 MouseEventArgs mouseArgs = (MouseEventArgs)args;
                 Point newPosition = mouseArgs.GetPosition(args as Canvas);
                 newPosition.Offset(-Convert.ToDouble(Resources.ImageWidth) * 2.5, -Convert.ToDouble(Resources.ImageHeight) / 2);
@@ -360,10 +377,13 @@ namespace Graph_Manager.ViewModel
                 Vertex.IsMouseLeftButtonDown = false;
             }
             else
+            {
+                IsDragging = false;
                 DragVertexCommand = new RelayCommand(DragVertex, (n) => false);
-
+            }
+                
+                
             AddToObjectCompositeCollection();
-            
         }
 
         private void AddToObjectCompositeCollection()
@@ -372,6 +392,30 @@ namespace Graph_Manager.ViewModel
             ObjectCompositeCollection.Add(new CollectionContainer() { Collection = Graph.Vertexes });
             ObjectCompositeCollection.Add(new CollectionContainer() { Collection = Graph.Edges });
 
+            if (!IsDragging)
+                CreateDegreeSequence();
+        }
+
+        private void CreateDegreeSequence()
+        {
+            DegreeSequence = string.Empty;
+            List<int> degreeSequence = new List<int>();
+            foreach (var vertex in Graph.Vertexes)
+                degreeSequence.Add(vertex.ConnectedVertexes.Count);
+
+            if (degreeSequence.Contains(0) && degreeSequence.Count <= 1)
+            {
+                IsConnectedGraph = true;
+            }
+            else if (degreeSequence.Contains(0) && degreeSequence.Count >= 1)
+                IsConnectedGraph = false;
+            else
+                IsConnectedGraph = true;
+
+            degreeSequence.Sort();
+            DegreeSequence = string.Join(",", degreeSequence);
+
+                
         }
 
         private void AddEdge(Vertex vertex)
