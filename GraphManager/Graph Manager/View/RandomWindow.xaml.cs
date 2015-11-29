@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Windows;
 using Graph_Manager.Model;
 using Graph_Manager.ViewModel;
@@ -13,6 +14,7 @@ namespace Graph_Manager.View
         public RandomWindow(RandomWindowViewModel randomViewModel)
         {
             InitializeComponent();
+            randomViewModel.CloseAction = new Action(this.Close);
             DataContext = randomViewModel;
         }
     }

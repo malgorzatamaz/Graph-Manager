@@ -32,6 +32,7 @@ namespace Graph_Manager.Model
         public ICommand OnLeaveChangeCursorCommand { get; set; }
         public virtual Graph Graph { get; set; }
         public int GraphId { get; set; }
+        public int Degree { get; set; }
 
         public Vertex()
         {

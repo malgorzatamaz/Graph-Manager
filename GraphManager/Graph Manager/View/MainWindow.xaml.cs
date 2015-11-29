@@ -15,10 +15,5 @@ namespace Graph_Manager.View
             InitializeComponent();
             DataContext=new MainWindowViewModel();
         }
-
-        private void Image_ImageFailed(object sender, ExceptionRoutedEventArgs e)
-        {
-
-        }
     }
 }

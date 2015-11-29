@@ -11,7 +11,7 @@
         xmlns:viewModel="clr-namespace:Graph_Manager.ViewModel"
         Title="MainWindow"
         Width="750"
-        Height="518"
+        Height="458"
         MinWidth="540"
         MinHeight="370"
         mc:Ignorable="d">
@@ -74,7 +74,7 @@
                     Command="{Binding OpenWindowRandomCommand}">
                 <Image Source="{StaticResource Random}" />
             </Button>
-            <Button x:Name="BtnPrufer"
+            <!--<Button x:Name="BtnPrufer"
                     Width="60"
                     Height="60"
                     HorizontalAlignment="Center"
@@ -84,7 +84,7 @@
                     ToolTipService.InitialShowDelay="0"
                     Command="{Binding OpenWindowPruferCommand}">
                 <Image Source="{StaticResource Prufer}" />
-            </Button>
+            </Button>-->
             <Button x:Name="BtnOpen"
                     Width="60"
                     Height="60"
