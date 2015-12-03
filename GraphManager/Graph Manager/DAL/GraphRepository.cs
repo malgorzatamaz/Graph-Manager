@@ -178,5 +178,13 @@ namespace Graph_Manager.DAL
 
 
         }
+
+        public void DeleteGraph()
+        {
+            _graphContext.Edges.RemoveRange(_graphContext.Edges.Where(e => e.GraphId == _graphId));
+            _graphContext.Vertexes.RemoveRange(_graphContext.Vertexes.Where(v => v.GraphId == _graphId));
+            _graphContext.Graphs.RemoveRange(_graphContext.Graphs.Where(g => g.GraphId == _graphId));
+            _graphContext.SaveChanges();
+        }
     }
 }

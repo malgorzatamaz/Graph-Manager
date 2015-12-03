@@ -5,58 +5,88 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Graph_Manager.View"
         mc:Ignorable="d"
-        Title="Wczytaj graph z bazy danych" Height="250" Width="470">
+        Title="Wczytaj graph z bazy danych" Height="300" Width="470"
+        ResizeMode="NoResize">
     <Grid>
-        <ComboBox 
-            Name="CbxFileName"
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top" 
-            Margin="15" 
-            Width="150" 
-            Height="25"
-            ItemsSource="{Binding FileNameList}"
-            SelectedIndex="{Binding SelectedIndexFileNames,
-                            Mode=TwoWay, 
-                            UpdateSourceTrigger=PropertyChanged}"/>
-        <Label Content="Ilość wierzchołków:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,15,20,20"/>
-        <Label Content="Ilość krawędzi:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,45,20,20" />
-        <Label Content="Ciąg stopni grafu:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,75,20,20" />
-        <Label Content="Spójność:" HorizontalAlignment="Left" VerticalAlignment="Top" Margin="200,105,20,20" />
-        <TextBox Name="TxbNoVertexes"
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top" 
-            Margin="350,20,0,0" 
-            Width="80" 
-            TextAlignment="Left"
-            Text="{Binding VertexesNumber}"/>
-        <TextBox Name="TxbNoEdges"
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top" 
-            Margin="350,50,0,0" 
-            Width="80" 
-            TextAlignment="Left"
-            Text="{Binding EdgesNumber}"/>
-        <TextBox Name="TxbDegreeSequence"
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top" 
-            Margin="350,80,0,0" 
-            Width="80" 
-            TextAlignment="Left"
-            Text="{Binding GraphSequence}"/>
-        <TextBox Name="TxbConnectivity"
-            HorizontalAlignment="Left" 
-            VerticalAlignment="Top" 
-            Margin="350,110,0,0" 
-            Width="80" 
-            TextAlignment="Left"
-            Text="{Binding GraphConnectivity}"/>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*" />
+            <ColumnDefinition Width="0.7*" />
+            <ColumnDefinition Width="1*" />
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="1.5*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="1*"/>
+            <RowDefinition Height="3*"/>
+        </Grid.RowDefinitions>
+
+
+        <Label Grid.Column="0" Grid.Row="0" Content="Nazwa pliku: " VerticalAlignment="Bottom" Margin="10,0"/>
+        <ComboBox Name="CbxFileName"
+                  Grid.Column="0"
+                  Grid.Row="1"
+                  Margin="10,0"
+                  Height="20"
+                  ItemsSource="{Binding FileNameList}"
+                  SelectedIndex="{Binding SelectedIndexFileNames,
+                                                Mode=TwoWay, 
+                                                UpdateSourceTrigger=PropertyChanged}"/>
         <Button Name="BtnLoadGraph"
-            HorizontalAlignment="Center" 
-            VerticalAlignment="Bottom" 
-            Margin="20" Height="30" 
-            Content="Wczytaj graf" 
-            Width="250"
-            Command="{Binding LoadGraphCommand}"/>
+                Grid.Column="2"
+                Grid.Row="4"
+                Margin="0,0,10,20"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Bottom" 
+                Height="30" 
+                Content="Wczytaj graf" 
+                Command="{Binding LoadGraphCommand}"/>
+
+        <Button Name="BtnDeleteGraph"
+                Grid.Column="0"
+                Grid.Row="4"
+                Margin="10,0,0,20"
+                HorizontalAlignment="Stretch" 
+                VerticalAlignment="Bottom" 
+                Height="30" 
+                Content="Usuń graf" 
+                Command="{Binding DeleteGraphCommand}"/>
+
+        <Label Grid.Column="1" Grid.Row="0" Content="Ilość wierzchołków:" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <Label Grid.Column="1" Grid.Row="1" Content="Ilość krawędzi:" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <Label Grid.Column="1" Grid.Row="2" Content="Ciąg stopni grafu:" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        <Label Grid.Column="1" Grid.Row="3" Content="Spójność:" HorizontalAlignment="Left" VerticalAlignment="Bottom"/>
+        
+        <TextBox Grid.Column="2" Grid.Row="0"
+                 Name="TxbNoVertexes"
+                 HorizontalAlignment="Stretch" 
+                 VerticalAlignment="Bottom"
+                 Margin="0,0,10,3"
+                 TextAlignment="Left"
+                 Text="{Binding VertexesNumber}"/>
+        <TextBox Grid.Column="2" Grid.Row="1"
+                 Name="TxbNoEdges"
+                 HorizontalAlignment="Stretch" 
+                 VerticalAlignment="Bottom" 
+                 Margin="0,0,10,3"
+                 TextAlignment="Left"
+                 Text="{Binding EdgesNumber}"/>
+        <TextBox Grid.Column="2" Grid.Row="2"
+                 Name="TxbDegreeSequence"
+                 HorizontalAlignment="Stretch" 
+                 VerticalAlignment="Bottom" 
+                 Margin="0,0,10,3"
+                 TextAlignment="Left"
+                 Text="{Binding GraphSequence}"/>
+        <TextBox Grid.Column="2" Grid.Row="3"
+                 Name="TxbConnectivity"
+                 HorizontalAlignment="Stretch" 
+                 VerticalAlignment="Bottom" 
+                 Margin="0,0,10,3"
+                 TextAlignment="Left"
+                 Text="{Binding GraphConnectivity}"/>
+
+
 
     </Grid>
 </Window>

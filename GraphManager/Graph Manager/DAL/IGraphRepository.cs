@@ -15,5 +15,6 @@ namespace Graph_Manager.DAL
         void ShowGraphDetails(string fileName);
         void GetFileNames(ObservableCollection<string> fileNameList);
         bool CheckFileNames(string fileName);
+        void DeleteGraph();
     }
 }

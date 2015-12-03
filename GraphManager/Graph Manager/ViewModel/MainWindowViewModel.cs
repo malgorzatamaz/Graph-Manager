@@ -30,6 +30,7 @@ namespace Graph_Manager.ViewModel
         public int IdState { get; set; }
 
         public Vertex Vertex { get; set; }
+        public Edge Edge { get; set; }
         public Graph Graph { get; set; }
         public Graph GraphNew { get; set; }
 
@@ -320,18 +321,22 @@ namespace Graph_Manager.ViewModel
             else if (IndexAction == 3 && IsImageSelectedLeftButton == true)
             {
                 Vertex = Graph.Vertexes.FirstOrDefault(v => v.IsMouseLeftButtonDown);
-                foreach (var edge in Vertex.ConnectedEdges)
+               // List<Edge> edgeList = Vertex.ConnectedEdges.;
+                foreach (var edge in Vertex.ConnectedEdges.ToList())
+                {
                     Graph.Edges.Remove(edge);
-
+                    Edge = edge;
+                    RemoveEdge();
+                }
                 Graph.Vertexes.Remove(Vertex);
-
             }
 
             //usuwa dowolną krawędź
             else if (IndexAction == 3 && IsLineSelectedRightButton == true)
             {
-                var edge = Graph.Edges.FirstOrDefault(v => v.IsMouseLeftButtonDown == true);
-                Graph.Edges.Remove(edge);
+                Edge = Graph.Edges.FirstOrDefault(v => v.IsMouseLeftButtonDown == true);
+                RemoveEdge();
+                Graph.Edges.Remove(Edge);
             }
 
             //przesuwanie wierzcholkow
@@ -343,6 +348,18 @@ namespace Graph_Manager.ViewModel
 
             AddToObjectCompositeCollection();
             Save();
+        }
+
+        private void RemoveEdge()
+        {
+            var startVertex = Graph.Vertexes.Where(v => v.IdVertex == Edge.StartVertexId).FirstOrDefault();
+            var endVertex = Graph.Vertexes.Where(v => v.IdVertex == Edge.EndVertexId).FirstOrDefault();
+
+            startVertex.ConnectedVertexes.Remove(endVertex);
+            endVertex.ConnectedVertexes.Remove(startVertex);
+
+            startVertex.ConnectedEdges.Remove(Edge);
+            endVertex.ConnectedEdges.Remove(Edge);
         }
 
         private void DragVertex(object args)

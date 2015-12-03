@@ -59,9 +59,7 @@ namespace Graph_Manager.ViewModel
             string sequenceString = (string)obj;
             List<int> degreeSequence = Validation.SplitSequence(sequenceString);
 
-            int maxEdgesIndex = 0,
-                maxDegree = 0,
-                radius,
+            int radius,
                 vertexIndex,
                 angleChange = 0,
                 angle,

@@ -22,14 +22,15 @@ namespace Graph_Manager.ViewModel
         public LoadGraphWindow Window { get; set; }
         public bool ReadTo { get; set; }
 
-        public int VertexesNumber { get; set; }
-        public int EdgesNumber { get; set; }
+        public string VertexesNumber { get; set; }
+        public string EdgesNumber { get; set; }
         public string GraphSequence { get; set; }
         public string GraphConnectivity { get; set; }
 
         public ObservableCollection<string> FileNameList { get; set; }
 
         public ICommand LoadGraphCommand { get; set; }
+        public ICommand DeleteGraphCommand { get; set; }
 
         public int SelectedIndexFileNames
         {
@@ -44,12 +45,23 @@ namespace Graph_Manager.ViewModel
         public LoadGraphViewModel(Graph graph)
         {
             LoadGraphCommand = new RelayCommand(LoadGraph, (n) => true);
+            DeleteGraphCommand = new RelayCommand(DeleteGraph, (n) => true);
             _graph = graph;
             _graphRepository = new GraphRepository();
             FileNameList = new ObservableCollection<string>();
             _graphRepository.GetFileNames(FileNameList);
             SelectedIndexFileNames = 0;
             ShowGraphProperties();
+        }
+
+        private void DeleteGraph(object obj)
+        {
+            _graphRepository.DeleteGraph();
+            FileNameList = new ObservableCollection<string>();
+            _graphRepository.GetFileNames(FileNameList);
+            SelectedIndexFileNames = 0;
+            ShowGraphProperties();
+
         }
 
         private void LoadGraph(object obj)
@@ -64,11 +76,19 @@ namespace Graph_Manager.ViewModel
             if (FileNameList.Any())
             {
                 _graphRepository.ShowGraphDetails(FileNameList[SelectedIndexFileNames]);
-                VertexesNumber = _graphRepository.VertexesNumber;
-                EdgesNumber = _graphRepository.EdgesNumber;
+                VertexesNumber = _graphRepository.VertexesNumber.ToString();
+                EdgesNumber = _graphRepository.EdgesNumber.ToString();
                 GraphSequence = _graphRepository.GraphSequence;
                 GraphConnectivity = _graphRepository.GraphConnectivity;
             }
+            else
+            {
+                VertexesNumber = string.Empty;
+                EdgesNumber = string.Empty;
+                GraphSequence = string.Empty;
+                GraphConnectivity = string.Empty;
+            }
+
         }
 
     }
