@@ -8,6 +8,7 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms;
 using System.Windows.Input;
 
 namespace Graph_Manager.ViewModel
@@ -41,7 +42,6 @@ namespace Graph_Manager.ViewModel
                 ShowGraphProperties();
             }
         }
-
         public LoadGraphViewModel(Graph graph)
         {
             LoadGraphCommand = new RelayCommand(LoadGraph, (n) => true);
@@ -56,11 +56,20 @@ namespace Graph_Manager.ViewModel
 
         private void DeleteGraph(object obj)
         {
-            _graphRepository.DeleteGraph();
-            FileNameList = new ObservableCollection<string>();
-            _graphRepository.GetFileNames(FileNameList);
-            SelectedIndexFileNames = 0;
-            ShowGraphProperties();
+            if (FileNameList.Any())
+            {
+                DialogResult dialog = MessageBox.Show("Czy chcesz napewno usunąć plik '" + FileNameList[SelectedIndexFileNames] + "'?", 
+                    "Usunięcie grafu", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+
+                if (dialog == DialogResult.Yes)
+                {
+                    _graphRepository.DeleteGraph();
+                    FileNameList = new ObservableCollection<string>();
+                    _graphRepository.GetFileNames(FileNameList);
+                    SelectedIndexFileNames = 0;
+                    ShowGraphProperties();  
+                }
+            }
 
         }
 

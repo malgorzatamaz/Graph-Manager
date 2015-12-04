@@ -27,7 +27,7 @@
                   Grid.Column="0"
                   Grid.Row="1"
                   Margin="10,0"
-                  Height="20"
+                  Height="25"
                   ItemsSource="{Binding FileNameList}"
                   SelectedIndex="{Binding SelectedIndexFileNames,
                                                 Mode=TwoWay, 
