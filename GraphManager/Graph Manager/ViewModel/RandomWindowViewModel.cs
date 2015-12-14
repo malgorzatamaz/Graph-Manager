@@ -105,8 +105,13 @@ namespace Graph_Manager.ViewModel
 
             while (_graph.Vertexes.Sum(s => s.Degree) > 0)
             {
-                Vertex radomVertex = _graph.Vertexes[random.Next(_graph.Vertexes.Count)];
-                Vertex maxVertex;
+                Vertex maxVertex, radomVertex;
+
+                do
+                {
+                    radomVertex = _graph.Vertexes[random.Next(_graph.Vertexes.Count)];
+                } while (radomVertex.Degree == 0);
+
 
                 try
                 {
