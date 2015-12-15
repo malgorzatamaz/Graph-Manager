@@ -27,7 +27,7 @@ namespace Graph_Manager.ViewModel
             _canvasWidth = canvasWidth;
             _canvasHeight = canvasHeight;
             _graph = graph;
-            _expression = new Regex("[1-9]+([,]{1}[1-9]+)*");
+            _expression = new Regex("[1-9]+([,]{1}[1-9])");
             OnCircle = true;
             RandomizeCommand = new RelayCommand(Randomize, Validation.IsEven);
         }

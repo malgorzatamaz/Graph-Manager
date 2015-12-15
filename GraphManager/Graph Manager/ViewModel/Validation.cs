@@ -9,7 +9,7 @@ namespace Graph_Manager.ViewModel
 {
     static class Validation
     {
-        static Regex _expression = new Regex("[1-9]+([,]{1}[1-9]+)*");
+        static Regex _expression = new Regex("[1-9]+([,]{1}[1-9])");
         public static bool IsEven(object obj) // Parzysta
         {
             int sum;
