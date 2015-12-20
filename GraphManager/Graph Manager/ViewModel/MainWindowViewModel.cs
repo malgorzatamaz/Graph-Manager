@@ -418,18 +418,55 @@ namespace Graph_Manager.ViewModel
             foreach (var vertex in Graph.Vertexes)
                 degreeSequence.Add(vertex.ConnectedVertexes.Count);
 
-            if (degreeSequence.Contains(0) && degreeSequence.Count <= 1)
-            {
-                IsConnectedGraph = true;
-            }
-            else if (degreeSequence.Contains(0) && degreeSequence.Count >= 1)
-                IsConnectedGraph = false;
-            else
-                IsConnectedGraph = true;
+            CheckConnectivity();
 
             degreeSequence.Sort();
             DegreeSequence = string.Join(",", degreeSequence);
+        }
 
+        private void CheckConnectivity()
+        {
+            var listVertexes = Graph.Vertexes.Select(n => n.IdVertex).ToList();
+
+            if (listVertexes.Count > 0)
+            {
+                List<int> stack = new List<int>();
+                List<int> visitedVertexes = new List<int>();
+
+                visitedVertexes.Add(listVertexes[0]);
+                var vertex = Graph.Vertexes.FirstOrDefault(n => n.IdVertex == visitedVertexes[0]);
+                listVertexes.Remove(visitedVertexes[0]);
+                while (listVertexes.Count > 0)
+                {
+                    var tempStack = vertex.ConnectedVertexes.Select(n => n.IdVertex).ToList();
+                    var sortedTempStack = tempStack.OrderByDescending(i => i);
+
+                    foreach (var stackItem in sortedTempStack)
+                    {
+                        if (!visitedVertexes.Contains(stackItem) && !stack.Contains(stackItem))
+                            stack.Add(stackItem);
+                    }
+
+                    if (stack.Any())
+                    {
+                        int lastVertex = stack.Last();
+                        vertex = Graph.Vertexes.FirstOrDefault(n => n.IdVertex == lastVertex);
+                        if (listVertexes.Contains(lastVertex))
+                        {
+                            listVertexes.Remove(lastVertex);
+                            stack.Remove(lastVertex);
+                            if (!visitedVertexes.Contains(lastVertex))
+                                visitedVertexes.Add(lastVertex);
+                        }
+                    }
+                    else
+                        break;
+                }
+            }
+            if (listVertexes.Any())
+                IsConnectedGraph = false;
+            else
+                IsConnectedGraph = true;
 
         }
 
