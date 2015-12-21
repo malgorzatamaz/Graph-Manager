@@ -17,7 +17,7 @@ namespace Graph_Manager.ViewModel
 
             if (!string.IsNullOrEmpty(sequenceString))
             {
-                if (sequenceString.Last() != ',' && _expression.IsMatch(sequenceString))
+                if (sequenceString.Last() != ',' && _expression.IsMatch(sequenceString) && sequenceString.First() != ',')
                 {
                     List<int> degreeSequence = SplitSequence(sequenceString);
                     degreeSequence = degreeSequence.OrderByDescending(x => x).ToList();
